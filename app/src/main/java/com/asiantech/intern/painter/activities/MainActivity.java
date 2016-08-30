@@ -1,7 +1,4 @@
-package com.asiantech.intern.painter.activitys;
-
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+package com.asiantech.intern.painter.activities;
 
 import com.asiantech.intern.painter.R;
 

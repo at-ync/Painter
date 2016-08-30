@@ -11,9 +11,6 @@ import org.androidannotations.annotations.EFragment;
  */
 @EFragment
 public abstract class BaseFragment extends Fragment {
-    abstract void afterView();
     @AfterViews
-    void init(){
-        afterView();
-    }
+    abstract void afterViews();
 }

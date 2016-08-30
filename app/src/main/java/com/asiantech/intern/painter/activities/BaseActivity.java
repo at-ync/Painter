@@ -1,4 +1,4 @@
-package com.asiantech.intern.painter.activitys;
+package com.asiantech.intern.painter.activities;
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -11,10 +11,6 @@ import org.androidannotations.annotations.EActivity;
  */
 @EActivity
 public abstract class BaseActivity extends AppCompatActivity {
-    abstract void afterViews();
-
     @AfterViews
-    void init() {
-        afterViews();
-    }
+    abstract void afterViews();
 }
