@@ -30,6 +30,8 @@ dependencies {
     //lombok
     provided "org.projectlombok:lombok:1.12.6"
     apt "org.projectlombok:lombok:1.12.6"
+
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }
 apt {
     arguments {
