@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">painter</string>
+    <!--MainActivity-->
+    <string name="activity.main.textview.text.camera">Camera</string>
+    <string name="activity.main.textview.text.photo">Photo</string>
+    <string name="activity.main.imageview.description">Logo</string>
 </resources>
