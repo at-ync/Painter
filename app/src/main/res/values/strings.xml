@@ -4,4 +4,8 @@
     <string name="activity.main.textview.text.camera">Camera</string>
     <string name="activity.main.textview.text.photo">Photo</string>
     <string name="activity.main.imageview.description">Logo</string>
+    <string name="dialog.input_text.textview.text.size">Size:</string>
+    <string name="dialog.input_text.textview.text.color">Color:</string>
+    <string name="dialog.input_text.button.text.cancel">Cancel</string>
+    <string name="dialog.input_text.button.text.ok">Ok</string>
 </resources>

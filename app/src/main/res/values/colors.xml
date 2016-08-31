@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <!--MainActivity-->
     <color name="activity.main.textview.color.camera">@android:color/white</color>
-    <color name="activity.main.circleimageview.boder.color">@android:color/white</color>
+    <color name="activity.main.circleimageview.color.boder">@android:color/white</color>
     <color name="activity.main.textview.color.photo">@android:color/white</color>
+    <color name="dialog.input_text.edittext.color.shape">#e7e5e5</color>
 </resources>
