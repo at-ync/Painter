@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_activitymain"
+    android:background="@drawable/bg_activity_main"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
@@ -32,7 +32,7 @@
                 android:layout_width="@dimen/activity.main.circleimageview.camera.width"
                 android:layout_height="@dimen/activity.main.circleimageview.camera.height"
                 android:src="@drawable/ic_camera"
-                app:civ_border_color="@color/activity.main.circleimageview.boder.color"
+                app:civ_border_color="@color/activity.main.circleimageview.color"
                 app:civ_border_width="@dimen/activity.main.circleimageview.boder.width" />
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_width="@dimen/activity.main.circleimageview.photo.width"
                 android:layout_height="@dimen/activity.main.circleimageview.photo.height"
                 android:src="@drawable/ic_photo"
-                app:civ_border_color="@color/activity.main.circleimageview.boder.color"
+                app:civ_border_color="@color/activity.main.circleimageview.color"
                 app:civ_border_width="@dimen/activity.main.circleimageview.boder.width" />
 
             <TextView
