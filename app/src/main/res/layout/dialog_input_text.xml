@@ -15,9 +15,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/dialog_input_text.texview.marginright"
+            android:layout_marginRight="@dimen/dialog.input_text.texview.marginright"
             android:gravity="center"
-            android:text="@string/dialog_input_text.textview.text.size" />
+            android:text="@string/dialog.input_text.textview.text.size" />
 
         <EditText
             android:id="@+id/edtSizeText"
@@ -27,16 +27,16 @@
             android:background="@drawable/round_edittext"
             android:inputType="number"
             android:maxLength="2"
-            android:padding="@dimen/dialog_input_text.edittext.padding"
+            android:padding="@dimen/dialog.input_text.edittext.padding"
             android:singleLine="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dialog_input_text.texview.marginleft"
-            android:layout_marginRight="@dimen/dialog_input_text.texview.marginright"
+            android:layout_marginLeft="@dimen/dialog.input_text.texview.marginleft.title_color"
+            android:layout_marginRight="@dimen/dialog.input_text.texview.marginright"
             android:gravity="center"
-            android:text="@string/dialog_input_text.textview.text.color" />
+            android:text="@string/dialog.input_text.textview.text.color" />
 
         <EditText
             android:id="@+id/edtCodeColor"
@@ -50,9 +50,9 @@
 
         <ImageView
             android:id="@+id/imgPickColor"
-            android:layout_width="@dimen/dialog_input_text.imageview.size"
-            android:layout_height="@dimen/dialog_input_text.imageview.size"
-            android:layout_marginLeft="@dimen/dialog_input_text.imageview.marginleft"
+            android:layout_width="@dimen/dialog.input_text.imageview.size"
+            android:layout_height="@dimen/dialog.input_text.imageview.size"
+            android:layout_marginLeft="@dimen/dialog.input_text.imageview.marginleft"
             android:src="@drawable/ic_pickcolor" />
 
     </LinearLayout>
@@ -60,11 +60,11 @@
     <EditText
         android:id="@+id/edtInputText"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dialog_input_text.edittext.height"
-        android:layout_marginBottom="@dimen/dialog_input_text_edittext.marginbot"
-        android:layout_marginTop="@dimen/dialog_input_text.edittext.margintop"
+        android:layout_height="@dimen/dialog.input_text.edittext.height"
+        android:layout_marginBottom="@dimen/dialog.input_text_edittext.marginbot"
+        android:layout_marginTop="@dimen/dialog.input_text.edittext.margintop"
         android:background="@drawable/round_edittext"
-        android:padding="@dimen/dialog_input_text.edittext.padding" />
+        android:padding="@dimen/dialog.input_text.edittext.padding" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/dialog_input_text.button.text.cancel" />
+            android:text="@string/dialog.input_text.button.text.cancel" />
 
         <Button
             android:id="@+id/btnOk"
@@ -84,6 +84,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/dialog_input_text.button.text.ok" />
+            android:text="@string/dialog.input_text.button.text.ok" />
     </LinearLayout>
 </LinearLayout>
