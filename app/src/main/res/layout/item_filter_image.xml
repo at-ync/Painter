@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cv="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="@dimen/item.filterimage.linearlayout.margin"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImagViewFilter"
+        android:src="@drawable/bg_activitymain"
+        android:layout_width="@dimen/item.filterimage.circleimageview.width"
+        cv:civ_border_color="@color/item.filterimage.circleimageview.boder.color"
+        cv:civ_border_width="@dimen/item.filterimage.circleimageview.boder.width"
+        android:layout_height="@dimen/item.filterimage.circleimageview.height" />
+    <TextView
+        android:textColor="@color/item.filterimage.textview.color"
+        android:id="@+id/tvNameFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

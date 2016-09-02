@@ -11,75 +11,75 @@
     <LinearLayout
         android:id="@+id/linearLayoutEditPhoto"
         android:layout_alignParentBottom="true"
-        android:background="#ffffff"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/activity.home.linearlayout.height"
         android:orientation="vertical">
         <LinearLayout
             android:gravity="center"
-            android:background="#000000"
+            android:background="@color/activity.home.linearlayout.color"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="@dimen/activity.home.linearlayout.height.menu_select">
             <ImageButton
-                android:background="#00000000"
-                android:padding="5dp"
-                android:scaleY="0.7"
-                android:scaleX="0.7"
+                android:background="@drawable/custom_select_imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_font"/>
+                android:src="@drawable/ic_font"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton" />
             <ImageButton
-                android:background="#00000000"
-                android:padding="5dp"
-                android:scaleY="0.5"
-                android:scaleX="0.5"
+                android:background="@drawable/custom_select_imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_edit"/>
+                android:src="@drawable/ic_paint"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton" />
             <ImageButton
-                android:background="#00000000"
-                android:padding="5dp"
-                android:scaleY="0.5"
-                android:scaleX="0.5"
+                android:background="@drawable/custom_select_imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_eraser"/>
+                android:src="@drawable/ic_eraser"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton" />
             <ImageButton
-                android:background="#00000000"
-                android:padding="5dp"
-                android:scaleY="0.5"
-                android:scaleX="0.5"
+                android:background="@drawable/custom_select_imagebutton"
+                android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_picture"/>
+                android:src="@drawable/ic_picture"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton" />
             <ImageButton
-                android:background="#00000000"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                android:padding="5dp"
+                android:background="@drawable/custom_select_imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_crop"/>
+                android:src="@drawable/ic_crop"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton" />
             <ImageButton
-                android:background="#00000000"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                android:padding="5dp"
+                android:background="@drawable/custom_select_imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_save"/>
+                android:src="@drawable/ic_save"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton" />
             <ImageButton
-                android:background="#00000000"
-                android:scaleX="0.6"
-                android:scaleY="0.6"
-                android:padding="5dp"
+                android:background="@drawable/custom_select_imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_share"/>
+                android:src="@drawable/ic_rotate"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton" />
+            <ImageButton
+                android:background="@drawable/custom_select_imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_share"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton" />
         </LinearLayout>
         <android.support.v7.widget.RecyclerView
-            android:background="#000000"
+            android:id="@+id/recyclerView"
+            android:background="@color/activity.home.recyclerview.background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

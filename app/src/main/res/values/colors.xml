@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!--MainActivity-->
+    <color name="activity.main.textview.color.camera">@android:color/white</color>
+    <color name="activity.main.circleimageview.boder.color">@android:color/white</color>
+    <color name="activity.main.textview.color.photo">@android:color/white</color>
+    <color name="activity.home.linearlayout.color">@android:color/black</color>
+    <color name="activity.home.recyclerview.background">@android:color/black</color>
+    <color name="item.filterimage.circleimageview.boder.color">@android:color/white</color>
+    <color name="item.filterimage.textview.color">@android:color/white</color>
+    <color name="custom.select.imagebutton.background_tranparent">#00000000</color>
+    <color name="custom.select.imagebutton.background_select_tranparent">#3fffffff</color>
 </resources>
