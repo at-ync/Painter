@@ -8,4 +8,5 @@
     <string name="dialog.input_text.textview.text.color">Color:</string>
     <string name="dialog.input_text.button.text.cancel">Cancel</string>
     <string name="dialog.input_text.button.text.ok">Ok</string>
+    <string name="activity.home.contentdescription.imagebutton">ImageButton</string>
 </resources>
