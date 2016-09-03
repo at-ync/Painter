@@ -22,11 +22,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
 
     private final Context mContext;
-    private final List<FilterImage> mListFilterImage;
+    private final List<FilterImage> mFilterImages;
 
-    public FilterAdapter(Context context, List<FilterImage> listFilterImage){
+    public FilterAdapter(Context context, List<FilterImage> filterImages){
         this.mContext = context;
-        this.mListFilterImage = listFilterImage;
+        this.mFilterImages = filterImages;
     }
 
     @Override
@@ -37,13 +37,13 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
 
     @Override
     public void onBindViewHolder(FilterViewHolder holder, int position) {
-        holder.tvNameFilter.setText(mListFilterImage.get(position).getNameFilter());
-        holder.imageViewFilter.setImageResource(mListFilterImage.get(position).getImageFilter());
+        holder.tvNameFilter.setText(mFilterImages.get(position).getNameFilter());
+        holder.imageViewFilter.setImageResource(mFilterImages.get(position).getImageFilter());
     }
 
     @Override
     public int getItemCount() {
-        return mListFilterImage.size();
+        return mFilterImages.size();
     }
 
     public class FilterViewHolder extends RecyclerView.ViewHolder {
