@@ -21,8 +21,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
 
-    private Context mContext;
-    private List<FilterImage> mListFilterImage;
+    private final Context mContext;
+    private final List<FilterImage> mListFilterImage;
 
     public FilterAdapter(Context context, List<FilterImage> listFilterImage){
         this.mContext = context;
@@ -47,8 +47,8 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
     }
 
     public class FilterViewHolder extends RecyclerView.ViewHolder {
-        CircleImageView imageViewFilter;
-        TextView tvNameFilter;
+        private final CircleImageView imageViewFilter;
+        private final TextView tvNameFilter;
         public FilterViewHolder(View itemView) {
             super(itemView);
             imageViewFilter = (CircleImageView) itemView.findViewById(R.id.circleImagViewFilter);
