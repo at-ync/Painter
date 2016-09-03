@@ -8,7 +8,7 @@
     android:layout_height="wrap_content">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImagViewFilter"
-        android:src="@drawable/bg_activitymain"
+        android:src="@drawable/bg_activity_main"
         android:layout_width="@dimen/item.filterimage.circleimageview.width"
         cv:civ_border_color="@color/item.filterimage.circleimageview.boder.color"
         cv:civ_border_width="@dimen/item.filterimage.circleimageview.boder.width"
