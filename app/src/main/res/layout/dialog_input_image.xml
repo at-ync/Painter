@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_activitymain"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity.main.linearlayout.camera.margin"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageViewCamera"
+            android:layout_width="@dimen/activity.main.circleimageview.camera.width"
+            android:layout_height="@dimen/activity.main.circleimageview.camera.height"
+            android:src="@drawable/ic_camera"
+            app:civ_border_color="@color/activity.main.textview.color.photo"
+            app:civ_border_width="@dimen/activity.main.circleimageview.boder.width" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity.main.textview.text.camera"
+            android:textColor="@color/activity.main.textview.color.camera"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity.main.linearlayout.photo.margin"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageViewPhoto"
+            android:layout_width="@dimen/activity.main.circleimageview.photo.width"
+            android:layout_height="@dimen/activity.main.circleimageview.photo.height"
+            android:src="@drawable/ic_photo"
+            app:civ_border_color="@color/activity.main.textview.color.photo"
+            app:civ_border_width="@dimen/activity.main.circleimageview.boder.width" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity.main.textview.text.photo"
+            android:textColor="@color/activity.main.textview.color.photo"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>
