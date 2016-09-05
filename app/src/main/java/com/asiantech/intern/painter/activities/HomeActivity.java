@@ -45,12 +45,13 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
     @Click(R.id.imgButtonInputText)
     public void inPutText() {
+        mCustomPainter.isDrawing(false);
         setActionText(Action.STOP);
         DialogInputText_.builder().build().show(getFragmentManager(), "");
     }
 
     @Click(R.id.imgButtonDraw)
     public void onClickButtonDraw(){
-
+        mCustomPainter.isDrawing(true);
     }
 }

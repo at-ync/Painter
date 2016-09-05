@@ -1,12 +1,16 @@
 package com.asiantech.intern.painter.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.asiantech.intern.painter.beans.Component;
+import com.asiantech.intern.painter.beans.DrawingPainter;
 import com.asiantech.intern.painter.beans.TextObject;
 import com.asiantech.intern.painter.commo.Action;
 import com.asiantech.intern.painter.interfaces.ITextLab;
@@ -20,6 +24,8 @@ import java.util.List;
  * Created by LyHV on 8/31/2016.
  */
 public class CustomPainter extends View implements ITextLab {
+    float initialX;
+    float initialY;
     private boolean isOnDraw = true;
     // Text Activities
     private TextFactory mTextFactory;
@@ -27,25 +33,49 @@ public class CustomPainter extends View implements ITextLab {
     private float mCenterX;
     private float mCenterY;
     private int actionText;
-    float initialX;
-    float initialY;
+    //Draw Activities
+    private boolean mIsDrawing;
+    private Bitmap mBitmapBackground;
+    private Paint mPaintBackground;
+    private DrawingPainter mDrawingPainter;
     // Image Activities
 
     public CustomPainter(Context context) {
         super(context);
+        init();
     }
 
     public CustomPainter(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
+    }
+
+    private void init(){
         mTextFactory = new TextFactory();
         mComponents = new ArrayList<>();
+        mPaintBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mDrawingPainter = new DrawingPainter();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        if (mBitmapBackground == null) {
+            mDrawingPainter.setBitmap(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
+        } else {
+            mDrawingPainter.setBitmap(mBitmapBackground.copy(Bitmap.Config.ARGB_8888, true));
+        }
         mCenterX = w / 2;
         mCenterY = h / 2;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mBitmapBackground != null) {
+            setMeasuredDimension(mBitmapBackground.getWidth(), mBitmapBackground.getHeight());
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 
     @Override
@@ -59,17 +89,32 @@ public class CustomPainter extends View implements ITextLab {
         if (isOnDraw) {
             invalidate();
         }
+        canvas.drawBitmap(mDrawingPainter.getBitmap(), 0, 0, mPaintBackground);
+        if(mIsDrawing){
+            canvas.drawPath(mDrawingPainter.getPath(), mDrawingPainter.getPaint());
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 initMove(event);
+                if (mIsDrawing) {
+                    mDrawingPainter.onTouchStart(x, y);
+                }
                 break;
             case MotionEvent.ACTION_UP:
+                if (mIsDrawing) {
+                    mDrawingPainter.onTouchUp();
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
+                if(mIsDrawing){
+                    mDrawingPainter.onTouchMove(x, y);
+                }
                 updateMove(event);
                 break;
         }
@@ -133,5 +178,16 @@ public class CustomPainter extends View implements ITextLab {
         if (textObject != null) {
             mTextFactory.onDraw(canvas, textObject);
         }
+    }
+
+    //Set background for Painter
+    public void setBackground(Bitmap background) {
+        this.mBitmapBackground = background;
+        this.setBackground(new BitmapDrawable(getResources(), mBitmapBackground));
+    }
+
+    //Set isDrawing
+    public void isDrawing(boolean isDrawing){
+        this.mIsDrawing = isDrawing;
     }
 }
