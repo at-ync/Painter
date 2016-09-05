@@ -189,7 +189,7 @@ public class CustomPainter extends View implements ITextLab {
     }
 
     //Set isDrawing
-    public void isDrawing(boolean isDrawing){
+    public void setIsDrawing(boolean isDrawing){
         mIsDrawing = isDrawing;
     }
 }

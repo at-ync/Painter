@@ -22,9 +22,9 @@ public class DrawingPainter {
     private float coordinatesY;
 
     public DrawingPainter() {
-        this.path = new Path();
-        this.paint = new Paint();
-        this.paint.setStyle(Paint.Style.STROKE);
+        path = new Path();
+        paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
     }
 
     public void onTouchStart(float x, float y) {
@@ -53,6 +53,6 @@ public class DrawingPainter {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
-        this.canvas = new Canvas(bitmap);
+        canvas = new Canvas(bitmap);
     }
 }
