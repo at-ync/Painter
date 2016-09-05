@@ -13,8 +13,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.OnActivityResult;
 
-import java.io.IOException;
-
 @Fullscreen
 @EActivity(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
