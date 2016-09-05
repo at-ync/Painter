@@ -9,4 +9,6 @@
     <string name="dialog.input_text.button.text.cancel">Cancel</string>
     <string name="dialog.input_text.button.text.ok">Ok</string>
     <string name="activity.home.contentdescription.imagebutton">ImageButton</string>
+    <string name="send_to">Send To</string>
+    <string name="share_photo">SharePhoto.png</string>
 </resources>
