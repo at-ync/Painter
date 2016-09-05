@@ -11,6 +11,4 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Component {
     private TextObject textObject;
-    private PathObject pathObject;
-    private ImageObject imageObject;
 }

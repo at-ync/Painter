@@ -1,7 +1,6 @@
 package com.asiantech.intern.painter.models;
 
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -45,18 +44,4 @@ public class TextFactory implements ITextFactory {
         textObject.setCoordinatesY(textObject.getCoordinatesY() + movementY);
     }
 
-    @Override
-    public void updateAngle(TextObject textObject, float angle) {
-        textObject.setAngle(textObject.getAngle() + angle);
-    }
-
-    @Override
-    public void onRotateText(TextObject textObject, Canvas canvas, Matrix matrix) {
-        canvas.rotate(textObject.getAngle());
-        matrix.setRotate(-textObject.getAngle());
-        float[] arrayMatrix = {textObject.getCoordinatesX(), textObject.getCoordinatesX()};
-        matrix.mapPoints(arrayMatrix);
-        canvas.drawText(textObject.getContent(), arrayMatrix[0], arrayMatrix[1], textObject.getPaint());
-        canvas.rotate(-textObject.getAngle());
-    }
 }

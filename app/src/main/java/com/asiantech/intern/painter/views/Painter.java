@@ -2,7 +2,6 @@ package com.asiantech.intern.painter.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,7 +29,6 @@ public class Painter extends View implements ITextLab {
     private int actionText;
     float initialX;
     float initialY;
-    private Matrix matrix;
     // Image Activities
 
     public Painter(Context context) {
@@ -41,7 +39,6 @@ public class Painter extends View implements ITextLab {
         super(context, attrs);
         mTextFactory = new TextFactory();
         mComponents = new ArrayList<>();
-        matrix = new Matrix();
     }
 
     @Override
@@ -59,24 +56,9 @@ public class Painter extends View implements ITextLab {
             Component component = mComponents.get(i);
             if (component.getTextObject() != null) {
                 TextObject textObject = component.getTextObject();
-                // Draw
-                if (actionText == Action.ROTATE) {
-                    mTextFactory.onRotateText(textObject, canvas, matrix);
-                } else {
-                   // canvas.rotate(-textObject.getAngle());
-                    mTextFactory.onDraw(canvas, textObject);
-                }
-
-
+                mTextFactory.onDraw(canvas, textObject);
             }
 
-            if (component.getImageObject() != null) {
-                // Draw
-            }
-
-            if (component.getPathObject() != null) {
-                // Draw
-            }
         }
         if (isOnDraw) {
             invalidate();
@@ -108,11 +90,6 @@ public class Painter extends View implements ITextLab {
                         initialX = event.getX();
                         initialY = event.getY();
                         updateMoveText(xMovement, yMovement);
-                        break;
-                    case Action.ROTATE:
-                      /*  initialX = event.getX();
-                        initialY = event.getY();
-                        updateRotateText();*/
                         break;
                 }
                 break;
@@ -152,20 +129,5 @@ public class Painter extends View implements ITextLab {
             }
         }
 
-    }
-
-    private void updateRotateText() {
-        synchronized (mComponents) {
-            for (int i = mComponents.size() - 1; i >= 0; i--) {
-                TextObject textObject = mComponents.get(i).getTextObject();
-                if (textObject != null) {
-                    if (mTextFactory.isTouchInTextArea(textObject, initialX, initialY)) {
-                        mTextFactory.updateAngle(textObject, 4);
-                        break;
-                    }
-                }
-
-            }
-        }
     }
 }

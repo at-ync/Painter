@@ -21,8 +21,6 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     ImageButton mImgButtonInputText;
     @ViewById(R.id.imgButtonMove)
     ImageButton mImgButtonMove;
-    @ViewById(R.id.imgButtonRotate)
-    ImageButton mImgButtonRotate;
 
     void afterViews() {
     }
@@ -35,11 +33,6 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     @Click(R.id.imgButtonMove)
     public void clickMove() {
         setActionText(Action.MOVE);
-    }
-
-    @Click(R.id.imgButtonRotate)
-    public void clickRotate() {
-        setActionText(Action.ROTATE);
     }
 
     @Override
