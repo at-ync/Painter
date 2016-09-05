@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class Components {
+public class Component {
     private TextObject textObject;
     private PathObject pathObject;
     private ImageObject imageObject;

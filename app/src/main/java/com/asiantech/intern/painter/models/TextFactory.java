@@ -1,16 +1,24 @@
 package com.asiantech.intern.painter.models;
 
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.asiantech.intern.painter.beans.TextObject;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * Copyright @2016 AsianTech Inc.
  * Created by LyHV on 9/3/2016.
  */
+@EqualsAndHashCode(callSuper = false)
+@Data
 public class TextFactory implements ITextFactory {
+    private int mAction;
+
     @Override
     public void onDraw(Canvas canvas, TextObject textObject) {
         canvas.drawText(textObject.getContent(), textObject.getCoordinatesX(), textObject.getCoordinatesY(), textObject.getPaint());
@@ -29,5 +37,26 @@ public class TextFactory implements ITextFactory {
             return (oX - width / 2 <= x && x <= width / 2 + oX && oY - height <= y && y <= oY);
         }
         return false;
+    }
+
+    @Override
+    public void updateCoordinatesText(TextObject textObject, float movementX, float movementY) {
+        textObject.setCoordinatesX(textObject.getCoordinatesX() + movementX);
+        textObject.setCoordinatesY(textObject.getCoordinatesY() + movementY);
+    }
+
+    @Override
+    public void updateAngle(TextObject textObject, float angle) {
+        textObject.setAngle(textObject.getAngle() + angle);
+    }
+
+    @Override
+    public void onRotateText(TextObject textObject, Canvas canvas, Matrix matrix) {
+        canvas.rotate(textObject.getAngle());
+        matrix.setRotate(-textObject.getAngle());
+        float[] arrayMatrix = {textObject.getCoordinatesX(), textObject.getCoordinatesX()};
+        matrix.mapPoints(arrayMatrix);
+        canvas.drawText(textObject.getContent(), arrayMatrix[0], arrayMatrix[1], textObject.getPaint());
+        canvas.rotate(-textObject.getAngle());
     }
 }

@@ -6,6 +6,7 @@
     tools:context="com.asiantech.intern.painter.activities.HomeActivity">
 
     <com.asiantech.intern.painter.views.Painter
+        android:id="@+id/viewPaint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linearLayoutEditPhoto" />
@@ -25,6 +26,25 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/imgButtonMove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_select_imagebutton"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
+                android:src="@drawable/ic_move" />
+
+            <ImageButton
+                android:id="@+id/imgButtonRotate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_select_imagebutton"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
+                android:src="@drawable/ic_rotate1" />
+
+            <ImageButton
+                android:id="@+id/imgButtonInputText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_select_imagebutton"
