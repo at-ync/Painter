@@ -43,6 +43,7 @@
                 android:src="@drawable/ic_font" />
 
             <ImageButton
+                android:id="@+id/imgButtonDraw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_select_imagebutton"
