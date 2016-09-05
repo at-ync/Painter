@@ -30,16 +30,10 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     ImageButton mImgButtonInputText;
     @ViewById(R.id.imgButtonMove)
     ImageButton mImgButtonMove;
-    private static final String TAG  = HomeActivity.class.getName();
-    private Bitmap mBitmap;
     @Extra
-    void setData(Bitmap bitmap){
-        this.mBitmap = bitmap;
-    }
+    Bitmap mBitmap;
 
     void afterViews() {
-        if (mBitmap != null) {
-        }
     }
 
     @Click(R.id.imgBtnShare)
@@ -60,7 +54,6 @@ public class HomeActivity extends BaseActivity implements ITextLab {
             out.flush();
             out.close();
         } catch (IOException e) {
-            Log.e(TAG, "getUriFromBitmap: " + e.toString());
         }
         return Uri.parse("file://" + sharefile);
     }

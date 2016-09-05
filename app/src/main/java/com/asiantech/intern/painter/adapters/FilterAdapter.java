@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.asiantech.intern.painter.R;
-import com.asiantech.intern.painter.beans.FilterImage;
+import com.asiantech.intern.painter.models.FilterImage;
 
 import java.util.List;
 

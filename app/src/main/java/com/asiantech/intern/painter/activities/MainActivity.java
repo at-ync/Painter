@@ -46,18 +46,18 @@ public class MainActivity extends BaseActivity {
     @OnActivityResult(REQUEST_CAMERA)
     void captureImageResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            HomeActivity_.intent(this).setData(onCaptureImageResult(data)).start();
+            HomeActivity_.intent(this).mBitmap(onCaptureImageResult(data)).start();
         }
     }
 
     @OnActivityResult(REQUEST_PHOTO)
     void selectFromGalleryResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            HomeActivity_.intent(this).setData(onSelectFromGalleryResult(data)).start();
+            HomeActivity_.intent(this).mBitmap(onSelectFromGalleryResult(data)).start();
         }
     }
 
-    public Bitmap onCaptureImageResult(Intent data) {
+    private Bitmap onCaptureImageResult(Intent data) {
         Bitmap bitmap = null;
         if (data != null) {
             bitmap = (Bitmap) data.getExtras().get("data");
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity {
         return bitmap;
     }
 
-    public Bitmap onSelectFromGalleryResult(Intent data) {
+    private Bitmap onSelectFromGalleryResult(Intent data) {
         Bitmap bitmap = null;
         if (data.getData() != null) {
             Uri selectedImage = data.getData();
