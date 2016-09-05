@@ -58,7 +58,6 @@ public class Painter extends View implements ITextLab {
                 TextObject textObject = component.getTextObject();
                 mTextFactory.onDraw(canvas, textObject);
             }
-
         }
         if (isOnDraw) {
             invalidate();
@@ -72,11 +71,6 @@ public class Painter extends View implements ITextLab {
                 if (actionText == Action.MOVE) {
                     initialX = event.getX();
                     initialY = event.getY();
-                }
-                if (actionText == Action.ROTATE) {
-                    initialX = event.getX();
-                    initialY = event.getY();
-                    updateMoveText(initialX, initialY);
                 }
                 break;
             case MotionEvent.ACTION_UP:
