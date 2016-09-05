@@ -72,6 +72,7 @@ public class MainActivity extends BaseActivity {
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
             Cursor cursor = getContentResolver().query(
                     selectedImage, filePathColumn, null, null, null);
+            assert cursor != null;
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String filePath = cursor.getString(columnIndex);
