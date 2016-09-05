@@ -3,9 +3,7 @@ package com.asiantech.intern.painter.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.ImageButton;
-
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.beans.TextObject;
 import com.asiantech.intern.painter.commo.Action;
