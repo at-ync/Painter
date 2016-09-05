@@ -69,15 +69,6 @@ public class CustomPainter extends View implements ITextLab {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (mBitmapBackground != null) {
-            setMeasuredDimension(mBitmapBackground.getWidth(), mBitmapBackground.getHeight());
-        } else {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        }
-    }
-
-    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int size = mComponents.size();
