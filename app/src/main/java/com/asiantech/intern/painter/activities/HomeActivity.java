@@ -1,41 +1,40 @@
 package com.asiantech.intern.painter.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ImageButton;
 
 import com.asiantech.intern.painter.R;
-import com.asiantech.intern.painter.adapters.FilterAdapter;
-import com.asiantech.intern.painter.models.FilterImage;
+import com.asiantech.intern.painter.beans.TextObject;
+import com.asiantech.intern.painter.commo.Action;
+import com.asiantech.intern.painter.dialogs.DialogInputText_;
+import com.asiantech.intern.painter.interfaces.ITextLab;
+import com.asiantech.intern.painter.views.CustomPainter;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements ITextLab {
+    @ViewById(R.id.viewPaint)
+    CustomPainter mCustomPainter;
+    @ViewById(R.id.imgButtonInputText)
+    ImageButton mImgButtonInputText;
+    @ViewById(R.id.imgButtonMove)
+    ImageButton mImgButtonMove;
+    private static final String TAG  = HomeActivity.class.getName();
     private Bitmap mBitmap;
-    private static final String TAG = HomeActivity.class.getName();
-
     @Extra
-    void setData(Bitmap bitmap) {
-        mBitmap = bitmap;
+    void setData(Bitmap bitmap){
+        this.mBitmap = bitmap;
     }
 
     void afterViews() {
@@ -64,5 +63,27 @@ public class HomeActivity extends BaseActivity {
             Log.e(TAG, "getUriFromBitmap: " + e.toString());
         }
         return Uri.parse("file://" + sharefile);
+    }
+
+    @Override
+    public void setTextObject(TextObject textObject) {
+        mCustomPainter.setTextObject(textObject);
+    }
+
+    @Click(R.id.imgButtonMove)
+    public void clickMove() {
+        setActionText(Action.MOVE);
+    }
+
+    @Override
+    public void setActionText(int action) {
+        mCustomPainter.setActionText(action);
+    }
+
+
+    @Click(R.id.imgButtonInputText)
+    public void inPutText() {
+        setActionText(Action.STOP);
+        DialogInputText_.builder().build().show(getFragmentManager(), "");
     }
 }

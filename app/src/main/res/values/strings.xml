@@ -11,4 +11,9 @@
     <string name="activity.home.contentdescription.imagebutton">ImageButton</string>
     <string name="send_to">Send To</string>
     <string name="share_photo">SharePhoto.png</string>
+    <string name="dialog.input_text.title">Input Text</string>
+    <string name="dialog.pick_color.title">Choose color</string>
+    <string name="dialog.pick_color.button.text.ok">ok</string>
+    <string name="dialog.pick_color.button.text.cancel">cancel</string>
+    <string name="typeface.arizonia_regular.ttf">arizonia_regular.ttf</string>
 </resources>
