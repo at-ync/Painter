@@ -16,4 +16,5 @@
     <string name="dialog.pick_color.button.text.ok">ok</string>
     <string name="dialog.pick_color.button.text.cancel">cancel</string>
     <string name="typeface.arizonia_regular.ttf">arizonia_regular.ttf</string>
+    <string name="activity_home_file_image">file://%s</string>
 </resources>

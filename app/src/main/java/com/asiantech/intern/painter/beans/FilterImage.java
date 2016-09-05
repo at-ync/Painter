@@ -1,4 +1,4 @@
-package com.asiantech.intern.painter.models;
+package com.asiantech.intern.painter.beans;
 
 import lombok.Data;
 

@@ -55,7 +55,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
             out.close();
         } catch (IOException e) {
         }
-        return Uri.parse("file://" + sharefile);
+        return Uri.parse(String.format(getString(R.string.activity_home_file_image),sharefile));
     }
 
     @Override
