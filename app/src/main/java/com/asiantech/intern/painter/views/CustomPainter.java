@@ -42,7 +42,6 @@ public class CustomPainter extends View implements ITextLab {
 
     public CustomPainter(Context context) {
         super(context);
-        init();
     }
 
     public CustomPainter(Context context, AttributeSet attrs) {
@@ -97,24 +96,16 @@ public class CustomPainter extends View implements ITextLab {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 initMove(event);
-                if (mIsDrawing) {
-                    mDrawingPainter.onTouchStart(x, y);
-                }
+                onDrawInit(event);
                 break;
             case MotionEvent.ACTION_UP:
-                if (mIsDrawing) {
-                    mDrawingPainter.onTouchUp();
-                }
+                onDrawFinish();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(mIsDrawing){
-                    mDrawingPainter.onTouchMove(x, y);
-                }
+                onDrawMove(event);
                 updateMove(event);
                 break;
         }
@@ -157,6 +148,26 @@ public class CustomPainter extends View implements ITextLab {
 
     }
 
+    private void onDrawInit(MotionEvent event){
+        float x = event.getX();
+        float y = event.getY();
+        mDrawingPainter.onTouchStart(x, y);
+    }
+
+    private void onDrawMove(MotionEvent event){
+        float x = event.getX();
+        float y = event.getY();
+        if(mIsDrawing){
+            mDrawingPainter.onTouchMove(x, y);
+        }
+    }
+
+    private void onDrawFinish(){
+        if (mIsDrawing) {
+            mDrawingPainter.onTouchUp();
+        }
+    }
+
     private void initMove(MotionEvent event) {
         if (mActionText == Action.MOVE) {
             mInitialX = event.getX();
@@ -182,12 +193,12 @@ public class CustomPainter extends View implements ITextLab {
 
     //Set background for Painter
     public void setBackground(Bitmap background) {
-        this.mBitmapBackground = background;
+        mBitmapBackground = background;
         this.setBackground(new BitmapDrawable(getResources(), mBitmapBackground));
     }
 
     //Set isDrawing
     public void isDrawing(boolean isDrawing){
-        this.mIsDrawing = isDrawing;
+        mIsDrawing = isDrawing;
     }
 }
