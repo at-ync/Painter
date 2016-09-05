@@ -24,15 +24,15 @@ import java.util.List;
  * Created by LyHV on 8/31/2016.
  */
 public class CustomPainter extends View implements ITextLab {
-    float initialX;
-    float initialY;
-    private boolean isOnDraw = true;
+    private float mInitialX;
+    private float mInitialY;
+    private boolean mIsOnDraw = true;
     // Text Activities
     private TextFactory mTextFactory;
     private List<Component> mComponents;
     private float mCenterX;
     private float mCenterY;
-    private int actionText;
+    private int mActionText;
     //Draw Activities
     private boolean mIsDrawing;
     private Bitmap mBitmapBackground;
@@ -86,7 +86,7 @@ public class CustomPainter extends View implements ITextLab {
             Component component = mComponents.get(i);
             onDrawText(canvas, component.getTextObject());
         }
-        if (isOnDraw) {
+        if (mIsOnDraw) {
             invalidate();
         }
         canvas.drawBitmap(mDrawingPainter.getBitmap(), 0, 0, mPaintBackground);
@@ -137,7 +137,7 @@ public class CustomPainter extends View implements ITextLab {
 
     @Override
     public void setActionText(int action) {
-        actionText = action;
+        mActionText = action;
     }
 
 
@@ -146,7 +146,7 @@ public class CustomPainter extends View implements ITextLab {
             for (int i = mComponents.size() - 1; i >= 0; i--) {
                 TextObject textObject = mComponents.get(i).getTextObject();
                 if (textObject != null) {
-                    if (mTextFactory.isTouchInTextArea(textObject, initialX, initialY)) {
+                    if (mTextFactory.isTouchInTextArea(textObject, mInitialX, mInitialY)) {
                         mTextFactory.updateCoordinatesText(textObject, movementX, movementY);
                         break;
                     }
@@ -158,18 +158,18 @@ public class CustomPainter extends View implements ITextLab {
     }
 
     private void initMove(MotionEvent event) {
-        if (actionText == Action.MOVE) {
-            initialX = event.getX();
-            initialY = event.getY();
+        if (mActionText == Action.MOVE) {
+            mInitialX = event.getX();
+            mInitialY = event.getY();
         }
     }
 
     private void updateMove(MotionEvent event) {
-        if (actionText == Action.MOVE) {
-            float xMovement = event.getX() - initialX;
-            float yMovement = event.getY() - initialY;
-            initialX = event.getX();
-            initialY = event.getY();
+        if (mActionText == Action.MOVE) {
+            float xMovement = event.getX() - mInitialX;
+            float yMovement = event.getY() - mInitialY;
+            mInitialX = event.getX();
+            mInitialY = event.getY();
             updateMoveText(xMovement, yMovement);
         }
     }
