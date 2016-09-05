@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     tools:context="com.asiantech.intern.painter.activities.HomeActivity">
 
-    <com.asiantech.intern.painter.views.Painter
+    <com.asiantech.intern.painter.views.CustomPainter
         android:id="@+id/viewPaint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/linearLayoutEditPhoto" />
+        android:layout_above="@+id/llEditPhoto" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutEditPhoto"
+        android:id="@+id/llEditPhoto"
         android:layout_width="match_parent"
         android:layout_height="@dimen/activity.home.linearlayout.height"
         android:layout_alignParentBottom="true"

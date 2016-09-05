@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.asiantech.intern.painter.R;
+import com.asiantech.intern.painter.activities.HomeActivity;
 import com.asiantech.intern.painter.beans.TextObject;
 import com.asiantech.intern.painter.interfaces.ITextLab;
 import com.flask.colorpicker.ColorPickerView;
@@ -42,38 +43,41 @@ public class DialogInputText extends DialogFragment {
     ImageView mImgPickColor;
     @ViewById(R.id.edtCodeColor)
     EditText mEdtCodeColor;
-    int colorText = Color.BLACK;
-    ITextLab iTextLab;
+    private int mColorText = Color.BLACK;
+    private ITextLab mITextLab;
 
     @AfterViews
     public void init() {
-        getDialog().setTitle("Input Text");
-        mEdtCodeColor.setBackgroundColor(colorText);
-        iTextLab = (ITextLab) getActivity();
+        getDialog().setTitle(R.string.dialog_input_text_title);
+        mEdtCodeColor.setBackgroundColor(mColorText);
+        if (getActivity() instanceof HomeActivity) {
+            mITextLab = (ITextLab) getActivity();
+        }
     }
 
     @Click(R.id.btnCancel)
-    public void dismiss() {
-        getDialog().dismiss();
+    public void onClickCancel() {
+        dismiss();
     }
 
     @Click(R.id.btnOk)
-    public void getText() {
+    public void onClickOk() {
         String content = mEditInputText.getText().toString();
-        String size = mEdtSizeText.getText().toString();
-        if (TextUtils.isEmpty(content) || TextUtils.isEmpty(size))
+        String sizeText = mEdtSizeText.getText().toString();
+        if (TextUtils.isEmpty(content) || TextUtils.isEmpty(sizeText)) {
             return;
-        int sizeText = Integer.parseInt(size);
-        TextObject textObject = createNewTextObject(content, getPaint(sizeText, colorText));
-        iTextLab.setTextObject(textObject);
-        dismiss();
+        }
+        int size = Integer.parseInt(sizeText);
+        TextObject textObject = createNewTextObject(content, getPaint(size, mColorText));
+        mITextLab.setTextObject(textObject);
+        onClickCancel();
     }
 
     @Click(R.id.imgPickColor)
     public void setImgPickColor() {
         ColorPickerDialogBuilder
                 .with(getActivity())
-                .setTitle("Choose color")
+                .setTitle(getString(R.string.dialog_pick_color_title))
                 .initialColor(-1)
                 .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                 .density(12)
@@ -83,14 +87,14 @@ public class DialogInputText extends DialogFragment {
 
                     }
                 })
-                .setPositiveButton("ok", new ColorPickerClickListener() {
+                .setPositiveButton(getString(R.string.dialog_pick_color_button_text_ok), new ColorPickerClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                        colorText = selectedColor;
+                        mColorText = selectedColor;
                         mEdtCodeColor.setBackgroundColor(selectedColor);
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.dialog_pick_color_button_text_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -105,9 +109,7 @@ public class DialogInputText extends DialogFragment {
         paint.setTextSize(size);
         paint.setColor(color);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
-        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "arizonia_regular.ttf");
-        paint.setTypeface(typeface);
+        paint.setTypeface(getTypeface(getString(R.string.typeface_arizonia_regular_ttf)));
         return paint;
     }
 
@@ -117,5 +119,9 @@ public class DialogInputText extends DialogFragment {
         textObject.setPaint(paint);
         textObject.setContent(content);
         return textObject;
+    }
+
+    private Typeface getTypeface(String name) {
+        return Typeface.createFromAsset(getActivity().getAssets(), name);
     }
 }

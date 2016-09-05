@@ -7,7 +7,7 @@ import com.asiantech.intern.painter.beans.TextObject;
 import com.asiantech.intern.painter.commo.Action;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
 import com.asiantech.intern.painter.interfaces.ITextLab;
-import com.asiantech.intern.painter.views.Painter;
+import com.asiantech.intern.painter.views.CustomPainter;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -16,7 +16,7 @@ import org.androidannotations.annotations.ViewById;
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements ITextLab {
     @ViewById(R.id.viewPaint)
-    Painter mPainter;
+    CustomPainter mCustomPainter;
     @ViewById(R.id.imgButtonInputText)
     ImageButton mImgButtonInputText;
     @ViewById(R.id.imgButtonMove)
@@ -27,7 +27,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
     @Override
     public void setTextObject(TextObject textObject) {
-        mPainter.setTextObject(textObject);
+        mCustomPainter.setTextObject(textObject);
     }
 
     @Click(R.id.imgButtonMove)
@@ -37,7 +37,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
     @Override
     public void setActionText(int action) {
-        mPainter.setActionText(action);
+        mCustomPainter.setActionText(action);
     }
 
 

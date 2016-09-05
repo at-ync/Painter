@@ -19,7 +19,7 @@ import java.util.List;
  * Copyright @2016 AsianTech Inc.
  * Created by LyHV on 8/31/2016.
  */
-public class Painter extends View implements ITextLab {
+public class CustomPainter extends View implements ITextLab {
     private boolean isOnDraw = true;
     // Text Activities
     private TextFactory mTextFactory;
@@ -31,11 +31,11 @@ public class Painter extends View implements ITextLab {
     float initialY;
     // Image Activities
 
-    public Painter(Context context) {
+    public CustomPainter(Context context) {
         super(context);
     }
 
-    public Painter(Context context, AttributeSet attrs) {
+    public CustomPainter(Context context, AttributeSet attrs) {
         super(context, attrs);
         mTextFactory = new TextFactory();
         mComponents = new ArrayList<>();
@@ -54,10 +54,7 @@ public class Painter extends View implements ITextLab {
         int size = mComponents.size();
         for (int i = 0; i < size; i++) {
             Component component = mComponents.get(i);
-            if (component.getTextObject() != null) {
-                TextObject textObject = component.getTextObject();
-                mTextFactory.onDraw(canvas, textObject);
-            }
+            onDrawText(canvas, component.getTextObject());
         }
         if (isOnDraw) {
             invalidate();
@@ -68,24 +65,12 @@ public class Painter extends View implements ITextLab {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (actionText == Action.MOVE) {
-                    initialX = event.getX();
-                    initialY = event.getY();
-                }
+                initMove(event);
                 break;
             case MotionEvent.ACTION_UP:
-
                 break;
             case MotionEvent.ACTION_MOVE:
-                switch (actionText) {
-                    case Action.MOVE:
-                        float xMovement = event.getX() - initialX;
-                        float yMovement = event.getY() - initialY;
-                        initialX = event.getX();
-                        initialY = event.getY();
-                        updateMoveText(xMovement, yMovement);
-                        break;
-                }
+                updateMove(event);
                 break;
         }
         return true;
@@ -94,7 +79,9 @@ public class Painter extends View implements ITextLab {
     @Override
     public void setTextObject(TextObject textObject) {
         synchronized (mComponents) {
-            if (textObject == null) return;
+            if (textObject == null) {
+                return;
+            }
             Component component = new Component();
             textObject.setCoordinatesX(mCenterX);
             textObject.setCoordinatesY(mCenterY);
@@ -123,5 +110,28 @@ public class Painter extends View implements ITextLab {
             }
         }
 
+    }
+
+    private void initMove(MotionEvent event) {
+        if (actionText == Action.MOVE) {
+            initialX = event.getX();
+            initialY = event.getY();
+        }
+    }
+
+    private void updateMove(MotionEvent event) {
+        if (actionText == Action.MOVE) {
+            float xMovement = event.getX() - initialX;
+            float yMovement = event.getY() - initialY;
+            initialX = event.getX();
+            initialY = event.getY();
+            updateMoveText(xMovement, yMovement);
+        }
+    }
+
+    private void onDrawText(Canvas canvas, TextObject textObject) {
+        if (textObject != null) {
+            mTextFactory.onDraw(canvas, textObject);
+        }
     }
 }
