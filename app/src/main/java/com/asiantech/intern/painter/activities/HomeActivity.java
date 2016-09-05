@@ -21,6 +21,8 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     ImageButton mImgButtonInputText;
     @ViewById(R.id.imgButtonMove)
     ImageButton mImgButtonMove;
+    @ViewById(R.id.imgButtonDraw)
+    ImageButton mImgButtonDraw;
 
     void afterViews() {
     }
@@ -43,7 +45,13 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
     @Click(R.id.imgButtonInputText)
     public void inPutText() {
+        mCustomPainter.setIsDrawing(false);
         setActionText(Action.STOP);
         DialogInputText_.builder().build().show(getFragmentManager(), "");
+    }
+
+    @Click(R.id.imgButtonDraw)
+    public void onClickButtonDraw(){
+        mCustomPainter.setIsDrawing(true);
     }
 }

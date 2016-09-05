@@ -31,8 +31,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_select_imagebutton"
                 android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding"
-                android:src="@drawable/ic_move" />
+                android:padding="@dimen/activity.home.imagebutton.padding" />
 
             <ImageButton
                 android:id="@+id/imgButtonInputText"
@@ -44,6 +43,7 @@
                 android:src="@drawable/ic_font" />
 
             <ImageButton
+                android:id="@+id/imgButtonDraw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_select_imagebutton"
