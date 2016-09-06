@@ -21,9 +21,8 @@
 
         <EditText
             android:id="@+id/edtSizeText"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dialog.intput_text.editext.height.edt_size_text"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@drawable/round_edittext"
             android:inputType="number"
             android:maxLength="3"
