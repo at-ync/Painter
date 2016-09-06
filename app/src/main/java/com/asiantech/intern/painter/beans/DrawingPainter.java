@@ -16,6 +16,7 @@ import lombok.Data;
  */
 @Data
 public class DrawingPainter {
+    private static final float DEFAULT_STROKE_WIDTH = 12;
     private static final float TOUCH_TOLERANCE = 4;
     private Paint paint;
     private Path path;
@@ -74,7 +75,7 @@ public class DrawingPainter {
         paint.setDither(true);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setStrokeWidth(12);
+        paint.setStrokeWidth(DEFAULT_STROKE_WIDTH);
         paint.setStyle(Paint.Style.STROKE);
     }
 }

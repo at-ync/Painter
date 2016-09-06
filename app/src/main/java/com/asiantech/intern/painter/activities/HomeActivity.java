@@ -54,13 +54,16 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
     @Click(R.id.imgButtonDraw)
     public void onClickButtonDraw(){
-        mCustomPainter.setIsDrawing(true);
-        mCustomPainter.getDrawingPainter().setIsEraser(false);
+        setDrawing(true);
     }
 
     @Click(R.id.imgButtonEraser)
     public void onClickButtonEraser(){
+        setDrawing(true);
+    }
+
+    private void setDrawing(boolean isEraser){
         mCustomPainter.setIsDrawing(true);
-        mCustomPainter.getDrawingPainter().setIsEraser(true);
+        mCustomPainter.getDrawingPainter().setIsEraser(isEraser);
     }
 }
