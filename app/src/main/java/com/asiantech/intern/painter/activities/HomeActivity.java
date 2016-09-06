@@ -32,6 +32,8 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     Bitmap mBitmap;
     @ViewById(R.id.imgButtonDraw)
     ImageButton mImgButtonDraw;
+    @ViewById(R.id.imgButtonEraser)
+    ImageButton mImgButtonEraser;
 
     void afterViews() {
     }
@@ -83,6 +85,16 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
     @Click(R.id.imgButtonDraw)
     public void onClickButtonDraw(){
+        setDrawing(true);
+    }
+
+    @Click(R.id.imgButtonEraser)
+    public void onClickButtonEraser(){
+        setDrawing(true);
+    }
+
+    private void setDrawing(boolean isEraser){
         mCustomPainter.setIsDrawing(true);
+        mCustomPainter.getDrawingPainter().setIsEraser(isEraser);
     }
 }
