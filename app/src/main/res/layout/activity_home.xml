@@ -24,85 +24,14 @@
             android:background="@color/activity.home.linearlayout.color"
             android:gravity="center"
             android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/imgButtonMove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding" />
-
-            <ImageButton
-                android:id="@+id/imgButtonInputText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding"
-                android:src="@drawable/ic_font" />
-
-            <ImageButton
-                android:id="@+id/imgButtonDraw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding"
-                android:src="@drawable/ic_paint" />
-
-            <ImageButton
-                android:id="@+id/imgButtonEraser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding"
-                android:src="@drawable/ic_eraser" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="10dp"
-                android:src="@drawable/ic_picture" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding"
-                android:src="@drawable/ic_crop" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding"
-                android:src="@drawable/ic_save" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding"
-                android:src="@drawable/ic_rotate" />
-            <ImageButton
-                android:id="@+id/imgBtnShare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding"
-                android:src="@drawable/ic_share" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewTool"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerViewFilter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/activity.home.recyclerview.background" />
