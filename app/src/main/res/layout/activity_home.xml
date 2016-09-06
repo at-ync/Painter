@@ -90,8 +90,8 @@
                 android:contentDescription="@string/activity.home.contentdescription.imagebutton"
                 android:padding="@dimen/activity.home.imagebutton.padding"
                 android:src="@drawable/ic_rotate" />
-
             <ImageButton
+                android:id="@+id/imgBtnShare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_select_imagebutton"
