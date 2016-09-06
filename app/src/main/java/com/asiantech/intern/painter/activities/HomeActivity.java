@@ -1,9 +1,7 @@
 package com.asiantech.intern.painter.activities;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.widget.ImageButton;
+
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.beans.TextObject;
 import com.asiantech.intern.painter.commo.Action;
@@ -13,12 +11,7 @@ import com.asiantech.intern.painter.views.CustomPainter;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements ITextLab {
@@ -28,36 +21,10 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     ImageButton mImgButtonInputText;
     @ViewById(R.id.imgButtonMove)
     ImageButton mImgButtonMove;
-    @Extra
-    Bitmap mBitmap;
     @ViewById(R.id.imgButtonDraw)
     ImageButton mImgButtonDraw;
-    @ViewById(R.id.imgButtonEraser)
-    ImageButton mImgButtonEraser;
 
     void afterViews() {
-    }
-
-    @Click(R.id.imgBtnShare)
-    void share() {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.setType("image/*");
-        shareIntent.putExtra(Intent.EXTRA_STREAM, getUriFromBitmap(mBitmap));
-        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
-    }
-
-    public Uri getUriFromBitmap(Bitmap bitmap) {
-        File cache = getApplicationContext().getExternalCacheDir();
-        File sharefile = new File(cache, getString(R.string.share_photo));
-        try {
-            FileOutputStream out = new FileOutputStream(sharefile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-        }
-        return Uri.parse(String.format(getString(R.string.activity_home_file_image),sharefile));
     }
 
     @Override
@@ -85,16 +52,6 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
     @Click(R.id.imgButtonDraw)
     public void onClickButtonDraw(){
-        setDrawing(true);
-    }
-
-    @Click(R.id.imgButtonEraser)
-    public void onClickButtonEraser(){
-        setDrawing(true);
-    }
-
-    private void setDrawing(boolean isEraser){
         mCustomPainter.setIsDrawing(true);
-        mCustomPainter.getDrawingPainter().setIsEraser(isEraser);
     }
 }

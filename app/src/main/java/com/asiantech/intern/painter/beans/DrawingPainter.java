@@ -2,11 +2,8 @@ package com.asiantech.intern.painter.beans;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 
 import lombok.Data;
 
@@ -16,7 +13,6 @@ import lombok.Data;
  */
 @Data
 public class DrawingPainter {
-    private static final float DEFAULT_STROKE_WIDTH = 12;
     private static final float TOUCH_TOLERANCE = 4;
     private Paint paint;
     private Path path;
@@ -28,7 +24,7 @@ public class DrawingPainter {
     public DrawingPainter() {
         path = new Path();
         paint = new Paint();
-        initPaint();
+        paint.setStyle(Paint.Style.STROKE);
     }
 
     public void onTouchStart(float x, float y) {
@@ -58,24 +54,5 @@ public class DrawingPainter {
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
         canvas = new Canvas(bitmap);
-    }
-
-    public void setIsEraser(boolean isEraser) {
-        if (isEraser) {
-            paint.setAlpha(Color.TRANSPARENT);
-            paint.setColor(Color.TRANSPARENT);
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        } else {
-            paint.setXfermode(null);
-            paint.setColor(Color.BLACK);
-        }
-    }
-    private void initPaint(){
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setStrokeWidth(DEFAULT_STROKE_WIDTH);
-        paint.setStyle(Paint.Style.STROKE);
     }
 }

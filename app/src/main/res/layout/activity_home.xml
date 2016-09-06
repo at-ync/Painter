@@ -31,7 +31,16 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_select_imagebutton"
                 android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding" />
+                android:padding="@dimen/activity.home.imagebutton.padding"
+                android:src="@drawable/ic_move" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_select_imagebutton"
+                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
+                android:padding="@dimen/activity.home.imagebutton.padding"
+                android:src="@drawable/ic_rotate" />
 
             <ImageButton
                 android:id="@+id/imgButtonInputText"
@@ -52,7 +61,6 @@
                 android:src="@drawable/ic_paint" />
 
             <ImageButton
-                android:id="@+id/imgButtonEraser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_select_imagebutton"
@@ -84,15 +92,8 @@
                 android:padding="@dimen/activity.home.imagebutton.padding"
                 android:src="@drawable/ic_save" />
 
+
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_select_imagebutton"
-                android:contentDescription="@string/activity.home.contentdescription.imagebutton"
-                android:padding="@dimen/activity.home.imagebutton.padding"
-                android:src="@drawable/ic_rotate" />
-            <ImageButton
-                android:id="@+id/imgBtnShare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_select_imagebutton"

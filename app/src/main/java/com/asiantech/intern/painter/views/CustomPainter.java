@@ -156,7 +156,6 @@ public class CustomPainter extends View implements ITextLab {
     private void onDrawFinish(){
         if (mIsDrawing) {
             mDrawingPainter.onTouchUp();
-            setLayerType(LAYER_TYPE_HARDWARE, mPaintBackground);
         }
     }
 
@@ -192,9 +191,5 @@ public class CustomPainter extends View implements ITextLab {
     //Set isDrawing
     public void setIsDrawing(boolean isDrawing){
         mIsDrawing = isDrawing;
-    }
-
-    public DrawingPainter getDrawingPainter(){
-        return mDrawingPainter;
     }
 }
