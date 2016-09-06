@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
 
 import com.asiantech.intern.painter.R;
+import com.asiantech.intern.painter.adapters.FilterAdapter;
 import com.asiantech.intern.painter.beans.TextObject;
 import com.asiantech.intern.painter.commo.Action;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
@@ -36,6 +39,8 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     ImageButton mImgButtonDraw;
     @ViewById(R.id.imgButtonEraser)
     ImageButton mImgButtonEraser;
+    @ViewById(R.id.recyclerView)
+    RecyclerView mRecyclerViewFilter;
 
     private Bitmap resizeBitmap(Bitmap sourceBitmap, int newWidth, int newHeight) {
         int width = sourceBitmap.getWidth();
@@ -48,6 +53,10 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     }
 
     void afterViews() {
+        FilterAdapter filterAdapter = new FilterAdapter(this, mBitmap);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerViewFilter.setAdapter(filterAdapter);
+        mRecyclerViewFilter.setLayoutManager(layoutManager);
     }
 
     @Override

@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.asiantech.intern.painter"
-        minSdkVersion 17
+        minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -34,6 +34,9 @@ dependencies {
     compile 'com.android.support:design:24.2.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.QuadFlask:colorpicker:0.0.11'
+    //Filter Image
+    compile 'jp.wasabeef:fresco-processors:2.0.0'
+    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
 }
 apt {
     arguments {
