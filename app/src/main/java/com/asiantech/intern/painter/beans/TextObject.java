@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class TextObject {
+public class TextObject extends Object {
     private float coordinatesX;
     private float coordinatesY;
     private String content;
