@@ -6,6 +6,7 @@ import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
@@ -46,7 +47,8 @@ public class HomeActivity extends BaseActivity implements ITextLab {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            mCustomPainter.setBackground(mBitmap);
+        }else {
+            showToast(getString(R.string.error_uri_null));
         }
         for (int icon : ICONS) {
             mTools.add(new Tool(icon));
@@ -104,11 +106,24 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         mCustomPainter.setTextObject(textObject);
     }
 
-
     @Override
     public void setActionText(int action) {
         mCustomPainter.setActionText(action);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
+        mCustomPainter.setBackground(resizedBitmap);
+    }
+
+    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize,
+                                     boolean filter) {
+        float ratio = Math.min(maxImageSize / realImage.getWidth(), maxImageSize / realImage.getHeight());
+        int width = Math.round(ratio * realImage.getWidth());
+        int height = Math.round(ratio * realImage.getHeight());
+        return Bitmap.createScaledBitmap(realImage, width, height, filter);
+    }
 
 }

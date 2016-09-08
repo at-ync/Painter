@@ -17,4 +17,8 @@
     <string name="dialog.pick_color.button.text.cancel">cancel</string>
     <string name="typeface.arizonia_regular.ttf">arizonia_regular.ttf</string>
     <string name="activity_home_file_image">file://%s</string>
+    <string name="format_date_name_image_camera">yyyyMMdd_HHmmss</string>
+    <string name="image_file_name">JPEG_%s_</string>
+    <string name="path_photo">file:%s</string>
+    <string name="error_uri_null">Ảnh không tồn tại vui lòng kiểm tra lại</string>
 </resources>

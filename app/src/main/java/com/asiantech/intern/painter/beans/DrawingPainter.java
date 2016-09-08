@@ -59,6 +59,10 @@ public class DrawingPainter {
         this.bitmap = bitmap;
         canvas = new Canvas(bitmap);
     }
+    public void setBitmap(int w, int h) {
+        this.bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(this.bitmap);
+    }
 
     public void setIsEraser(boolean isEraser) {
         if (isEraser) {
