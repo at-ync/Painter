@@ -31,20 +31,18 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     Bitmap mBitmap;
     @ViewById(R.id.recyclerViewTool)
     RecyclerView mRecyclerViewTool;
-    List<Tool> mTools = new ArrayList<>();
-    private final int mIcons[] = {R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
+    private List<Tool> mTools = new ArrayList<>();
+    private static final int ICONS[] = {R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
             R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
 
     void afterViews() {
-        for (int icon : mIcons) {
-            Tool tool = new Tool(icon);
-            mTools.add(tool);
+        for (int icon : ICONS) {
+            mTools.add(new Tool(icon));
         }
         mRecyclerViewTool.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewTool.setLayoutManager(layoutManager);
         final ToolAdapter toolAdapter = new ToolAdapter(this, mTools);
-        toolAdapter.notifyDataSetChanged();
         mRecyclerViewTool.setAdapter(toolAdapter);
         mRecyclerViewTool.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewTool, new IClickItemRecyclerView() {
             @Override
