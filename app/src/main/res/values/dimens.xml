@@ -26,4 +26,8 @@
     <dimen name="dialog.input_text_edittext.marginbot">20dp</dimen>
     <dimen name="dialog.input_text.edittext.margintop">20dp</dimen>
     <dimen name="dialog.input_text_edittext.shape.corners.radius">5dp</dimen>
+    <dimen name="custom.select.imagebutton.storke">1dp</dimen>
+    <dimen name="dialog.input_text.linearLayout.margin">20dp</dimen>
+    <dimen name="dialog.input_text.edittext.width">50dp</dimen>
+    <dimen name="dialog.input_text.edittext.margin">20dp</dimen>
 </resources>

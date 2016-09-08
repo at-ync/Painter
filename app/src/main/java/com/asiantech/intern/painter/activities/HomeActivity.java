@@ -32,13 +32,12 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     @ViewById(R.id.recyclerViewTool)
     RecyclerView mRecyclerViewTool;
     List<Tool> mTools = new ArrayList<>();
+    private final int mIcons[] = {R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
+            R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
 
     void afterViews() {
-        int[] icons = {R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
-                R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
-        for (int icon : icons) {
-            Tool tool = new Tool();
-            tool.setIconTool(icon);
+        for (int icon : mIcons) {
+            Tool tool = new Tool(icon);
             mTools.add(tool);
         }
         mRecyclerViewTool.setHasFixedSize(true);
@@ -50,21 +49,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         mRecyclerViewTool.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewTool, new IClickItemRecyclerView() {
             @Override
             public void onClick(View view, int position) {
-                if (mTools.get(position).isClick()) {
-                    mTools.get(position).setClick(false);
-                } else {
-                    mTools.get(position).setClick(true);
-                }
-                int size = mTools.size();
-                for (int i = 0; i < size; i++) {
-                    if (i != position) {
-                        mTools.get(i).setClick(false);
-                    }
-                }
-                toolAdapter.notifyDataSetChanged();
-
-                setToolClick(mTools, position);
-
+                onItemSelect(view,mTools.get(position).getIconTool());
             }
 
             @Override
@@ -74,35 +59,33 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         }));
 
     }
-
-    private void setToolClick(List<Tool> tools, int position) {
-        switch (tools.get(position).getIconTool()) {
+    //TODO Tool click
+    private void onItemSelect(View view,int iconTool) {
+        switch (iconTool){
             case R.drawable.ic_font:
-                if (tools.get(position).isClick()) {
-                    mCustomPainter.setIsDrawing(false);
-                    setActionText(Action.STOP);
-                    DialogInputText_.builder().build().show(getFragmentManager(), "");
-                }
+                mCustomPainter.setIsDrawing(false);
+                setActionText(Action.STOP);
+                DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
-                if (tools.get(position).isClick()) {
-                    setActionText(Action.MOVE);
-                } else {
-                    setActionText(Action.STOP);
-                }
+                break;
+            case R.drawable.ic_crop:
                 break;
             case R.drawable.ic_eraser:
-                if (tools.get(position).isClick()) {
-                    setDrawing(true);
-                }
                 break;
             case R.drawable.ic_paint:
-                if (tools.get(position).isClick()) {
-                    setDrawing(true);
-                }
+                break;
+            case R.drawable.ic_photo:
+                break;
+            case R.drawable.ic_rotate:
+                break;
+            case R.drawable.ic_save:
+                break;
+            case R.drawable.ic_share:
                 break;
         }
     }
+
 
     @Override
     public void setTextObject(TextObject textObject) {

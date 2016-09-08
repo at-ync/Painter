@@ -18,7 +18,8 @@ import java.util.List;
  */
 public class ToolAdapter extends RecyclerView.Adapter<ToolAdapter.ToolViewHolder> {
     private final Context mContext;
-    private List<Tool> mTools;
+    private final List<Tool> mTools;
+    private int mIndex = -1;
 
     public ToolAdapter(Context context, List<Tool> tools) {
         mContext = context;
@@ -32,13 +33,9 @@ public class ToolAdapter extends RecyclerView.Adapter<ToolAdapter.ToolViewHolder
     }
 
     @Override
-    public void onBindViewHolder(final ToolViewHolder holder, final int position) {
-        holder.imgTool.setImageResource(mTools.get(position).getIconTool());
-        if (mTools.get(position).isClick()) {
-            holder.imgTool.setBackgroundResource(R.drawable.custom_icon_selected);
-        }else{
-            holder.imgTool.setBackgroundResource(R.drawable.custom_select_imagebutton);
-        }
+    public void onBindViewHolder(final ToolViewHolder holder, int position) {
+        holder.mImgTool.setImageResource(mTools.get(position).getIconTool());
+        holder.mView.setSelected(mIndex == position);
     }
 
     @Override
@@ -46,12 +43,23 @@ public class ToolAdapter extends RecyclerView.Adapter<ToolAdapter.ToolViewHolder
         return mTools == null ? 0 : mTools.size();
     }
 
+    /**
+     * This class hold tool for recyclerview.
+     */
     public class ToolViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imgTool;
-
+        private final ImageView mImgTool;
+        private final View mView;
         public ToolViewHolder(View itemView) {
             super(itemView);
-            imgTool = (ImageView) itemView.findViewById(R.id.imgTool);
+            mView = itemView;
+            mImgTool = (ImageView) itemView.findViewById(R.id.imgTool);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mIndex = getAdapterPosition();
+                    notifyDataSetChanged();
+                }
+            });
         }
     }
 

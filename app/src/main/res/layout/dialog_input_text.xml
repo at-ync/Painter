@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:gravity="center"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/dialog.input_text.linearLayout.margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -19,8 +19,8 @@
         <EditText
             android:layout_gravity="center"
             android:id="@+id/edtSizeText"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dialog.input_text.edittext.width"
+            android:layout_height="@dimen/activity.home.linearlayout.height"
             android:background="@drawable/round_edittext"
             android:inputType="number"
             android:maxLength="3"
@@ -37,7 +37,7 @@
 
         <EditText
             android:id="@+id/edtCodeColor"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/dialog.input_text.edittext.width"
             android:layout_height="wrap_content"
             android:background="@drawable/round_edittext"
             android:enabled="false"
@@ -55,7 +55,7 @@
     </LinearLayout>
 
     <EditText
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/dialog.input_text.edittext.margin"
         android:id="@+id/edtInputText"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dialog.input_text.edittext.height"

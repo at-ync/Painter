@@ -11,5 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Tool {
     private int iconTool;
-    private boolean isClick;
+    public Tool(int iconTool){
+        this.iconTool = iconTool;
+    }
 }

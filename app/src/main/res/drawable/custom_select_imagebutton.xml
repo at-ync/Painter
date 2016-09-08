@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/custom.select.imagebutton.background_tranparent" />
+    <item android:state_pressed="false"
+        android:state_selected="false"
+        android:drawable="@color/custom.select.imagebutton.background_tranparent" />
+    <item android:state_pressed="false" android:state_selected="true">
+        <shape android:shape="oval">
+            <stroke android:width="@dimen/custom.select.imagebutton.storke"
+                android:color="@android:color/white"/>
+            <solid android:color="@color/custom.select.imagebutton.background_select_tranparent" />
+        </shape>
+    </item>
 </selector>
