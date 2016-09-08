@@ -7,14 +7,24 @@
     <string name="dialog.input_text.textview.text.size">Size:</string>
     <string name="dialog.input_text.textview.text.color">Color:</string>
     <string name="dialog.input_text.button.text.cancel">Cancel</string>
-    <string name="dialog.input_text.button.text.ok">Ok</string>
+    <string name="dialog.input_text.button.text.ok">OK</string>
     <string name="activity.home.contentdescription.imagebutton">ImageButton</string>
     <string name="send_to">Send To</string>
     <string name="share_photo">SharePhoto.png</string>
     <string name="dialog.input_text.title">Input Text</string>
     <string name="dialog.pick_color.title">Choose color</string>
-    <string name="dialog.pick_color.button.text.ok">ok</string>
-    <string name="dialog.pick_color.button.text.cancel">cancel</string>
+    <string name="dialog.pick_color.button.text.ok">OK</string>
+    <string name="dialog.pick_color.button.text.cancel">Cancel</string>
     <string name="typeface.arizonia_regular.ttf">arizonia_regular.ttf</string>
     <string name="activity_home_file_image">file://%s</string>
+    <string name="filter_name_contrast">Contrast</string>
+    <string name="filter_name_invert">Invert</string>
+    <string name="filter_name_hue">Hue</string>
+    <string name="filter_name_sepia">Sepia</string>
+    <string name="filter_name_gray_scale">Gray</string>
+    <string name="filter_name_sharpness">Sharpness</string>
+    <string name="filter_name_sobel_edge_detection">Sobel</string>
+    <string name="filter_name_vignette">Vignette</string>
+    <string name="filter_name_sketch">Sketch</string>
+    <string name="filter_name_false_color">False</string>
 </resources>

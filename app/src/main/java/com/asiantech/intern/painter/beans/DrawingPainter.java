@@ -55,9 +55,9 @@ public class DrawingPainter {
         path.reset();
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-        canvas = new Canvas(bitmap);
+    public void setBitmap(int w, int h) {
+        this.bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(this.bitmap);
     }
 
     public void setIsEraser(boolean isEraser) {
@@ -70,7 +70,8 @@ public class DrawingPainter {
             paint.setColor(Color.BLACK);
         }
     }
-    private void initPaint(){
+
+    private void initPaint() {
         paint.setAntiAlias(true);
         paint.setDither(true);
         paint.setStrokeJoin(Paint.Join.ROUND);

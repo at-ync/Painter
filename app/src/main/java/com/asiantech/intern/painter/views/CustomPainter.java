@@ -35,7 +35,6 @@ public class CustomPainter extends View implements ITextLab {
     private int mActionText;
     //Draw Activities
     private boolean mIsDrawing;
-    private Bitmap mBitmapBackground;
     private Paint mPaintBackground;
     private DrawingPainter mDrawingPainter;
     // Image Activities
@@ -49,7 +48,7 @@ public class CustomPainter extends View implements ITextLab {
         init();
     }
 
-    private void init(){
+    private void init() {
         mTextFactory = new TextFactory();
         mComponents = new ArrayList<>();
         mPaintBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -59,11 +58,6 @@ public class CustomPainter extends View implements ITextLab {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (mBitmapBackground == null) {
-            mDrawingPainter.setBitmap(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
-        } else {
-            mDrawingPainter.setBitmap(mBitmapBackground.copy(Bitmap.Config.ARGB_8888, true));
-        }
         mCenterX = w / 2;
         mCenterY = h / 2;
     }
@@ -71,6 +65,7 @@ public class CustomPainter extends View implements ITextLab {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.drawBitmap(mDrawingPainter.getBitmap(), 0, 0, mPaintBackground);
         int size = mComponents.size();
         for (int i = 0; i < size; i++) {
             Component component = mComponents.get(i);
@@ -79,8 +74,7 @@ public class CustomPainter extends View implements ITextLab {
         if (mIsOnDraw) {
             invalidate();
         }
-        canvas.drawBitmap(mDrawingPainter.getBitmap(), 0, 0, mPaintBackground);
-        if(mIsDrawing){
+        if (mIsDrawing) {
             canvas.drawPath(mDrawingPainter.getPath(), mDrawingPainter.getPaint());
         }
     }
@@ -139,24 +133,24 @@ public class CustomPainter extends View implements ITextLab {
 
     }
 
-    private void onDrawInit(MotionEvent event){
+    private void onDrawInit(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
         mDrawingPainter.onTouchStart(x, y);
     }
 
-    private void onDrawMove(MotionEvent event){
+    private void onDrawMove(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
-        if(mIsDrawing){
+        if (mIsDrawing) {
             mDrawingPainter.onTouchMove(x, y);
         }
     }
 
-    private void onDrawFinish(){
+    private void onDrawFinish() {
         if (mIsDrawing) {
-            mDrawingPainter.onTouchUp();
             setLayerType(LAYER_TYPE_HARDWARE, mPaintBackground);
+            mDrawingPainter.onTouchUp();
         }
     }
 
@@ -185,16 +179,15 @@ public class CustomPainter extends View implements ITextLab {
 
     //Set background for Painter
     public void setBackground(Bitmap background) {
-        mBitmapBackground = background;
-        this.setBackground(new BitmapDrawable(getResources(), mBitmapBackground));
+        this.setBackground(new BitmapDrawable(getResources(), background));
     }
 
     //Set isDrawing
-    public void setIsDrawing(boolean isDrawing){
+    public void setIsDrawing(boolean isDrawing) {
         mIsDrawing = isDrawing;
     }
 
-    public DrawingPainter getDrawingPainter(){
+    public DrawingPainter getDrawingPainter() {
         return mDrawingPainter;
     }
 }

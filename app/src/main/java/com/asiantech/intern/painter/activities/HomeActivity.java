@@ -2,9 +2,14 @@ package com.asiantech.intern.painter.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
+
 import com.asiantech.intern.painter.R;
+import com.asiantech.intern.painter.adapters.FilterAdapter;
 import com.asiantech.intern.painter.beans.TextObject;
 import com.asiantech.intern.painter.commons.Action;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
@@ -34,8 +39,32 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     ImageButton mImgButtonDraw;
     @ViewById(R.id.imgButtonEraser)
     ImageButton mImgButtonEraser;
+    @ViewById(R.id.recyclerView)
+    RecyclerView mRecyclerViewFilter;
+
+    private Bitmap resizeBitmap(Bitmap sourceBitmap, int newWidth, int newHeight) {
+        int width = sourceBitmap.getWidth();
+        int height = sourceBitmap.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        return Bitmap.createBitmap(sourceBitmap, 0, 0, width, height, matrix, false);
+    }
 
     void afterViews() {
+        FilterAdapter filterAdapter = new FilterAdapter(this, mBitmap);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerViewFilter.setAdapter(filterAdapter);
+        mRecyclerViewFilter.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Bitmap resizedBitmap = resizeBitmap(mBitmap, mCustomPainter.getWidth(), mCustomPainter.getHeight());
+        mCustomPainter.setBackground(resizedBitmap);
+        mCustomPainter.getDrawingPainter().setBitmap(mCustomPainter.getWidth(), mCustomPainter.getHeight());
     }
 
     @Click(R.id.imgBtnShare)
@@ -57,7 +86,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
             out.close();
         } catch (IOException e) {
         }
-        return Uri.parse(String.format(getString(R.string.activity_home_file_image),sharefile));
+        return Uri.parse(String.format(getString(R.string.activity_home_file_image), sharefile));
     }
 
     @Override
@@ -84,16 +113,16 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     }
 
     @Click(R.id.imgButtonDraw)
-    public void onClickButtonDraw(){
-        setDrawing(true);
+    public void onClickButtonDraw() {
+        setDrawing(false);
     }
 
     @Click(R.id.imgButtonEraser)
-    public void onClickButtonEraser(){
+    public void onClickButtonEraser() {
         setDrawing(true);
     }
 
-    private void setDrawing(boolean isEraser){
+    private void setDrawing(boolean isEraser) {
         mCustomPainter.setIsDrawing(true);
         mCustomPainter.getDrawingPainter().setIsEraser(isEraser);
     }
