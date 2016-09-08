@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.widget.ImageButton;
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.beans.TextObject;
-import com.asiantech.intern.painter.commo.Action;
+import com.asiantech.intern.painter.commons.Action;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
 import com.asiantech.intern.painter.interfaces.ITextLab;
 import com.asiantech.intern.painter.views.CustomPainter;

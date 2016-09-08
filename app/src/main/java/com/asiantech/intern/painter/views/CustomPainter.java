@@ -12,7 +12,7 @@ import android.view.View;
 import com.asiantech.intern.painter.beans.Component;
 import com.asiantech.intern.painter.beans.DrawingPainter;
 import com.asiantech.intern.painter.beans.TextObject;
-import com.asiantech.intern.painter.commo.Action;
+import com.asiantech.intern.painter.commons.Action;
 import com.asiantech.intern.painter.interfaces.ITextLab;
 import com.asiantech.intern.painter.models.TextFactory;
 
