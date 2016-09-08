@@ -1,4 +1,4 @@
-package com.asiantech.intern.painter.commo;
+package com.asiantech.intern.painter.commons;
 
 /**
  * Copyright @2016 AsianTech Inc.

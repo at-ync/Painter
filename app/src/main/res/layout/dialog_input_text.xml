@@ -5,22 +5,24 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:gravity="center"
-        android:layout_margin="@dimen/dialog.input_text.linearLayout.margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dialog.input_text.linearLayout.margin"
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dialog.input_text.texview.marginright"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/dialog.input_text.textview.text.size" />
 
         <EditText
-            android:layout_gravity="center"
             android:id="@+id/edtSizeText"
             android:layout_width="@dimen/dialog.input_text.edittext.width"
             android:layout_height="@dimen/activity.home.linearlayout.height"
+            android:layout_gravity="center"
             android:background="@drawable/round_edittext"
             android:inputType="number"
             android:maxLength="3"
@@ -32,6 +34,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dialog.input_text.texview.marginleft.title_color"
             android:layout_marginRight="@dimen/dialog.input_text.texview.marginright"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/dialog.input_text.textview.text.color" />
 
@@ -39,26 +42,26 @@
             android:id="@+id/edtCodeColor"
             android:layout_width="@dimen/dialog.input_text.edittext.width"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:background="@drawable/round_edittext"
             android:enabled="false"
             android:inputType="number"
             android:singleLine="true" />
 
         <ImageView
-            android:layout_gravity="center"
             android:id="@+id/imgPickColor"
             android:layout_width="@dimen/dialog.input_text.imageview.size"
             android:layout_height="@dimen/dialog.input_text.imageview.size"
+            android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dialog.input_text.imageview.marginleft"
             android:src="@drawable/ic_pickcolor" />
-
     </LinearLayout>
 
     <EditText
-        android:layout_margin="@dimen/dialog.input_text.edittext.margin"
         android:id="@+id/edtInputText"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dialog.input_text.edittext.height"
+        android:layout_margin="@dimen/dialog.input_text.edittext.margin"
         android:layout_marginBottom="@dimen/dialog.input_text_edittext.marginbot"
         android:layout_marginTop="@dimen/dialog.input_text.edittext.margintop"
         android:background="@drawable/round_edittext"
@@ -70,7 +73,7 @@
 
         <Button
             android:id="@+id/btnCancel"
-            style="@style/Animation.AppCompat.Dialog"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -78,7 +81,7 @@
 
         <Button
             android:id="@+id/btnOk"
-            style="@style/Animation.AppCompat.Dialog"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

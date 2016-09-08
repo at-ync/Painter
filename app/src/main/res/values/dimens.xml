@@ -19,8 +19,13 @@
     <dimen name="item.filterimage.linearlayout.margin">2dp</dimen>
     <dimen name="dialog.input_text.texview.marginright">5dp</dimen>
     <dimen name="dialog.input_text.texview.marginleft.title_color">10dp</dimen>
+<<<<<<< HEAD
     <dimen name="dialog.input_text.edittext.padding">5dp</dimen>
     <dimen name="dialog.input_text.imageview.size">30dp</dimen>
+=======
+    <dimen name="dialog.input_text.edittext.padding">10dp</dimen>
+    <dimen name="dialog.input_text.imageview.size">40dp</dimen>
+>>>>>>> master
     <dimen name="dialog.input_text.imageview.marginleft">5dp</dimen>
     <dimen name="dialog.input_text.edittext.height">56dp</dimen>
     <dimen name="dialog.input_text_edittext.marginbot">20dp</dimen>

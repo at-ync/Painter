@@ -9,7 +9,7 @@ import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
 import com.asiantech.intern.painter.beans.TextObject;
 import com.asiantech.intern.painter.beans.Tool;
-import com.asiantech.intern.painter.commo.Action;
+import com.asiantech.intern.painter.commons.Action;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
 import com.asiantech.intern.painter.interfaces.ITextLab;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
@@ -49,7 +49,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         mRecyclerViewTool.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewTool, new IClickItemRecyclerView() {
             @Override
             public void onClick(View view, int position) {
-                onItemSelect(view,mTools.get(position).getIconTool());
+                onItemSelect(mTools.get(position).getIconTool());
             }
 
             @Override
@@ -59,9 +59,10 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         }));
 
     }
+
     //TODO Tool click
-    private void onItemSelect(View view,int iconTool) {
-        switch (iconTool){
+    private void onItemSelect(int iconTool) {
+        switch (iconTool) {
             case R.drawable.ic_font:
                 mCustomPainter.setIsDrawing(false);
                 setActionText(Action.STOP);
@@ -99,8 +100,4 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     }
 
 
-    private void setDrawing(boolean isEraser) {
-        mCustomPainter.setIsDrawing(true);
-        mCustomPainter.getDrawingPainter().setIsEraser(isEraser);
-    }
 }
