@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.asiantech.intern.painter.beans.TextObject;
+import com.asiantech.intern.painter.interfaces.ITextFactory;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

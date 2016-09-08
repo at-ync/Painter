@@ -9,7 +9,7 @@ import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
 import com.asiantech.intern.painter.beans.TextObject;
 import com.asiantech.intern.painter.beans.Tool;
-import com.asiantech.intern.painter.commons.Action;
+import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
 import com.asiantech.intern.painter.interfaces.ITextLab;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
@@ -63,7 +63,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         switch (iconTool) {
             case R.drawable.ic_font:
                 mCustomPainter.setIsDrawing(false);
-                setActionText(Action.STOP);
+                setActionText(Constant.STOP);
                 DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
