@@ -1,24 +1,30 @@
 package com.asiantech.intern.painter.activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+
 import com.asiantech.intern.painter.R;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.ViewById;
+
+import java.io.ByteArrayOutputStream;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 @Fullscreen
 @EActivity(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
     private static final int REQUEST_CAMERA = 101;
     private static final int REQUEST_PHOTO = 202;
-    private static final String TAG = MainActivity.class.getName();
+    @ViewById(R.id.circleImageViewPhoto)
+    CircleImageView mCircleImageViewPhoto;
 
     @Override
     void afterViews() {
@@ -33,48 +39,37 @@ public class MainActivity extends BaseActivity {
 
     @Click(R.id.circleImageViewPhoto)
     void selectPhotoFromGallery() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, REQUEST_PHOTO);
     }
 
     @OnActivityResult(REQUEST_CAMERA)
     void captureImageResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            HomeActivity_.intent(this).mBitmap(onCaptureImageResult(data)).start();
+            HomeActivity_.intent(this).mUri(onCaptureImageResult(data)).start();
         }
     }
 
     @OnActivityResult(REQUEST_PHOTO)
     void selectFromGalleryResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            HomeActivity_.intent(this).mBitmap(onSelectFromGalleryResult(data)).start();
+            HomeActivity_.intent(this).mUri(data.getData()).start();
         }
     }
 
-    private Bitmap onCaptureImageResult(Intent data) {
+    private Uri onCaptureImageResult(Intent data) {
         Bitmap bitmap = null;
         if (data != null) {
             bitmap = (Bitmap) data.getExtras().get("data");
         }
-        return bitmap;
+        return getImageUri(this, bitmap);
     }
 
-    private Bitmap onSelectFromGalleryResult(Intent data) {
-        Bitmap bitmap = null;
-        if (data.getData() != null) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(
-                    selectedImage, filePathColumn, null, null, null);
-            assert cursor != null;
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String filePath = cursor.getString(columnIndex);
-            cursor.close();
-            bitmap = BitmapFactory.decodeFile(filePath);
-        }
-        return bitmap;
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage,"", null);
+        return Uri.parse(path);
     }
 }
