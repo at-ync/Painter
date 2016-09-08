@@ -11,7 +11,7 @@
     <dimen name="activity.main.linearlayout.camera.margin">5dp</dimen>
     <dimen name="activity.main.linearlayout.photo.margin">5dp</dimen>
     <dimen name="activity.home.linearlayout.height">120dp</dimen>
-    <dimen name="activity.home.linearlayout.height.menu_select">40dp</dimen>
+    <dimen name="activity.home.linearlayout.height.menu_select">50dp</dimen>
     <dimen name="activity.home.imagebutton.padding">10dp</dimen>
     <dimen name="item.filterimage.circleimageview.width">50dp</dimen>
     <dimen name="item.filterimage.circleimageview.height">50dp</dimen>
@@ -19,11 +19,15 @@
     <dimen name="item.filterimage.linearlayout.margin">2dp</dimen>
     <dimen name="dialog.input_text.texview.marginright">5dp</dimen>
     <dimen name="dialog.input_text.texview.marginleft.title_color">10dp</dimen>
-    <dimen name="dialog.input_text.edittext.padding">10dp</dimen>
-    <dimen name="dialog.input_text.imageview.size">40dp</dimen>
+    <dimen name="dialog.input_text.edittext.padding">5dp</dimen>
+    <dimen name="dialog.input_text.imageview.size">30dp</dimen>
     <dimen name="dialog.input_text.imageview.marginleft">5dp</dimen>
-    <dimen name="dialog.input_text.edittext.height">56dp</dimen>
+    <dimen name="dialog.input_text.edittext.height">60dp</dimen>
     <dimen name="dialog.input_text_edittext.marginbot">20dp</dimen>
     <dimen name="dialog.input_text.edittext.margintop">20dp</dimen>
     <dimen name="dialog.input_text_edittext.shape.corners.radius">5dp</dimen>
+    <dimen name="custom.select.imagebutton.storke">1dp</dimen>
+    <dimen name="dialog.input_text.linearLayout.margin">20dp</dimen>
+    <dimen name="dialog.input_text.edittext.width">50dp</dimen>
+    <dimen name="dialog.input_text.edittext.margin">20dp</dimen>
 </resources>
