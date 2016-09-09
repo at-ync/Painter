@@ -2,6 +2,7 @@ package com.asiantech.intern.painter.activities;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,7 @@ import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
-import com.asiantech.intern.painter.interfaces.ITextLab;
+import com.asiantech.intern.painter.interfaces.IAction;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
 import com.asiantech.intern.painter.views.CustomPainter;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements ITextLab {
+public class HomeActivity extends BaseActivity implements IAction {
     @ViewById(R.id.viewPaint)
     CustomPainter mCustomPainter;
     @Extra
@@ -46,7 +47,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             showToast(getString(R.string.error_uri_null));
         }
         for (int icon : ICONS) {
@@ -68,6 +69,13 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
             }
         }));
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sendBitmap();
+            }
+        }, 0);
 
     }
 
@@ -75,12 +83,11 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     private void onItemSelect(int iconTool) {
         switch (iconTool) {
             case R.drawable.ic_font:
-                mCustomPainter.setIsDrawing(false);
-                setActionText(Constant.STOP);
+                setActionText(Constant.ACTION_INPUT_TEXT);
                 DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
-                setActionText(Constant.MOVE);
+                setActionText(Constant.ACTION_MOVE);
                 break;
             case R.drawable.ic_crop:
                 break;
@@ -101,8 +108,8 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
 
     @Override
-    public void setTextObject(TextDrawer textObject) {
-        mCustomPainter.setTextObject(textObject);
+    public void setTextDrawer(TextDrawer textDrawer) {
+        mCustomPainter.setTextDrawer(textDrawer);
     }
 
     @Override
@@ -110,9 +117,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         mCustomPainter.setActionText(action);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
+    private void sendBitmap() {
         Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
         mCustomPainter.setBackground(resizedBitmap);
     }
