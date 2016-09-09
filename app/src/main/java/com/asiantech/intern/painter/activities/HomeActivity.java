@@ -14,13 +14,15 @@ import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
-import com.asiantech.intern.painter.interfaces.ITextLab;
+import com.asiantech.intern.painter.interfaces.IAction;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
 import com.asiantech.intern.painter.views.CustomPainter;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements ITextLab {
+public class HomeActivity extends BaseActivity implements IAction {
     @ViewById(R.id.viewPaint)
     CustomPainter mCustomPainter;
     @Extra
@@ -72,7 +74,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
             }
         }));
-
+        sendBitmap();
     }
 
     //TODO Tool click
@@ -82,12 +84,11 @@ public class HomeActivity extends BaseActivity implements ITextLab {
                 mLlTool.setVisibility(View.VISIBLE);
                 break;
             case R.drawable.ic_font:
-                mCustomPainter.setIsDrawing(false);
-                setActionText(Constant.STOP);
+                setActionText(Constant.ACTION_INPUT_TEXT);
                 DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
-                setActionText(Constant.MOVE);
+                setActionText(Constant.ACTION_MOVE);
                 break;
             case R.drawable.ic_crop:
                 break;
@@ -108,8 +109,8 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
 
     @Override
-    public void setTextObject(TextDrawer textObject) {
-        mCustomPainter.setTextObject(textObject);
+    public void setTextDrawer(TextDrawer textDrawer) {
+        mCustomPainter.setTextDrawer(textDrawer);
     }
 
     @Override
@@ -117,15 +118,18 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         mCustomPainter.setActionText(action);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
+    @UiThread
+    public void loadBitmap() {
         Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
         mCustomPainter.setBackground(resizedBitmap);
     }
 
-    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize,
-                                     boolean filter) {
+    @Background
+    public void sendBitmap() {
+        loadBitmap();
+    }
+
+    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize, boolean filter) {
         float ratio = Math.min(maxImageSize / realImage.getWidth(), maxImageSize / realImage.getHeight());
         int width = Math.round(ratio * realImage.getWidth());
         int height = Math.round(ratio * realImage.getHeight());

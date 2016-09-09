@@ -20,7 +20,7 @@ public class TextFactory implements ITextFactory {
     private int mAction;
 
     @Override
-    public void onDraw(Canvas canvas, TextDrawer textObject) {
+    public void onDrawText(Canvas canvas, TextDrawer textObject) {
         canvas.drawText(textObject.getContent(), textObject.getCoordinatesX(), textObject.getCoordinatesY(), textObject.getPaint());
     }
 

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.activities.HomeActivity;
 import com.asiantech.intern.painter.beans.TextDrawer;
-import com.asiantech.intern.painter.interfaces.ITextLab;
+import com.asiantech.intern.painter.interfaces.IAction;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
@@ -44,14 +44,14 @@ public class DialogInputText extends DialogFragment {
     @ViewById(R.id.edtCodeColor)
     EditText mEdtCodeColor;
     private int mColorText = Color.BLACK;
-    private ITextLab mITextLab;
+    private IAction mIAction;
 
     @AfterViews
     public void init() {
         getDialog().setTitle(R.string.dialog_input_text_title);
         mEdtCodeColor.setBackgroundColor(mColorText);
         if (getActivity() instanceof HomeActivity) {
-            mITextLab = (ITextLab) getActivity();
+            mIAction = (IAction) getActivity();
         }
     }
 
@@ -68,8 +68,8 @@ public class DialogInputText extends DialogFragment {
             return;
         }
         int size = Integer.parseInt(sizeText);
-        TextDrawer textObject = createNewTextObject(content, getPaint(size, mColorText));
-        mITextLab.setTextObject(textObject);
+        TextDrawer textDrawer = createNewTextObject(content, getPaint(size, mColorText));
+        mIAction.setTextDrawer(textDrawer);
         onClickCancel();
     }
 

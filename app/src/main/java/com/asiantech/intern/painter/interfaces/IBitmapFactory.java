@@ -2,6 +2,9 @@ package com.asiantech.intern.painter.interfaces;
 
 import android.graphics.Canvas;
 
+import com.asiantech.intern.painter.beans.BitmapDrawer;
+import com.asiantech.intern.painter.beans.TextDrawer;
+
 /**
  * Copyright @2016 AsianTech Inc.
  * Created by LyHV on 9/8/2016.
@@ -20,4 +23,5 @@ public interface IBitmapFactory {
      */
     float getVerticalAngle(float coordinateX, float coordinateY);
 
+    BitmapDrawer convertTextToBitmap(TextDrawer textDrawer);
 }
