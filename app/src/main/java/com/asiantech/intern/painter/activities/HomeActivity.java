@@ -6,7 +6,6 @@ import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
@@ -81,7 +80,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
                 DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
-                setActionText(Action.MOVE);
+                setActionText(Constant.MOVE);
                 break;
             case R.drawable.ic_crop:
                 break;
