@@ -6,6 +6,7 @@ import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
@@ -34,19 +35,22 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     Uri mUri;
     @ViewById(R.id.recyclerViewTool)
     RecyclerView mRecyclerViewTool;
+    @ViewById(R.id.llTool)
+    LinearLayout mLlTool;
     private List<Tool> mTools = new ArrayList<>();
-    private static final int ICONS[] = {R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
+    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
             R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
     private Bitmap mBitmap;
 
     void afterViews() {
+        mLlTool.setVisibility(View.GONE);
         if (mUri != null) {
             try {
                 mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             showToast(getString(R.string.error_uri_null));
         }
         for (int icon : ICONS) {
@@ -74,6 +78,9 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     //TODO Tool click
     private void onItemSelect(int iconTool) {
         switch (iconTool) {
+            case R.drawable.ic_filter:
+                mLlTool.setVisibility(View.VISIBLE);
+                break;
             case R.drawable.ic_font:
                 mCustomPainter.setIsDrawing(false);
                 setActionText(Constant.STOP);
