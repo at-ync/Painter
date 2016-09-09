@@ -1,9 +1,12 @@
 package com.asiantech.intern.painter.activities;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
@@ -20,6 +23,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,14 +32,24 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     @ViewById(R.id.viewPaint)
     CustomPainter mCustomPainter;
     @Extra
-    Bitmap mBitmap;
+    Uri mUri;
     @ViewById(R.id.recyclerViewTool)
     RecyclerView mRecyclerViewTool;
     private List<Tool> mTools = new ArrayList<>();
     private static final int ICONS[] = {R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
             R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
+    private Bitmap mBitmap;
 
     void afterViews() {
+        if (mUri != null) {
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            showToast(getString(R.string.error_uri_null));
+        }
         for (int icon : ICONS) {
             mTools.add(new Tool(icon));
         }
@@ -67,6 +81,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
                 DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
+                setActionText(Action.MOVE);
                 break;
             case R.drawable.ic_crop:
                 break;
@@ -91,11 +106,24 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         mCustomPainter.setTextObject(textObject);
     }
 
-
     @Override
     public void setActionText(int action) {
         mCustomPainter.setActionText(action);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
+        mCustomPainter.setBackground(resizedBitmap);
+    }
+
+    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize,
+                                     boolean filter) {
+        float ratio = Math.min(maxImageSize / realImage.getWidth(), maxImageSize / realImage.getHeight());
+        int width = Math.round(ratio * realImage.getWidth());
+        int height = Math.round(ratio * realImage.getHeight());
+        return Bitmap.createScaledBitmap(realImage, width, height, filter);
+    }
 
 }
