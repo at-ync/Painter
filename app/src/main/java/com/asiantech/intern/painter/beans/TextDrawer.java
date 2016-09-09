@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class TextObject extends Object {
+public class TextDrawer extends BaseDrawer {
     private float coordinatesX;
     private float coordinatesY;
     private String content;

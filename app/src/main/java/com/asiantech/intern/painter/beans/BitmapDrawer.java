@@ -9,7 +9,7 @@ import lombok.Data;
  * Created by LyHV on 9/7/2016.
  */
 @Data
-public class BitmapObject extends Object {
+public class BitmapDrawer extends BaseDrawer {
     private Bitmap bitmap;
     private float radius;
     private float rotateOriginX;

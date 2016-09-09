@@ -3,7 +3,7 @@ package com.asiantech.intern.painter.models;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 
-import com.asiantech.intern.painter.beans.BitmapObject;
+import com.asiantech.intern.painter.beans.BitmapDrawer;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.interfaces.IBitmapFactory;
 
@@ -15,25 +15,25 @@ import lombok.Setter;
  */
 @Setter
 public class BitmapFactory implements IBitmapFactory {
-    BitmapObject bitmapObject;
+    BitmapDrawer bitmapDrawer;
 
     @Override
     public void onDrawBitmap(Canvas canvas) {
         Matrix matrix = new Matrix();
-        matrix.postTranslate(bitmapObject.getBitmapCoordinateX(), bitmapObject.getBitmapCoordinateY());
-        matrix.postRotate(bitmapObject.getRotateAngle(), bitmapObject.getRotateOriginX(), bitmapObject.getRotateOriginY());
-        canvas.drawBitmap(bitmapObject.getBitmap(), matrix, null);
+        matrix.postTranslate(bitmapDrawer.getBitmapCoordinateX(), bitmapDrawer.getBitmapCoordinateY());
+        matrix.postRotate(bitmapDrawer.getRotateAngle(), bitmapDrawer.getRotateOriginX(), bitmapDrawer.getRotateOriginY());
+        canvas.drawBitmap(bitmapDrawer.getBitmap(), matrix, null);
     }
 
     @Override
     public int getAreaInBitmap(float coordinateX, float coordinateY) {
-        if (coordinateX <= bitmapObject.getRotateOriginX() && coordinateY < bitmapObject.getRotateOriginY())
+        if (coordinateX <= bitmapDrawer.getRotateOriginX() && coordinateY < bitmapDrawer.getRotateOriginY())
             return Constant.AREA_1;
-        if (coordinateX > bitmapObject.getRotateOriginX() && coordinateY <= bitmapObject.getRotateOriginY())
+        if (coordinateX > bitmapDrawer.getRotateOriginX() && coordinateY <= bitmapDrawer.getRotateOriginY())
             return Constant.AREA_2;
-        if (coordinateX >= bitmapObject.getRotateOriginX() && coordinateY > bitmapObject.getRotateOriginY())
+        if (coordinateX >= bitmapDrawer.getRotateOriginX() && coordinateY > bitmapDrawer.getRotateOriginY())
             return Constant.AREA_3;
-        if (coordinateX < bitmapObject.getRotateOriginX() && coordinateY >= bitmapObject.getRotateOriginY())
+        if (coordinateX < bitmapDrawer.getRotateOriginX() && coordinateY >= bitmapDrawer.getRotateOriginY())
             return Constant.AREA_4;
         return 0;
     }
@@ -59,20 +59,20 @@ public class BitmapFactory implements IBitmapFactory {
         int area = getAreaInBitmap(coordinateX, coordinateY);
         switch (area) {
             case Constant.AREA_1:
-                return (float) (Math.atan((bitmapObject.getRotateOriginX() - coordinateX) / (bitmapObject.getRotateOriginY() - coordinateY)) / Math.PI * 180);
+                return (float) (Math.atan((bitmapDrawer.getRotateOriginX() - coordinateX) / (bitmapDrawer.getRotateOriginY() - coordinateY)) / Math.PI * 180);
             case Constant.AREA_2:
-                if (bitmapObject.getRotateOriginY() == coordinateY) {
+                if (bitmapDrawer.getRotateOriginY() == coordinateY) {
                     return 90;
                 } else {
-                    return (float) (Math.atan((coordinateX - bitmapObject.getRotateOriginX()) / (bitmapObject.getRotateOriginY() - coordinateY)) / Math.PI * 180);
+                    return (float) (Math.atan((coordinateX - bitmapDrawer.getRotateOriginX()) / (bitmapDrawer.getRotateOriginY() - coordinateY)) / Math.PI * 180);
                 }
             case Constant.AREA_3:
-                return (float) (Math.atan((coordinateX - bitmapObject.getRotateOriginX()) / (coordinateY - bitmapObject.getRotateOriginY())) / Math.PI * 180);
+                return (float) (Math.atan((coordinateX - bitmapDrawer.getRotateOriginX()) / (coordinateY - bitmapDrawer.getRotateOriginY())) / Math.PI * 180);
             case Constant.AREA_4:
-                if (bitmapObject.getRotateOriginY() == coordinateY) {
+                if (bitmapDrawer.getRotateOriginY() == coordinateY) {
                     return 90;
                 } else {
-                    return (float) (Math.atan((bitmapObject.getRotateOriginX() - coordinateX) / (coordinateY - bitmapObject.getRotateOriginY())) / Math.PI * 180);
+                    return (float) (Math.atan((bitmapDrawer.getRotateOriginX() - coordinateX) / (coordinateY - bitmapDrawer.getRotateOriginY())) / Math.PI * 180);
                 }
         }
         return 0;

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.activities.HomeActivity;
-import com.asiantech.intern.painter.beans.TextObject;
+import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.interfaces.ITextLab;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
@@ -68,7 +68,7 @@ public class DialogInputText extends DialogFragment {
             return;
         }
         int size = Integer.parseInt(sizeText);
-        TextObject textObject = createNewTextObject(content, getPaint(size, mColorText));
+        TextDrawer textObject = createNewTextObject(content, getPaint(size, mColorText));
         mITextLab.setTextObject(textObject);
         onClickCancel();
     }
@@ -113,8 +113,8 @@ public class DialogInputText extends DialogFragment {
         return paint;
     }
 
-    private TextObject createNewTextObject(String content, Paint paint) {
-        TextObject textObject = new TextObject();
+    private TextDrawer createNewTextObject(String content, Paint paint) {
+        TextDrawer textObject = new TextDrawer();
         textObject.setAngle(0);
         textObject.setPaint(paint);
         textObject.setContent(content);
