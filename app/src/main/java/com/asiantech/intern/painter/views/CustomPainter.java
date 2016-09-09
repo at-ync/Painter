@@ -55,7 +55,7 @@ public class CustomPainter extends View implements IAction {
         init();
     }
 
-    private void init() {
+    public void init() {
         mTextFactory = new TextFactory();
         mBitmapFactory = new BitmapFactory();
         mComponents = new ArrayList<>();
@@ -150,7 +150,6 @@ public class CustomPainter extends View implements IAction {
 
             }
         }
-
     }
 
     private void onDrawInit(MotionEvent event) {

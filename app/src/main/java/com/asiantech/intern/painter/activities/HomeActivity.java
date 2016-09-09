@@ -2,7 +2,6 @@ package com.asiantech.intern.painter.activities;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +18,10 @@ import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
 import com.asiantech.intern.painter.views.CustomPainter;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
@@ -69,14 +70,7 @@ public class HomeActivity extends BaseActivity implements IAction {
 
             }
         }));
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                sendBitmap();
-            }
-        }, 0);
-
+        sendBitmap();
     }
 
     //TODO Tool click
@@ -117,13 +111,18 @@ public class HomeActivity extends BaseActivity implements IAction {
         mCustomPainter.setActionText(action);
     }
 
-    private void sendBitmap() {
+    @UiThread
+    public void loadBitmap() {
         Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
         mCustomPainter.setBackground(resizedBitmap);
     }
 
-    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize,
-                                     boolean filter) {
+    @Background
+    public void sendBitmap() {
+        loadBitmap();
+    }
+
+    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize, boolean filter) {
         float ratio = Math.min(maxImageSize / realImage.getWidth(), maxImageSize / realImage.getHeight());
         int width = Math.round(ratio * realImage.getWidth());
         int height = Math.round(ratio * realImage.getHeight());

@@ -86,18 +86,14 @@ public class BitmapFactory implements IBitmapFactory {
         BitmapDrawer bitmapDrawer = null;
         Rect rect = new Rect();
         textDrawer.getPaint().getTextBounds(textDrawer.getContent(), 0, textDrawer.getContent().length(), rect);
-        try {
-            bitmapDrawer.setBitmap(Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888));
-            bitmapDrawer.setBitmapCoordinateX(textDrawer.getCoordinatesX());
-            bitmapDrawer.setBitmapCoordinateY(textDrawer.getCoordinatesY());
-            bitmapDrawer.setRotateOriginX(textDrawer.getCoordinatesX() + rect.width() / 2);
-            bitmapDrawer.setBitmapCoordinateY(textDrawer.getCoordinatesY() + rect.height() / 2);
-            TextFactory textFactory = new TextFactory();
-            Canvas canvas = new Canvas(bitmapDrawer.getBitmap());
-            textFactory.onDrawText(canvas, textDrawer);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        bitmapDrawer.setBitmap(Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888));
+        bitmapDrawer.setBitmapCoordinateX(textDrawer.getCoordinatesX());
+        bitmapDrawer.setBitmapCoordinateY(textDrawer.getCoordinatesY());
+        bitmapDrawer.setRotateOriginX(textDrawer.getCoordinatesX() + rect.width() / 2);
+        bitmapDrawer.setBitmapCoordinateY(textDrawer.getCoordinatesY() + rect.height() / 2);
+        TextFactory textFactory = new TextFactory();
+        Canvas canvas = new Canvas(bitmapDrawer.getBitmap());
+        textFactory.onDrawText(canvas, textDrawer);
         return bitmapDrawer;
     }
 
