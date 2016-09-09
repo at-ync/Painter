@@ -90,7 +90,7 @@ public class CustomPainter extends View implements IAction {
             TextDrawer textDrawer = mComponents.get(i).getTextDrawer();
             BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
             if (textDrawer != null) {
-                mTextFactory.onDraw(canvas, textDrawer);
+                mTextFactory.onDrawText(canvas, textDrawer);
             }
             if (bitmapDrawer != null) {
                 mBitmapFactory.setBitmapDrawer(bitmapDrawer);

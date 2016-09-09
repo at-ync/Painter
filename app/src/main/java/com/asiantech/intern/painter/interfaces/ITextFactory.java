@@ -9,9 +9,10 @@ import com.asiantech.intern.painter.beans.TextDrawer;
  * Created by LyHV on 9/3/2016.
  */
 public interface ITextFactory {
-    void onDraw(Canvas canvas, TextDrawer textObject);
+    void onDrawText(Canvas canvas, TextDrawer textObject);
 
     boolean isTouchInTextArea(TextDrawer textObject, float x, float y);
 
     void updateCoordinatesText(TextDrawer textObject, float movementX, float movementY);
+
 }
