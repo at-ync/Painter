@@ -11,8 +11,8 @@ import android.view.View;
 
 import com.asiantech.intern.painter.beans.Component;
 import com.asiantech.intern.painter.beans.DrawingPainter;
-import com.asiantech.intern.painter.beans.TextObject;
-import com.asiantech.intern.painter.commons.Action;
+import com.asiantech.intern.painter.beans.TextDrawer;
+import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.interfaces.ITextLab;
 import com.asiantech.intern.painter.models.TextFactory;
 
@@ -104,7 +104,7 @@ public class CustomPainter extends View implements ITextLab {
     }
 
     @Override
-    public void setTextObject(TextObject textObject) {
+    public void setTextObject(TextDrawer textObject) {
         synchronized (mComponents) {
             if (textObject == null) {
                 return;
@@ -126,7 +126,7 @@ public class CustomPainter extends View implements ITextLab {
     private void updateMoveText(float movementX, float movementY) {
         synchronized (mComponents) {
             for (int i = mComponents.size() - 1; i >= 0; i--) {
-                TextObject textObject = mComponents.get(i).getTextObject();
+                TextDrawer textObject = mComponents.get(i).getTextObject();
                 if (textObject != null) {
                     if (mTextFactory.isTouchInTextArea(textObject, mInitialX, mInitialY)) {
                         mTextFactory.updateCoordinatesText(textObject, movementX, movementY);
@@ -161,14 +161,14 @@ public class CustomPainter extends View implements ITextLab {
     }
 
     private void initMove(MotionEvent event) {
-        if (mActionText == Action.MOVE) {
+        if (mActionText == Constant.MOVE) {
             mInitialX = event.getX();
             mInitialY = event.getY();
         }
     }
 
     private void updateMove(MotionEvent event) {
-        if (mActionText == Action.MOVE) {
+        if (mActionText == Constant.MOVE) {
             float xMovement = event.getX() - mInitialX;
             float yMovement = event.getY() - mInitialY;
             mInitialX = event.getX();
@@ -177,7 +177,7 @@ public class CustomPainter extends View implements ITextLab {
         }
     }
 
-    private void onDrawText(Canvas canvas, TextObject textObject) {
+    private void onDrawText(Canvas canvas, TextDrawer textObject) {
         if (textObject != null) {
             mTextFactory.onDraw(canvas, textObject);
         }

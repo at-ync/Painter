@@ -4,7 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.asiantech.intern.painter.beans.TextObject;
+import com.asiantech.intern.painter.beans.TextDrawer;
+import com.asiantech.intern.painter.interfaces.ITextFactory;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,12 +20,12 @@ public class TextFactory implements ITextFactory {
     private int mAction;
 
     @Override
-    public void onDraw(Canvas canvas, TextObject textObject) {
+    public void onDraw(Canvas canvas, TextDrawer textObject) {
         canvas.drawText(textObject.getContent(), textObject.getCoordinatesX(), textObject.getCoordinatesY(), textObject.getPaint());
     }
 
     @Override
-    public boolean isTouchInTextArea(TextObject textObject, float x, float y) {
+    public boolean isTouchInTextArea(TextDrawer textObject, float x, float y) {
         String contentText = textObject.getContent();
         float oX = textObject.getCoordinatesX();
         float oY = textObject.getCoordinatesY();
@@ -39,7 +40,7 @@ public class TextFactory implements ITextFactory {
     }
 
     @Override
-    public void updateCoordinatesText(TextObject textObject, float movementX, float movementY) {
+    public void updateCoordinatesText(TextDrawer textObject, float movementX, float movementY) {
         textObject.setCoordinatesX(textObject.getCoordinatesX() + movementX);
         textObject.setCoordinatesY(textObject.getCoordinatesY() + movementY);
     }

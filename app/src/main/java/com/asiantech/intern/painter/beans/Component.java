@@ -10,5 +10,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class Component {
-    private TextObject textObject;
+    private TextDrawer textObject;
 }
