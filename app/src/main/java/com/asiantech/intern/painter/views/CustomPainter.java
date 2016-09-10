@@ -34,10 +34,7 @@ public class CustomPainter extends View implements IAction {
     private BitmapFactory mBitmapFactory;
     private TextFactory mTextFactory;
     private BitmapBackground mBitmapBackground;
-    // TextDrawer Activities
-    private float mCenterX;
-    private float mCenterY;
-    private int mActionText;
+    private int mAction;
     //Draw Activities
     private boolean mIsDrawing;
     //  private Bitmap mBitmapBackground;
@@ -74,8 +71,6 @@ public class CustomPainter extends View implements IAction {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mCenterX = getWidth() / 2;
-        mCenterY = getHeight() / 2;
         // Draw Background
         if (!mBitmapBackground.isSetting()) {
             mBitmapBackground.setLeft((getWidth() - mBitmapBackground.getBitmap().getWidth()) / 2);
@@ -87,14 +82,9 @@ public class CustomPainter extends View implements IAction {
         // Draw other component
         int size = mComponents.size();
         for (int i = 0; i < size; i++) {
-            TextDrawer textDrawer = mComponents.get(i).getTextDrawer();
             BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
-            if (textDrawer != null) {
-                mTextFactory.onDrawText(canvas, textDrawer);
-            }
             if (bitmapDrawer != null) {
-                mBitmapFactory.setBitmapDrawer(bitmapDrawer);
-                mBitmapFactory.onDrawBitmap(canvas);
+                mBitmapFactory.onDrawBitmap(canvas, bitmapDrawer);
             }
         }
         if (mIsOnDraw) {
@@ -119,6 +109,7 @@ public class CustomPainter extends View implements IAction {
         }
         return true;
     }
+/*
 
     @Override
     public void setTextDrawer(TextDrawer textDrawer) {
@@ -130,10 +121,20 @@ public class CustomPainter extends View implements IAction {
             mComponents.add(component);
         }
     }
+*/
 
     @Override
     public void setActionText(int action) {
-        mActionText = action;
+        mAction = action;
+    }
+
+    @Override
+    public void setBitmapDrawer(BitmapDrawer bitmapDrawer) {
+        synchronized (mComponents) {
+            Component component = new Component();
+            component.setBitmapDrawer(bitmapDrawer);
+            mComponents.add(component);
+        }
     }
 
 
@@ -174,14 +175,14 @@ public class CustomPainter extends View implements IAction {
     }
 
     private void initMove(MotionEvent event) {
-        if (mActionText == Constant.ACTION_MOVE) {
+        if (mAction == Constant.ACTION_MOVE) {
             mInitialX = event.getX();
             mInitialY = event.getY();
         }
     }
 
     private void updateMove(MotionEvent event) {
-        if (mActionText == Constant.ACTION_MOVE) {
+        if (mAction == Constant.ACTION_MOVE) {
             float xMovement = event.getX() - mInitialX;
             float yMovement = event.getY() - mInitialY;
             mInitialX = event.getX();

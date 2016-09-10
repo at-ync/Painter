@@ -4,11 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.asiantech.intern.painter.beans.BitmapDrawer;
 import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.interfaces.IBitmapFactory;
+import com.asiantech.intern.painter.utils.PaintUtil;
 
 import lombok.Setter;
 
@@ -18,10 +20,9 @@ import lombok.Setter;
  */
 @Setter
 public class BitmapFactory implements IBitmapFactory {
-    BitmapDrawer bitmapDrawer;
 
     @Override
-    public void onDrawBitmap(Canvas canvas) {
+    public void onDrawBitmap(Canvas canvas, BitmapDrawer bitmapDrawer) {
         Matrix matrix = new Matrix();
         matrix.postTranslate(bitmapDrawer.getBitmapCoordinateX(), bitmapDrawer.getBitmapCoordinateY());
         matrix.postRotate(bitmapDrawer.getRotateAngle(), bitmapDrawer.getRotateOriginX(), bitmapDrawer.getRotateOriginY());
@@ -29,7 +30,7 @@ public class BitmapFactory implements IBitmapFactory {
     }
 
     @Override
-    public int getAreaInBitmap(float coordinateX, float coordinateY) {
+    public int getAreaInBitmap(BitmapDrawer bitmapDrawer, float coordinateX, float coordinateY) {
         if (coordinateX <= bitmapDrawer.getRotateOriginX() && coordinateY < bitmapDrawer.getRotateOriginY())
             return Constant.AREA_1;
         if (coordinateX > bitmapDrawer.getRotateOriginX() && coordinateY <= bitmapDrawer.getRotateOriginY())
@@ -42,10 +43,10 @@ public class BitmapFactory implements IBitmapFactory {
     }
 
     @Override
-    public float getRotateAngle(float currentCoordinateX, float currentCoordinateY, float newCoordinateX, float newCoordinateY) {
-        int areaNew = getAreaInBitmap(newCoordinateX, newCoordinateY);
-        float angleCurrent = getVerticalAngle(currentCoordinateX, currentCoordinateY);
-        float angleNew = getVerticalAngle(newCoordinateX, newCoordinateY);
+    public float getRotateAngle(BitmapDrawer bitmapDrawer, float currentCoordinateX, float currentCoordinateY, float newCoordinateX, float newCoordinateY) {
+        int areaNew = getAreaInBitmap(bitmapDrawer, newCoordinateX, newCoordinateY);
+        float angleCurrent = getVerticalAngle(bitmapDrawer, currentCoordinateX, currentCoordinateY);
+        float angleNew = getVerticalAngle(bitmapDrawer, newCoordinateX, newCoordinateY);
         switch (areaNew) {
             case Constant.AREA_1:
             case Constant.AREA_3:
@@ -58,8 +59,8 @@ public class BitmapFactory implements IBitmapFactory {
     }
 
     @Override
-    public float getVerticalAngle(float coordinateX, float coordinateY) {
-        int area = getAreaInBitmap(coordinateX, coordinateY);
+    public float getVerticalAngle(BitmapDrawer bitmapDrawer, float coordinateX, float coordinateY) {
+        int area = getAreaInBitmap(bitmapDrawer, coordinateX, coordinateY);
         switch (area) {
             case Constant.AREA_1:
                 return (float) (Math.atan((bitmapDrawer.getRotateOriginX() - coordinateX) / (bitmapDrawer.getRotateOriginY() - coordinateY)) / Math.PI * 180);
@@ -83,18 +84,36 @@ public class BitmapFactory implements IBitmapFactory {
 
     @Override
     public BitmapDrawer convertTextToBitmap(TextDrawer textDrawer) {
-        BitmapDrawer bitmapDrawer = null;
+        BitmapDrawer bitmapDrawer = new BitmapDrawer();
         Rect rect = new Rect();
         textDrawer.getPaint().getTextBounds(textDrawer.getContent(), 0, textDrawer.getContent().length(), rect);
-        bitmapDrawer.setBitmap(Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888));
+        int height = (int) (Math.abs(textDrawer.getPaint().ascent()) + Math.abs(textDrawer.getPaint().descent()));
+        int width = (int) textDrawer.getPaint().measureText(textDrawer.getContent(), 0, textDrawer.getContent().length());
+        Log.d("Height", height + "");
+        Log.d("Width", width + "");
+        bitmapDrawer.setBitmap(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888));// ???fuck this
         bitmapDrawer.setBitmapCoordinateX(textDrawer.getCoordinatesX());
         bitmapDrawer.setBitmapCoordinateY(textDrawer.getCoordinatesY());
-        bitmapDrawer.setRotateOriginX(textDrawer.getCoordinatesX() + rect.width() / 2);
-        bitmapDrawer.setBitmapCoordinateY(textDrawer.getCoordinatesY() + rect.height() / 2);
-        TextFactory textFactory = new TextFactory();
+     /*   bitmapDrawer.setRotateOriginX(textDrawer.getCoordinatesX() + rect.width() / 2);
+        bitmapDrawer.setRotateOriginY(textDrawer.getCoordinatesY() + rect.height() / 2);*/
         Canvas canvas = new Canvas(bitmapDrawer.getBitmap());
+        TextFactory textFactory = new TextFactory();
         textFactory.onDrawText(canvas, textDrawer);
         return bitmapDrawer;
+    }
+
+    @Override
+    public boolean isTouchCircleBitmap(BitmapDrawer bitmapDrawer, float x, float y) {
+        float originX = bitmapDrawer.getRotateOriginX();
+        float originY = bitmapDrawer.getRotateOriginY();
+        float radius = (float) Math.sqrt(Math.pow(x - originX, 2) + Math.pow(y - originY, 2));
+        return radius <= bitmapDrawer.getRadius();
+    }
+
+    @Override
+    public void onDrawCircleBitmap(Canvas canvas, BitmapDrawer bitmapDrawer) {
+        canvas.drawCircle(bitmapDrawer.getBitmapCoordinateX(), bitmapDrawer.getBitmapCoordinateY(), bitmapDrawer.getRadius(), PaintUtil.getInstance().getPaint());
+
     }
 
 }

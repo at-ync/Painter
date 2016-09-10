@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
-import com.asiantech.intern.painter.beans.TextDrawer;
+import com.asiantech.intern.painter.beans.BitmapDrawer;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
@@ -46,15 +46,6 @@ public class HomeActivity extends BaseActivity implements IAction {
 
     void afterViews() {
         mLlTool.setVisibility(View.GONE);
-        if (mUri != null) {
-            try {
-                mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            showToast(getString(R.string.error_uri_null));
-        }
         for (int icon : ICONS) {
             mTools.add(new Tool(icon));
         }
@@ -108,18 +99,32 @@ public class HomeActivity extends BaseActivity implements IAction {
     }
 
 
-    @Override
+   /* @Override
     public void setTextDrawer(TextDrawer textDrawer) {
         mCustomPainter.setTextDrawer(textDrawer);
-    }
+    }*/
 
     @Override
     public void setActionText(int action) {
         mCustomPainter.setActionText(action);
     }
 
+    @Override
+    public void setBitmapDrawer(BitmapDrawer bitmapDrawer) {
+        mCustomPainter.setBitmapDrawer(bitmapDrawer);
+    }
+
     @UiThread
     public void loadBitmap() {
+        if (mUri != null) {
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            showToast(getString(R.string.error_uri_null));
+        }
         Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
         mCustomPainter.setBackground(resizedBitmap);
     }
