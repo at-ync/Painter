@@ -8,6 +8,11 @@ import lombok.Data;
  */
 @Data
 public class FilterImage {
-    private int imageFilter;
+    private int typeFilter;
     private String nameFilter;
+
+    public FilterImage(int typeFilter, String nameFilter) {
+        this.typeFilter = typeFilter;
+        this.nameFilter = nameFilter;
+    }
 }
