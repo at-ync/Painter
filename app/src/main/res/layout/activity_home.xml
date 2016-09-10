@@ -14,26 +14,38 @@
     <LinearLayout
         android:id="@+id/llEditPhoto"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity.home.linearlayout.height"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/activity.home.linearlayout.height.menu_select"
+            android:layout_gravity="center"
             android:background="@color/activity.home.linearlayout.color"
             android:gravity="center"
             android:orientation="horizontal">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewTool"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llTool"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity.home.linearlayout.height"
+        android:layout_alignBottom="@+id/viewPaint"
+        android:layout_alignParentStart="true">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewFilter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/activity.home.recyclerview.background" />
+            android:layout_alignBottom="@+id/viewPaint"
+            android:layout_alignParentStart="true"
+            android:background="@color/activity.home.recyclerview.filter.color" />
     </LinearLayout>
 </RelativeLayout>

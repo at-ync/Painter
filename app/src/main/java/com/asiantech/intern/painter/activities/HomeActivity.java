@@ -6,6 +6,7 @@ import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.FilterAdapter;
@@ -15,13 +16,15 @@ import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
-import com.asiantech.intern.painter.interfaces.ITextLab;
+import com.asiantech.intern.painter.interfaces.IAction;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
 import com.asiantech.intern.painter.views.CustomPainter;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
@@ -29,8 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements ITextLab {
-    private static final int ICONS[] = {R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
+public class HomeActivity extends BaseActivity implements IAction {
+    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
             R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
     @ViewById(R.id.viewPaint)
     CustomPainter mCustomPainter;
@@ -38,13 +41,14 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     Uri mUri;
     @ViewById(R.id.recyclerViewTool)
     RecyclerView mRecyclerViewTool;
+    @ViewById(R.id.llTool)
+    LinearLayout mLlTool;
     @ViewById(R.id.recyclerViewFilter)
     RecyclerView mRecyclerViewFilter;
     private List<Tool> mTools = new ArrayList<>();
     private Bitmap mBitmap;
 
-    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize,
-                                     boolean filter) {
+    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize, boolean filter) {
         float ratio = Math.min(maxImageSize / realImage.getWidth(), maxImageSize / realImage.getHeight());
         int width = Math.round(ratio * realImage.getWidth());
         int height = Math.round(ratio * realImage.getHeight());
@@ -52,6 +56,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     }
 
     void afterViews() {
+        mLlTool.setVisibility(View.GONE);
         if (mUri != null) {
             try {
                 mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
@@ -80,6 +85,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
 
             }
         }));
+        sendBitmap();
         LinearLayoutManager layoutManagerFilter = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewFilter.setLayoutManager(layoutManagerFilter);
         final FilterAdapter filterAdapter = new FilterAdapter(this, mBitmap);
@@ -89,7 +95,7 @@ public class HomeActivity extends BaseActivity implements ITextLab {
             public void onClick(View view, int position) {
                 FilterImage filterImage = filterAdapter.getPositionItem(position);
                 mBitmap = filterAdapter.getFilterBitmap(filterImage.getTypeFilter(), false);
-                mCustomPainter.setBackground(mBitmap);
+                loadBitmap();
             }
 
             @Override
@@ -102,13 +108,15 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     //TODO Tool click
     private void onItemSelect(int iconTool) {
         switch (iconTool) {
+            case R.drawable.ic_filter:
+                mLlTool.setVisibility(View.VISIBLE);
+                break;
             case R.drawable.ic_font:
-                mCustomPainter.setIsDrawing(false);
-                setActionText(Constant.STOP);
+                setActionText(Constant.ACTION_INPUT_TEXT);
                 DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
-                setActionText(Constant.MOVE);
+                setActionText(Constant.ACTION_MOVE);
                 break;
             case R.drawable.ic_crop:
                 break;
@@ -128,8 +136,8 @@ public class HomeActivity extends BaseActivity implements ITextLab {
     }
 
     @Override
-    public void setTextObject(TextDrawer textObject) {
-        mCustomPainter.setTextObject(textObject);
+    public void setTextDrawer(TextDrawer textDrawer) {
+        mCustomPainter.setTextDrawer(textDrawer);
     }
 
     @Override
@@ -137,10 +145,15 @@ public class HomeActivity extends BaseActivity implements ITextLab {
         mCustomPainter.setActionText(action);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
+    @UiThread
+    public void loadBitmap() {
         Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
         mCustomPainter.setBackground(resizedBitmap);
     }
+
+    @Background
+    public void sendBitmap() {
+        loadBitmap();
+    }
+
 }
