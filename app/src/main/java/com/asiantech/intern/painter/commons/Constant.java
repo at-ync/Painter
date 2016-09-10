@@ -12,4 +12,13 @@ public class Constant {
     public static final int AREA_2 = 2;
     public static final int AREA_3 = 3;
     public static final int AREA_4 = 4;
+    public static final int CONTRAST = 1;
+    public static final int INVERT = 2;
+    public static final int HUE = 3;
+    public static final int SEPIA = 4;
+    public static final int GRAYSCALE = 5;
+    public static final int SHARPNESS = 6;
+    public static final int VIGNETTE = 7;
+    public static final int SKETCH = 8;
+    public static final int BRIGHTNESS = 9;
 }
