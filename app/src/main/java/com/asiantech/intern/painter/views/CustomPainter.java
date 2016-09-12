@@ -35,6 +35,8 @@ public class CustomPainter extends View implements IAction {
     private TextFactory mTextFactory;
     private BitmapBackground mBitmapBackground;
     private int mAction;
+    private int mCenterX;
+    private int mCenterY;
     //Draw Activities
     private boolean mIsDrawing;
     //  private Bitmap mBitmapBackground;
@@ -73,6 +75,8 @@ public class CustomPainter extends View implements IAction {
         super.onDraw(canvas);
         // Draw Background
         if (!mBitmapBackground.isSetting()) {
+            mCenterX = getWidth() / 2;
+            mCenterY = getHeight() / 2;
             mBitmapBackground.setLeft((getWidth() - mBitmapBackground.getBitmap().getWidth()) / 2);
             mBitmapBackground.setTop((getHeight() - mBitmapBackground.getBitmap().getHeight()) / 2);
             mBitmapBackground.setSetting(true);
@@ -109,19 +113,6 @@ public class CustomPainter extends View implements IAction {
         }
         return true;
     }
-/*
-
-    @Override
-    public void setTextDrawer(TextDrawer textDrawer) {
-        synchronized (mComponents) {
-            Component component = new Component();
-            textDrawer.setCoordinatesX(mCenterX);
-            textDrawer.setCoordinatesY(mCenterY);
-            component.setTextDrawer(textDrawer);
-            mComponents.add(component);
-        }
-    }
-*/
 
     @Override
     public void setActionText(int action) {
@@ -131,6 +122,10 @@ public class CustomPainter extends View implements IAction {
     @Override
     public void setBitmapDrawer(BitmapDrawer bitmapDrawer) {
         synchronized (mComponents) {
+            bitmapDrawer.setBitmapCoordinateX(mCenterX - bitmapDrawer.getBitmap().getWidth() / 2);
+            bitmapDrawer.setBitmapCoordinateY(mCenterY - bitmapDrawer.getBitmap().getHeight() / 2);
+            bitmapDrawer.setRotateOriginX(mCenterX);
+            bitmapDrawer.setRotateOriginY(mCenterY);
             Component component = new Component();
             component.setBitmapDrawer(bitmapDrawer);
             mComponents.add(component);

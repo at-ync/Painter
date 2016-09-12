@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
-import android.util.Log;
 
 import com.asiantech.intern.painter.beans.BitmapDrawer;
 import com.asiantech.intern.painter.beans.TextDrawer;
@@ -12,13 +11,10 @@ import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.interfaces.IBitmapFactory;
 import com.asiantech.intern.painter.utils.PaintUtil;
 
-import lombok.Setter;
-
 /**
  * Copyright @2016 AsianTech Inc.
  * Created by LyHV on 9/7/2016.
  */
-@Setter
 public class BitmapFactory implements IBitmapFactory {
 
     @Override
@@ -87,17 +83,11 @@ public class BitmapFactory implements IBitmapFactory {
         BitmapDrawer bitmapDrawer = new BitmapDrawer();
         Rect rect = new Rect();
         textDrawer.getPaint().getTextBounds(textDrawer.getContent(), 0, textDrawer.getContent().length(), rect);
-        int height = (int) (Math.abs(textDrawer.getPaint().ascent()) + Math.abs(textDrawer.getPaint().descent()));
-        int width = (int) textDrawer.getPaint().measureText(textDrawer.getContent(), 0, textDrawer.getContent().length());
-        Log.d("Height", height + "");
-        Log.d("Width", width + "");
-        bitmapDrawer.setBitmap(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888));// ???fuck this
-        bitmapDrawer.setBitmapCoordinateX(textDrawer.getCoordinatesX());
-        bitmapDrawer.setBitmapCoordinateY(textDrawer.getCoordinatesY());
-     /*   bitmapDrawer.setRotateOriginX(textDrawer.getCoordinatesX() + rect.width() / 2);
-        bitmapDrawer.setRotateOriginY(textDrawer.getCoordinatesY() + rect.height() / 2);*/
+        bitmapDrawer.setBitmap(Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888));
         Canvas canvas = new Canvas(bitmapDrawer.getBitmap());
         TextFactory textFactory = new TextFactory();
+        textDrawer.setCoordinatesX(0);
+        textDrawer.setCoordinatesY(rect.height());
         textFactory.onDrawText(canvas, textDrawer);
         return bitmapDrawer;
     }
@@ -113,7 +103,6 @@ public class BitmapFactory implements IBitmapFactory {
     @Override
     public void onDrawCircleBitmap(Canvas canvas, BitmapDrawer bitmapDrawer) {
         canvas.drawCircle(bitmapDrawer.getBitmapCoordinateX(), bitmapDrawer.getBitmapCoordinateY(), bitmapDrawer.getRadius(), PaintUtil.getInstance().getPaint());
-
     }
 
 }

@@ -73,8 +73,6 @@ public class DialogInputText extends DialogFragment {
         }
         int size = Integer.parseInt(sizeText);
         TextDrawer textDrawer = createNewTextObject(content, getPaint(size, mColorText));
-        textDrawer.setCoordinatesX(100);
-        textDrawer.setCoordinatesY(300);
         BitmapDrawer bitmapDrawer = mBitmapFactory.convertTextToBitmap(textDrawer);
         mIAction.setBitmapDrawer(bitmapDrawer);
         onClickCancel();
