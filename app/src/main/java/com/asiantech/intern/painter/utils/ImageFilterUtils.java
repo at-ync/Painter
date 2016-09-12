@@ -28,15 +28,23 @@ import java.nio.IntBuffer;
  * Created by HungTQB on 08/09/2016.
  */
 
-public class ImageFilterUtils {
+public final class ImageFilterUtils {
     private static final int DEFAULT_HIGHLIGHT_WIDTH = 96;
     private static final int DEFAULT_MASK_FILTER_RADIUS = 15;
+    private static ImageFilterUtils sImageFilterUtils;
+
+    public static ImageFilterUtils getInstance() {
+        if (sImageFilterUtils == null) {
+            sImageFilterUtils = new ImageFilterUtils();
+        }
+        return sImageFilterUtils;
+    }
 
     /**
      * @param sourceBitmap sourceBitmap
      * @return Bitmap out
      */
-    public static Bitmap doHighLightImage(Bitmap sourceBitmap) {
+    public Bitmap doHighLightImage(Bitmap sourceBitmap) {
         Bitmap outBitmap = Bitmap.createBitmap(sourceBitmap.getWidth() + DEFAULT_HIGHLIGHT_WIDTH, sourceBitmap.getHeight() + DEFAULT_HIGHLIGHT_WIDTH, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(outBitmap);
         canvas.drawColor(0, PorterDuff.Mode.CLEAR);
@@ -56,7 +64,7 @@ public class ImageFilterUtils {
      * @param sourceBitmap sourceBitmap
      * @return invertBitmap
      */
-    public static Bitmap doInvertImage(Bitmap sourceBitmap) {
+    public Bitmap doInvertImage(Bitmap sourceBitmap) {
         ColorMatrix colorMatrix_Inverted =
                 new ColorMatrix(new float[]{
                         -1, 0, 0, 0, 255,
@@ -77,7 +85,7 @@ public class ImageFilterUtils {
      * @param sourceBitmap sourceBitmap
      * @return bitmap
      */
-    public static Bitmap doGrayScale(Bitmap sourceBitmap) {
+    public Bitmap doGrayScale(Bitmap sourceBitmap) {
         Bitmap outBitmap = Bitmap.createBitmap(sourceBitmap.getWidth(), sourceBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(outBitmap);
         Paint paint = new Paint();
@@ -94,7 +102,7 @@ public class ImageFilterUtils {
      * @param brightness   gamma value
      * @return bitmap
      */
-    public static Bitmap doBrightness(Bitmap sourceBitmap, float brightness) {
+    public Bitmap doBrightness(Bitmap sourceBitmap, float brightness) {
         Bitmap outBitmap = Bitmap.createBitmap(sourceBitmap.getWidth(), sourceBitmap.getHeight(), Bitmap.Config.RGB_565);
         float contrast = 1;
         ColorMatrix colorMatrix = new ColorMatrix(new float[]{
@@ -114,7 +122,7 @@ public class ImageFilterUtils {
      * @param intensity    intensity
      * @return bitmap
      */
-    public static Bitmap doSepia(Bitmap sourceBitmap, float intensity) {
+    public Bitmap doSepia(Bitmap sourceBitmap, float intensity) {
         Bitmap outBitmap = Bitmap.createBitmap(sourceBitmap.getWidth(), sourceBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         ColorMatrix colorMatrix = new ColorMatrix();
         colorMatrix.setSaturation(0);
@@ -134,7 +142,7 @@ public class ImageFilterUtils {
      * @param contrast     contrast value
      * @return bitmap
      */
-    public static Bitmap doContrast(Bitmap sourceBitmap, float contrast) {
+    public Bitmap doContrast(Bitmap sourceBitmap, float contrast) {
         Bitmap outBitmap = Bitmap.createBitmap(sourceBitmap.getWidth(), sourceBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         float brightness = 0;
         ColorMatrix colorMatrix = new ColorMatrix(new float[]{
@@ -154,7 +162,7 @@ public class ImageFilterUtils {
      * @param context      context
      * @return bitmap
      */
-    public static Bitmap doSharpen(Bitmap sourceBitmap, Context context) {
+    public Bitmap doSharpen(Bitmap sourceBitmap, Context context) {
         float weight = 0.8f;
         Bitmap outBitmap = Bitmap.createBitmap(sourceBitmap, 0, 0, sourceBitmap.getWidth(), sourceBitmap.getHeight());
         RenderScript renderScript = RenderScript.create(context);
@@ -174,7 +182,7 @@ public class ImageFilterUtils {
      * @param value        value
      * @return bitmap
      */
-    public static Bitmap doHue(Bitmap sourceBitmap, int value) {
+    public Bitmap doHue(Bitmap sourceBitmap, int value) {
         Bitmap outBitmap = Bitmap.createBitmap(sourceBitmap);
         float cosVal = (float) Math.cos(value);
         float sinVal = (float) Math.sin(value);
@@ -199,7 +207,7 @@ public class ImageFilterUtils {
      * @param context      context
      * @return sketchBitmap
      */
-    public static Bitmap doSketch(Bitmap sourceBitmap, Context context) {
+    public Bitmap doSketch(Bitmap sourceBitmap, Context context) {
         Bitmap copyBitmap, invertBitmap;
         copyBitmap = doGrayScale(sourceBitmap);
         invertBitmap = doInvertImage(copyBitmap);
@@ -212,7 +220,7 @@ public class ImageFilterUtils {
         }
     }
 
-    private static int colorDodge(int in1, int in2) {
+    private int colorDodge(int in1, int in2) {
         float image = (float) in2;
         float mask = (float) in1;
         return ((int) ((image == 255) ? image : Math.min(255, (((long) mask << 8) / (255 - image)))));
@@ -223,7 +231,7 @@ public class ImageFilterUtils {
      * @param layer  layerBitmap
      * @return blendBitmap
      */
-    private static Bitmap ColorDodgeBlend(Bitmap source, Bitmap layer) {
+    private Bitmap ColorDodgeBlend(Bitmap source, Bitmap layer) {
         Bitmap base = source.copy(Bitmap.Config.ARGB_8888, true);
         Bitmap blend = layer.copy(Bitmap.Config.ARGB_8888, false);
 
@@ -272,7 +280,7 @@ public class ImageFilterUtils {
      * @param context      context
      * @return bitmap
      */
-    public static Bitmap doGaussianBlur(Bitmap sourceBitmap, Context context) {
+    public Bitmap doGaussianBlur(Bitmap sourceBitmap, Context context) {
         final float BLUR_RADIUS = 25f;
         Bitmap outputBitmap = Bitmap.createBitmap(sourceBitmap);
         final RenderScript renderScript = RenderScript.create(context);
@@ -291,7 +299,7 @@ public class ImageFilterUtils {
      * @param radius       radius of Vignette
      * @return bitmap
      */
-    public static Bitmap doVignette(Bitmap sourceBitmap, float radius) {
+    public Bitmap doVignette(Bitmap sourceBitmap, float radius) {
         int width = sourceBitmap.getWidth();
         int height = sourceBitmap.getHeight();
         Bitmap outBitmap = Bitmap.createBitmap(sourceBitmap.getWidth(), sourceBitmap.getHeight(), Bitmap.Config.ARGB_8888);
