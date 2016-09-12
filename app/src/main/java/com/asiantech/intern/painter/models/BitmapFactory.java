@@ -86,8 +86,10 @@ public class BitmapFactory implements IBitmapFactory {
         bitmapDrawer.setBitmap(Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888));
         Canvas canvas = new Canvas(bitmapDrawer.getBitmap());
         TextFactory textFactory = new TextFactory();
-        textDrawer.setCoordinatesX(0);
-        textDrawer.setCoordinatesY(rect.height());
+        float xPos = 0;
+        float yPos = (float) ((canvas.getHeight() / 2f) - ((1.6 * textDrawer.getPaint().descent() + textDrawer.getPaint().ascent()) / 2f));
+        textDrawer.setCoordinatesX(xPos);
+        textDrawer.setCoordinatesY(yPos);
         textFactory.onDrawText(canvas, textDrawer);
         return bitmapDrawer;
     }
@@ -96,13 +98,21 @@ public class BitmapFactory implements IBitmapFactory {
     public boolean isTouchCircleBitmap(BitmapDrawer bitmapDrawer, float x, float y) {
         float originX = bitmapDrawer.getRotateOriginX();
         float originY = bitmapDrawer.getRotateOriginY();
-        float radius = (float) Math.sqrt(Math.pow(x - originX, 2) + Math.pow(y - originY, 2));
-        return radius <= bitmapDrawer.getRadius();
+        float r = (float) Math.sqrt(Math.pow(x - originX, 2) + Math.pow(y - originY, 2));
+        return r <= bitmapDrawer.getRadius();
     }
 
     @Override
     public void onDrawCircleBitmap(Canvas canvas, BitmapDrawer bitmapDrawer) {
         canvas.drawCircle(bitmapDrawer.getBitmapCoordinateX(), bitmapDrawer.getBitmapCoordinateY(), bitmapDrawer.getRadius(), PaintUtil.getInstance().getPaint());
+    }
+
+    @Override
+    public void updatePositionBitmap(BitmapDrawer bitmapDrawer, float movementX, float movementY) {
+        bitmapDrawer.setRotateOriginX(bitmapDrawer.getRotateOriginX() + movementX);
+        bitmapDrawer.setRotateOriginY(bitmapDrawer.getRotateOriginY() + movementY);
+        bitmapDrawer.setBitmapCoordinateY(bitmapDrawer.getBitmapCoordinateY() + movementY);
+        bitmapDrawer.setBitmapCoordinateX(bitmapDrawer.getBitmapCoordinateX() + movementX);
     }
 
 }

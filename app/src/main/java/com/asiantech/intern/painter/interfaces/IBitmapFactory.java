@@ -27,5 +27,7 @@ public interface IBitmapFactory {
 
     boolean isTouchCircleBitmap(BitmapDrawer bitmapDrawer, float x, float y);
 
-    void onDrawCircleBitmap(Canvas canvas,BitmapDrawer bitmapDrawer);
+    void onDrawCircleBitmap(Canvas canvas, BitmapDrawer bitmapDrawer);
+
+    void updatePositionBitmap(BitmapDrawer bitmapDrawer, float movementX, float movementY);
 }

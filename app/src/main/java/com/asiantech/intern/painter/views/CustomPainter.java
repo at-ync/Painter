@@ -13,7 +13,6 @@ import com.asiantech.intern.painter.beans.BitmapBackground;
 import com.asiantech.intern.painter.beans.BitmapDrawer;
 import com.asiantech.intern.painter.beans.Component;
 import com.asiantech.intern.painter.beans.DrawingPainter;
-import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.interfaces.IAction;
 import com.asiantech.intern.painter.models.BitmapFactory;
@@ -82,7 +81,6 @@ public class CustomPainter extends View implements IAction {
             mBitmapBackground.setSetting(true);
         }
         canvas.drawBitmap(mBitmapBackground.getBitmap(), mBitmapBackground.getLeft(), mBitmapBackground.getTop(), mBitmapBackground.getPaint());
-
         // Draw other component
         int size = mComponents.size();
         for (int i = 0; i < size; i++) {
@@ -91,31 +89,34 @@ public class CustomPainter extends View implements IAction {
                 mBitmapFactory.onDrawBitmap(canvas, bitmapDrawer);
             }
         }
-        if (mIsOnDraw) {
-            invalidate();
-        }
+
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                initMove(event);
+                if (mAction == Constant.ACTION_MOVE) {
+                    initMove(event);
+                }
                 onDrawInit(event);
                 break;
             case MotionEvent.ACTION_UP:
                 onDrawFinish();
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (mAction == Constant.ACTION_MOVE) {
+                    updateMoveBitmap(event.getX(), event.getY());
+                    invalidate();
+                }
                 onDrawMove(event);
-                updateMove(event);
                 break;
         }
         return true;
     }
 
     @Override
-    public void setActionText(int action) {
+    public void setAction(int action) {
         mAction = action;
     }
 
@@ -126,27 +127,14 @@ public class CustomPainter extends View implements IAction {
             bitmapDrawer.setBitmapCoordinateY(mCenterY - bitmapDrawer.getBitmap().getHeight() / 2);
             bitmapDrawer.setRotateOriginX(mCenterX);
             bitmapDrawer.setRotateOriginY(mCenterY);
+            bitmapDrawer.setRadius((float) Math.sqrt(Math.pow(bitmapDrawer.getBitmap().getWidth() / 2, 2) + Math.pow(bitmapDrawer.getBitmap().getHeight() / 2, 2)));
             Component component = new Component();
             component.setBitmapDrawer(bitmapDrawer);
             mComponents.add(component);
+            invalidate();
         }
     }
 
-
-    private void updateMoveText(float movementX, float movementY) {
-        synchronized (mComponents) {
-            for (int i = mComponents.size() - 1; i >= 0; i--) {
-                TextDrawer textObject = mComponents.get(i).getTextDrawer();
-                if (textObject != null) {
-                    if (mTextFactory.isTouchInTextArea(textObject, mInitialX, mInitialY)) {
-                        mTextFactory.updateCoordinatesText(textObject, movementX, movementY);
-                        break;
-                    }
-                }
-
-            }
-        }
-    }
 
     private void onDrawInit(MotionEvent event) {
         float x = event.getX();
@@ -176,16 +164,22 @@ public class CustomPainter extends View implements IAction {
         }
     }
 
-    private void updateMove(MotionEvent event) {
-        if (mAction == Constant.ACTION_MOVE) {
-            float xMovement = event.getX() - mInitialX;
-            float yMovement = event.getY() - mInitialY;
-            mInitialX = event.getX();
-            mInitialY = event.getY();
-            updateMoveText(xMovement, yMovement);
+    public void updateMoveBitmap(float newX, float newY) {
+        synchronized (mComponents) {
+            for (int i = mComponents.size() - 1; i >= 0; i--) {
+                BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
+                if (bitmapDrawer != null && mBitmapFactory.isTouchCircleBitmap(bitmapDrawer, newX, newY)) {
+                    float xMovement = newX - mInitialX;
+                    float yMovement = newY - mInitialY;
+                    mInitialX = newX;
+                    mInitialY = newY;
+                    mBitmapFactory.updatePositionBitmap(mComponents.get(i).getBitmapDrawer(), xMovement, yMovement);
+                    break;
+                }
+            }
         }
-    }
 
+    }
 
     //Set background for Painter
     public void setBackground(Bitmap background) {

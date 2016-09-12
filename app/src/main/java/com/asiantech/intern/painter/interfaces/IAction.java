@@ -7,7 +7,7 @@ import com.asiantech.intern.painter.beans.BitmapDrawer;
  * Created by LyHV on 9/3/2016.
  */
 public interface IAction {
-  //  void setTextDrawer(TextDrawer textDrawer);
-    void setActionText(int action);
+    void setAction(int action);
+
     void setBitmapDrawer(BitmapDrawer bitmapDrawer);
 }

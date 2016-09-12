@@ -75,11 +75,11 @@ public class HomeActivity extends BaseActivity implements IAction {
                 mLlTool.setVisibility(View.VISIBLE);
                 break;
             case R.drawable.ic_font:
-                setActionText(Constant.ACTION_INPUT_TEXT);
+                setAction(Constant.ACTION_INPUT_TEXT);
                 DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
-                setActionText(Constant.ACTION_MOVE);
+                setAction(Constant.ACTION_MOVE);
                 break;
             case R.drawable.ic_crop:
                 break;
@@ -90,6 +90,7 @@ public class HomeActivity extends BaseActivity implements IAction {
             case R.drawable.ic_photo:
                 break;
             case R.drawable.ic_rotate:
+                setAction(Constant.ACTION_ROTATE);
                 break;
             case R.drawable.ic_save:
                 break;
@@ -98,15 +99,9 @@ public class HomeActivity extends BaseActivity implements IAction {
         }
     }
 
-
-   /* @Override
-    public void setTextDrawer(TextDrawer textDrawer) {
-        mCustomPainter.setTextDrawer(textDrawer);
-    }*/
-
     @Override
-    public void setActionText(int action) {
-        mCustomPainter.setActionText(action);
+    public void setAction(int action) {
+        mCustomPainter.setAction(action);
     }
 
     @Override
