@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
-import com.asiantech.intern.painter.beans.BitmapDrawer;
+import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
@@ -46,6 +46,15 @@ public class HomeActivity extends BaseActivity implements IAction {
 
     void afterViews() {
         mLlTool.setVisibility(View.GONE);
+        if (mUri != null) {
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            showToast(getString(R.string.error_uri_null));
+        }
         for (int icon : ICONS) {
             mTools.add(new Tool(icon));
         }
@@ -75,11 +84,11 @@ public class HomeActivity extends BaseActivity implements IAction {
                 mLlTool.setVisibility(View.VISIBLE);
                 break;
             case R.drawable.ic_font:
-                setAction(Constant.ACTION_INPUT_TEXT);
+                setActionText(Constant.ACTION_INPUT_TEXT);
                 DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
-                setAction(Constant.ACTION_MOVE);
+                setActionText(Constant.ACTION_MOVE);
                 break;
             case R.drawable.ic_crop:
                 break;
@@ -90,7 +99,6 @@ public class HomeActivity extends BaseActivity implements IAction {
             case R.drawable.ic_photo:
                 break;
             case R.drawable.ic_rotate:
-                setAction(Constant.ACTION_ROTATE);
                 break;
             case R.drawable.ic_save:
                 break;
@@ -99,27 +107,19 @@ public class HomeActivity extends BaseActivity implements IAction {
         }
     }
 
+
     @Override
-    public void setAction(int action) {
-        mCustomPainter.setAction(action);
+    public void setTextDrawer(TextDrawer textDrawer) {
+        mCustomPainter.setTextDrawer(textDrawer);
     }
 
     @Override
-    public void setBitmapDrawer(BitmapDrawer bitmapDrawer) {
-        mCustomPainter.setBitmapDrawer(bitmapDrawer);
+    public void setActionText(int action) {
+        mCustomPainter.setActionText(action);
     }
 
     @UiThread
     public void loadBitmap() {
-        if (mUri != null) {
-            try {
-                mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            showToast(getString(R.string.error_uri_null));
-        }
         Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
         mCustomPainter.setBackground(resizedBitmap);
     }
