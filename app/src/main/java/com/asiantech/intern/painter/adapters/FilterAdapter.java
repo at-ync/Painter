@@ -33,14 +33,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
     private static final int IMAGE_DEFAULT_SIZE = 50;
 
     private final Context mContext;
-    private final Bitmap mFilterBitmap;
-    private final Bitmap mSourceBitmap;
+    private final Bitmap mBitmapFilter;
+    private final Bitmap mBitmapSource;
     private List<FilterImage> mFilterImages;
 
     public FilterAdapter(Context context, Bitmap bitmap) {
         this.mContext = context;
-        mFilterBitmap = ImageUtil.compressBitmap(bitmap, 10).copy(Bitmap.Config.ARGB_8888, true);
-        mSourceBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        mBitmapFilter = ImageUtil.compressBitmap(bitmap, 10).copy(Bitmap.Config.ARGB_8888, true);
+        mBitmapSource = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         initListFilters();
     }
 
@@ -91,41 +91,41 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         if (resize) {
             switch (type) {
                 case Constant.CONTRAST:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doContrast(mFilterBitmap, DEFAULT_CONTRAST), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doContrast(mBitmapFilter, DEFAULT_CONTRAST), IMAGE_DEFAULT_SIZE, false);
                 case Constant.INVERT:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doInvertImage(mFilterBitmap), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doInvertImage(mBitmapFilter), IMAGE_DEFAULT_SIZE, false);
                 case Constant.HUE:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doHue(mFilterBitmap, DEFAULT_HUE), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doHue(mBitmapFilter, DEFAULT_HUE), IMAGE_DEFAULT_SIZE, false);
                 case Constant.SEPIA:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doSepia(mFilterBitmap, DEFAULT_SEPIA), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doSepia(mBitmapFilter, DEFAULT_SEPIA), IMAGE_DEFAULT_SIZE, false);
                 case Constant.GRAYSCALE:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doGrayScale(mFilterBitmap), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doGrayScale(mBitmapFilter), IMAGE_DEFAULT_SIZE, false);
                 case Constant.VIGNETTE:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doVignette(mFilterBitmap, DEFAULT_VIGNETTE), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doVignette(mBitmapFilter, DEFAULT_VIGNETTE), IMAGE_DEFAULT_SIZE, false);
                 case Constant.SKETCH:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doSketch(mFilterBitmap, mContext), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doSketch(mBitmapFilter, mContext), IMAGE_DEFAULT_SIZE, false);
                 case Constant.BRIGHTNESS:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doBrightness(mFilterBitmap, DEFAULT_BRIGHTNESS), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doBrightness(mBitmapFilter, DEFAULT_BRIGHTNESS), IMAGE_DEFAULT_SIZE, false);
             }
         } else {
             switch (type) {
                 case Constant.CONTRAST:
-                    return ImageFilterUtils.doContrast(mSourceBitmap, DEFAULT_CONTRAST);
+                    return ImageFilterUtils.doContrast(mBitmapSource, DEFAULT_CONTRAST);
                 case Constant.INVERT:
-                    return ImageFilterUtils.doInvertImage(mSourceBitmap);
+                    return ImageFilterUtils.doInvertImage(mBitmapSource);
                 case Constant.HUE:
-                    return ImageFilterUtils.doHue(mSourceBitmap, DEFAULT_HUE);
+                    return ImageFilterUtils.doHue(mBitmapSource, DEFAULT_HUE);
                 case Constant.SEPIA:
-                    return ImageFilterUtils.doSepia(mSourceBitmap, DEFAULT_SEPIA);
+                    return ImageFilterUtils.doSepia(mBitmapSource, DEFAULT_SEPIA);
                 case Constant.GRAYSCALE:
-                    return ImageFilterUtils.doGrayScale(mSourceBitmap);
+                    return ImageFilterUtils.doGrayScale(mBitmapSource);
                 case Constant.VIGNETTE:
-                    return ImageFilterUtils.doVignette(mSourceBitmap, DEFAULT_VIGNETTE);
+                    return ImageFilterUtils.doVignette(mBitmapSource, DEFAULT_VIGNETTE);
                 case Constant.SKETCH:
-                    Bitmap sketchBitmap = ImageUtil.compressBitmap(mSourceBitmap, 100).copy(Bitmap.Config.ARGB_8888, true);
-                    return ImageFilterUtils.doSketch(mFilterBitmap, mContext);
+                    Bitmap sketchBitmap = ImageUtil.compressBitmap(mBitmapSource, 100).copy(Bitmap.Config.ARGB_8888, true);
+                    return ImageFilterUtils.doSketch(sketchBitmap, mContext);
                 case Constant.BRIGHTNESS:
-                    return ImageFilterUtils.doBrightness(mSourceBitmap, DEFAULT_BRIGHTNESS);
+                    return ImageFilterUtils.doBrightness(mBitmapSource, DEFAULT_BRIGHTNESS);
             }
         }
         return null;
