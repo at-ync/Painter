@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.FilterAdapter;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
-import com.asiantech.intern.painter.beans.FilterImage;
 import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
@@ -19,6 +18,7 @@ import com.asiantech.intern.painter.dialogs.DialogInputText_;
 import com.asiantech.intern.painter.interfaces.IAction;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
+import com.asiantech.intern.painter.utils.ImageUtil;
 import com.asiantech.intern.painter.views.CustomPainter;
 
 import org.androidannotations.annotations.Background;
@@ -47,13 +47,6 @@ public class HomeActivity extends BaseActivity implements IAction {
     RecyclerView mRecyclerViewFilter;
     private List<Tool> mTools = new ArrayList<>();
     private Bitmap mBitmap;
-
-    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize, boolean filter) {
-        float ratio = Math.min(maxImageSize / realImage.getWidth(), maxImageSize / realImage.getHeight());
-        int width = Math.round(ratio * realImage.getWidth());
-        int height = Math.round(ratio * realImage.getHeight());
-        return Bitmap.createScaledBitmap(realImage, width, height, filter);
-    }
 
     void afterViews() {
         mLlTool.setVisibility(View.GONE);
@@ -87,14 +80,13 @@ public class HomeActivity extends BaseActivity implements IAction {
         }));
         sendBitmap();
         final FilterAdapter filterAdapter = new FilterAdapter(this, mBitmap);
-        LinearLayoutManager layoutManagerFilter = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewFilter.setAdapter(filterAdapter);
+        RecyclerView.LayoutManager layoutManagerFilter = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewFilter.setLayoutManager(layoutManagerFilter);
         mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
             @Override
             public void onClick(View view, int position) {
-                FilterImage filterImage = filterAdapter.getPositionItem(position);
-                mBitmap = filterAdapter.getFilterBitmap(filterImage.getTypeFilter(), false);
+                mBitmap = filterAdapter.getFilterBitmap(filterAdapter.getPositionItem(position).getTypeFilter(), false);
                 loadBitmap();
             }
 
@@ -147,7 +139,7 @@ public class HomeActivity extends BaseActivity implements IAction {
 
     @UiThread
     public void loadBitmap() {
-        Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
+        Bitmap resizedBitmap = ImageUtil.scaleBitmap(mBitmap, mCustomPainter.getHeight(), false);
         mCustomPainter.setBackground(resizedBitmap);
     }
 

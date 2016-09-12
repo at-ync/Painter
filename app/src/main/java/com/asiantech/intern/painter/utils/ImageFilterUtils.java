@@ -27,10 +27,10 @@ import java.nio.IntBuffer;
  * Copyright © 2016 AsianTech inc.
  * Created by HungTQB on 08/09/2016.
  */
+
 public class ImageFilterUtils {
     private static final int DEFAULT_HIGHLIGHT_WIDTH = 96;
     private static final int DEFAULT_MASK_FILTER_RADIUS = 15;
-    private static final int MAX_COLOR_VALUE = 255;
 
     /**
      * @param sourceBitmap sourceBitmap
@@ -78,9 +78,7 @@ public class ImageFilterUtils {
      * @return bitmap
      */
     public static Bitmap doGrayScale(Bitmap sourceBitmap) {
-        int width = sourceBitmap.getWidth();
-        int height = sourceBitmap.getHeight();
-        Bitmap outBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap outBitmap = Bitmap.createBitmap(sourceBitmap.getWidth(), sourceBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(outBitmap);
         Paint paint = new Paint();
         ColorMatrix colorMatrix = new ColorMatrix();

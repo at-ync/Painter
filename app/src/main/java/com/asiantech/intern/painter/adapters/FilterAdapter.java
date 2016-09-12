@@ -13,6 +13,7 @@ import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.beans.FilterImage;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.utils.ImageFilterUtils;
+import com.asiantech.intern.painter.utils.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Congybk on 8/31/2016.
  */
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
+    private static final int DEFAULT_CONTRAST = 1;
+    private static final int DEFAULT_HUE = 50;
+    private static final float DEFAULT_SEPIA = 0.45f;
+    private static final float DEFAULT_VIGNETTE = 0.8f;
+    private static final int DEFAULT_BRIGHTNESS = 0;
 
     private final Context mContext;
     private final Bitmap mBitmap;
@@ -31,18 +37,8 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
 
     public FilterAdapter(Context context, Bitmap bitmap) {
         this.mContext = context;
-        mBitmap = bitmap.copy(Bitmap.Config.RGB_565, true);
+        mBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         initListFilters();
-    }
-
-    public static Bitmap resizeBitmap(Bitmap realImage, float maxImageSize, boolean filter) {
-        float ratio = Math.min(
-                maxImageSize / realImage.getWidth(),
-                maxImageSize / realImage.getHeight());
-        int width = Math.round(ratio * realImage.getWidth());
-        int height = Math.round(ratio * realImage.getHeight());
-        System.gc();
-        return Bitmap.createScaledBitmap(realImage, width, height, filter);
     }
 
     @Override
@@ -93,49 +89,39 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         if (resize) {
             switch (type) {
                 case Constant.CONTRAST:
-                    final int DEFAULT_CONTRAST = 1;
-                    return resizeBitmap(ImageFilterUtils.doContrast(mBitmap, DEFAULT_CONTRAST), DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doContrast(mBitmap, DEFAULT_CONTRAST), DEFAULT_SIZE, false);
                 case Constant.INVERT:
-                    return resizeBitmap(ImageFilterUtils.doInvertImage(mBitmap), DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doInvertImage(mBitmap), DEFAULT_SIZE, false);
                 case Constant.HUE:
-                    final int DEFAULT_HUE = 50;
-                    return resizeBitmap(ImageFilterUtils.doHue(mBitmap, DEFAULT_HUE), DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doHue(mBitmap, DEFAULT_HUE), DEFAULT_SIZE, false);
                 case Constant.SEPIA:
-                    final float DEFAULT_SEPIA = 0.45f;
-                    return resizeBitmap(ImageFilterUtils.doSepia(mBitmap, DEFAULT_SEPIA), DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doSepia(mBitmap, DEFAULT_SEPIA), DEFAULT_SIZE, false);
                 case Constant.GRAYSCALE:
-                    return resizeBitmap(ImageFilterUtils.doGrayScale(mBitmap), DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doGrayScale(mBitmap), DEFAULT_SIZE, false);
                 case Constant.VIGNETTE:
-                    final float DEFAULT_VIGNETTE = 0.8f;
-                    return resizeBitmap(ImageFilterUtils.doVignette(mBitmap, DEFAULT_VIGNETTE), DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doVignette(mBitmap, DEFAULT_VIGNETTE), DEFAULT_SIZE, false);
                 case Constant.SKETCH:
-                    return resizeBitmap(ImageFilterUtils.doSketch(mBitmap, mContext), DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doSketch(mBitmap, mContext), DEFAULT_SIZE, false);
                 case Constant.BRIGHTNESS:
-                    final int DEFAULT_BRIGHTNESS = 0;
-                    return resizeBitmap(ImageFilterUtils.doBrightness(mBitmap, DEFAULT_BRIGHTNESS), DEFAULT_SIZE, false);
+                    return ImageUtil.scaleBitmap(ImageFilterUtils.doBrightness(mBitmap, DEFAULT_BRIGHTNESS), DEFAULT_SIZE, false);
             }
         } else {
             switch (type) {
                 case Constant.CONTRAST:
-                    final int DEFAULT_CONTRAST = 1;
                     return ImageFilterUtils.doContrast(mBitmap, DEFAULT_CONTRAST);
                 case Constant.INVERT:
                     return ImageFilterUtils.doInvertImage(mBitmap);
                 case Constant.HUE:
-                    final int DEFAULT_HUE = 50;
                     return ImageFilterUtils.doHue(mBitmap, DEFAULT_HUE);
                 case Constant.SEPIA:
-                    final float DEFAULT_SEPIA = 0.45f;
                     return ImageFilterUtils.doSepia(mBitmap, DEFAULT_SEPIA);
                 case Constant.GRAYSCALE:
                     return ImageFilterUtils.doGrayScale(mBitmap);
                 case Constant.VIGNETTE:
-                    final float DEFAULT_VIGNETTE = 0.8f;
                     return ImageFilterUtils.doVignette(mBitmap, DEFAULT_VIGNETTE);
                 case Constant.SKETCH:
                     return ImageFilterUtils.doSketch(mBitmap, mContext);
                 case Constant.BRIGHTNESS:
-                    final int DEFAULT_BRIGHTNESS = 0;
                     return ImageFilterUtils.doBrightness(mBitmap, DEFAULT_BRIGHTNESS);
             }
         }

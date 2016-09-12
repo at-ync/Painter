@@ -1,5 +1,6 @@
 package com.asiantech.intern.painter.beans;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -7,12 +8,8 @@ import lombok.Data;
  * Created by Congybk on 8/31/2016.
  */
 @Data
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class FilterImage {
     private int typeFilter;
     private String nameFilter;
-
-    public FilterImage(int typeFilter, String nameFilter) {
-        this.typeFilter = typeFilter;
-        this.nameFilter = nameFilter;
-    }
 }
