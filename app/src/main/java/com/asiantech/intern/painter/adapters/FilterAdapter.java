@@ -33,12 +33,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
     private static final int IMAGE_DEFAULT_SIZE = 50;
 
     private final Context mContext;
-    private final Bitmap mBitmap;
+    private final Bitmap mBitmapFilter;
+    private final Bitmap mBitmapSource;
     private List<FilterImage> mFilterImages;
 
     public FilterAdapter(Context context, Bitmap bitmap) {
         this.mContext = context;
-        mBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        mBitmapFilter = ImageUtil.getInstance().compressBitmap(bitmap, 10).copy(Bitmap.Config.ARGB_8888, true);
+        mBitmapSource = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         initListFilters();
     }
 
@@ -54,7 +56,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         new AsyncTask<Integer, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Integer... integers) {
-                return getFilterBitmap(integers[0], false);
+                return getFilterBitmap(integers[0], true);
             }
 
             @Override
@@ -89,40 +91,41 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         if (resize) {
             switch (type) {
                 case Constant.CONTRAST:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doContrast(mBitmap, DEFAULT_CONTRAST), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.getInstance().scaleBitmap(ImageFilterUtils.getInstance().doContrast(mBitmapFilter, DEFAULT_CONTRAST), IMAGE_DEFAULT_SIZE, false);
                 case Constant.INVERT:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doInvertImage(mBitmap), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.getInstance().scaleBitmap(ImageFilterUtils.getInstance().doInvertImage(mBitmapFilter), IMAGE_DEFAULT_SIZE, false);
                 case Constant.HUE:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doHue(mBitmap, DEFAULT_HUE), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.getInstance().scaleBitmap(ImageFilterUtils.getInstance().doHue(mBitmapFilter, DEFAULT_HUE), IMAGE_DEFAULT_SIZE, false);
                 case Constant.SEPIA:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doSepia(mBitmap, DEFAULT_SEPIA), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.getInstance().scaleBitmap(ImageFilterUtils.getInstance().doSepia(mBitmapFilter, DEFAULT_SEPIA), IMAGE_DEFAULT_SIZE, false);
                 case Constant.GRAYSCALE:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doGrayScale(mBitmap), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.getInstance().scaleBitmap(ImageFilterUtils.getInstance().doGrayScale(mBitmapFilter), IMAGE_DEFAULT_SIZE, false);
                 case Constant.VIGNETTE:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doVignette(mBitmap, DEFAULT_VIGNETTE), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.getInstance().scaleBitmap(ImageFilterUtils.getInstance().doVignette(mBitmapFilter, DEFAULT_VIGNETTE), IMAGE_DEFAULT_SIZE, false);
                 case Constant.SKETCH:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doSketch(mBitmap, mContext), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.getInstance().scaleBitmap(ImageFilterUtils.getInstance().doSketch(mBitmapFilter, mContext), IMAGE_DEFAULT_SIZE, false);
                 case Constant.BRIGHTNESS:
-                    return ImageUtil.scaleBitmap(ImageFilterUtils.doBrightness(mBitmap, DEFAULT_BRIGHTNESS), IMAGE_DEFAULT_SIZE, false);
+                    return ImageUtil.getInstance().scaleBitmap(ImageFilterUtils.getInstance().doBrightness(mBitmapFilter, DEFAULT_BRIGHTNESS), IMAGE_DEFAULT_SIZE, false);
             }
         } else {
             switch (type) {
                 case Constant.CONTRAST:
-                    return ImageFilterUtils.doContrast(mBitmap, DEFAULT_CONTRAST);
+                    return ImageFilterUtils.getInstance().doContrast(mBitmapSource, DEFAULT_CONTRAST);
                 case Constant.INVERT:
-                    return ImageFilterUtils.doInvertImage(mBitmap);
+                    return ImageFilterUtils.getInstance().doInvertImage(mBitmapSource);
                 case Constant.HUE:
-                    return ImageFilterUtils.doHue(mBitmap, DEFAULT_HUE);
+                    return ImageFilterUtils.getInstance().doHue(mBitmapSource, DEFAULT_HUE);
                 case Constant.SEPIA:
-                    return ImageFilterUtils.doSepia(mBitmap, DEFAULT_SEPIA);
+                    return ImageFilterUtils.getInstance().doSepia(mBitmapSource, DEFAULT_SEPIA);
                 case Constant.GRAYSCALE:
-                    return ImageFilterUtils.doGrayScale(mBitmap);
+                    return ImageFilterUtils.getInstance().doGrayScale(mBitmapSource);
                 case Constant.VIGNETTE:
-                    return ImageFilterUtils.doVignette(mBitmap, DEFAULT_VIGNETTE);
+                    return ImageFilterUtils.getInstance().doVignette(mBitmapSource, DEFAULT_VIGNETTE);
                 case Constant.SKETCH:
-                    return ImageFilterUtils.doSketch(mBitmap, mContext);
+                    Bitmap sketchBitmap = ImageUtil.getInstance().compressBitmap(mBitmapSource, 100).copy(Bitmap.Config.ARGB_8888, true);
+                    return ImageFilterUtils.getInstance().doSketch(sketchBitmap, mContext);
                 case Constant.BRIGHTNESS:
-                    return ImageFilterUtils.doBrightness(mBitmap, DEFAULT_BRIGHTNESS);
+                    return ImageFilterUtils.getInstance().doBrightness(mBitmapSource, DEFAULT_BRIGHTNESS);
             }
         }
         return null;
@@ -134,7 +137,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
 
         public FilterViewHolder(View itemView) {
             super(itemView);
-            imageViewFilter = (CircleImageView) itemView.findViewById(R.id.circleImagViewFilter);
+            imageViewFilter = (CircleImageView) itemView.findViewById(R.id.circleImageViewFilter);
             tvNameFilter = (TextView) itemView.findViewById(R.id.tvNameFilter);
         }
     }

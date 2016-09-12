@@ -139,7 +139,7 @@ public class HomeActivity extends BaseActivity implements IAction {
 
     @UiThread
     public void loadBitmap() {
-        Bitmap resizedBitmap = ImageUtil.scaleBitmap(mBitmap, mCustomPainter.getHeight(), false);
+        Bitmap resizedBitmap = ImageUtil.getInstance().scaleBitmap(mBitmap, mCustomPainter.getHeight(), false);
         mCustomPainter.setBackground(resizedBitmap);
     }
 
