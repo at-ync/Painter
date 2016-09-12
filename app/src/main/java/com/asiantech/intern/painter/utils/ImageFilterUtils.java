@@ -204,7 +204,12 @@ public class ImageFilterUtils {
         copyBitmap = doGrayScale(sourceBitmap);
         invertBitmap = doInvertImage(copyBitmap);
         invertBitmap = doGaussianBlur(invertBitmap, context);
-        return ColorDodgeBlend(invertBitmap, copyBitmap);
+        try {
+            return ColorDodgeBlend(invertBitmap, copyBitmap);
+        } finally {
+            copyBitmap.recycle();
+            invertBitmap.recycle();
+        }
     }
 
     private static int colorDodge(int in1, int in2) {
