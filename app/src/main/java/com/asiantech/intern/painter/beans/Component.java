@@ -12,4 +12,5 @@ import lombok.EqualsAndHashCode;
 public class Component {
     private TextDrawer textDrawer;
     private BitmapDrawer bitmapDrawer;
+    private PathDrawer pathDrawer;
 }
