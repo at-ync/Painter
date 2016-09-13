@@ -93,12 +93,10 @@ public class HomeActivity extends BaseActivity implements IAction {
             case R.drawable.ic_crop:
                 break;
             case R.drawable.ic_eraser:
-                mCustomPainter.setIsDrawing(true);
-                mCustomPainter.setIsEraser(true);
+                mCustomPainter.setAction(Constant.ACTION_ERASER);
                 break;
             case R.drawable.ic_paint:
-                mCustomPainter.setIsEraser(false);
-                mCustomPainter.setIsDrawing(true);
+                mCustomPainter.setAction(Constant.ACTION_DRAWING);
                 break;
             case R.drawable.ic_photo:
                 break;

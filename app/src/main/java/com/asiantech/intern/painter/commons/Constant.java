@@ -9,6 +9,8 @@ public class Constant {
     public static final int ACTION_MOVE_BITMAP = 1;
     public static final int ACTION_INPUT_TEXT = 2;
     public static final int ACTION_ROTATE_BITMAP = 3;
+    public static final int ACTION_DRAWING = 4;
+    public static final int ACTION_ERASER = 5;
     public static final int AREA_1 = 1;
     public static final int AREA_2 = 2;
     public static final int AREA_3 = 3;
