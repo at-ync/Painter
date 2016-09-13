@@ -9,14 +9,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.asiantech.intern.painter.R;
+import com.asiantech.intern.painter.adapters.FilterAdapter;
+import com.asiantech.intern.painter.adapters.IconAdapter;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
-import com.asiantech.intern.painter.beans.BitmapDrawer;
+import com.asiantech.intern.painter.beans.Icon;
+import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
 import com.asiantech.intern.painter.interfaces.IAction;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
+import com.asiantech.intern.painter.utils.ImageUtil;
 import com.asiantech.intern.painter.views.CustomPainter;
 
 import org.androidannotations.annotations.Background;
@@ -31,6 +35,10 @@ import java.util.List;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements IAction {
+    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
+            R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
+    private static final int ICONIMAGES[] = {R.drawable.ic_happy, R.drawable.ic_hipster, R.drawable.ic_laughing, R.drawable.ic_love,
+            R.drawable.ic_relieved, R.drawable.ic_rich, R.drawable.ic_sick, R.drawable.ic_smile, R.drawable.ic_smiling};
     @ViewById(R.id.viewPaint)
     CustomPainter mCustomPainter;
     @Extra
@@ -39,9 +47,10 @@ public class HomeActivity extends BaseActivity implements IAction {
     RecyclerView mRecyclerViewTool;
     @ViewById(R.id.llTool)
     LinearLayout mLlTool;
+    @ViewById(R.id.recyclerViewFilter)
+    RecyclerView mRecyclerViewFilter;
     private List<Tool> mTools = new ArrayList<>();
-    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
-            R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
+    private List<Icon> mIconImages = new ArrayList<>();
     private Bitmap mBitmap;
 
     void afterViews() {
@@ -57,6 +66,9 @@ public class HomeActivity extends BaseActivity implements IAction {
         }
         for (int icon : ICONS) {
             mTools.add(new Tool(icon));
+        }
+        for (int iconImage : ICONIMAGES) {
+            mIconImages.add(new Icon(iconImage));
         }
         mRecyclerViewTool.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -75,44 +87,66 @@ public class HomeActivity extends BaseActivity implements IAction {
             }
         }));
         sendBitmap();
+        LinearLayoutManager layoutManagerFilter = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerViewFilter.setLayoutManager(layoutManagerFilter);
     }
 
     //TODO Tool click
     private void onItemSelect(int iconTool) {
         switch (iconTool) {
             case R.drawable.ic_filter:
+                addFilter();
                 mLlTool.setVisibility(View.VISIBLE);
                 break;
             case R.drawable.ic_font:
-                setAction(Constant.ACTION_INPUT_TEXT);
-                DialogInputText_.builder().build().show(getFragmentManager(), getString(R.string.diaglog_tag));
+                mLlTool.setVisibility(View.GONE);
+                setActionText(Constant.ACTION_INPUT_TEXT);
+                DialogInputText_.builder().build().show(getFragmentManager(), "");
                 break;
             case R.drawable.ic_move:
-                setAction(Constant.ACTION_MOVE_BITMAP);
+                mLlTool.setVisibility(View.GONE);
+                setActionText(Constant.ACTION_MOVE);
                 break;
             case R.drawable.ic_crop:
+                mLlTool.setVisibility(View.GONE);
                 break;
             case R.drawable.ic_eraser:
-                mCustomPainter.setAction(Constant.ACTION_ERASER);
+                mLlTool.setVisibility(View.GONE);
                 break;
             case R.drawable.ic_paint:
-                mCustomPainter.setAction(Constant.ACTION_DRAWING);
+                mLlTool.setVisibility(View.GONE);
+                mCustomPainter.setIsEraser(false);
+                mCustomPainter.setIsDrawing(true);
                 break;
-            case R.drawable.ic_photo:
+            case R.drawable.ic_picture:
+                addIconImage();
+                mLlTool.setVisibility(View.VISIBLE);
                 break;
             case R.drawable.ic_rotate:
+                mLlTool.setVisibility(View.GONE);
                 break;
             case R.drawable.ic_save:
+                mLlTool.setVisibility(View.GONE);
                 break;
             case R.drawable.ic_share:
+                mLlTool.setVisibility(View.GONE);
                 break;
         }
     }
 
+    @Override
+    public void setTextDrawer(TextDrawer textDrawer) {
+        mCustomPainter.setTextDrawer(textDrawer);
+    }
+
+    @Override
+    public void setActionText(int action) {
+        mCustomPainter.setActionText(action);
+    }
 
     @UiThread
     public void loadBitmap() {
-        Bitmap resizedBitmap = scalePhoto(mBitmap, mCustomPainter.getHeight(), false);
+        Bitmap resizedBitmap = ImageUtil.getInstance().scaleBitmap(mBitmap, mCustomPainter.getHeight(), false);
         mCustomPainter.setBackground(resizedBitmap);
     }
 
@@ -121,18 +155,37 @@ public class HomeActivity extends BaseActivity implements IAction {
         loadBitmap();
     }
 
-    private Bitmap scalePhoto(Bitmap realImage, float maxImageSize, boolean filter) {
-        float ratio = Math.min(maxImageSize / realImage.getWidth(), maxImageSize / realImage.getHeight());
-        return Bitmap.createScaledBitmap(realImage, Math.round(ratio * realImage.getWidth()), Math.round(ratio * realImage.getHeight()), filter);
+    private void addIconImage() {
+        IconAdapter iconAdapter = new IconAdapter(mIconImages);
+        mRecyclerViewFilter.setAdapter(iconAdapter);
+        mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
+            @Override
+            public void onClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
-    @Override
-    public void setAction(int action) {
-        mCustomPainter.setAction(action);
+    private void addFilter() {
+        final FilterAdapter filterAdapter = new FilterAdapter(this, mBitmap);
+        mRecyclerViewFilter.setAdapter(filterAdapter);
+        mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
+            @Override
+            public void onClick(View view, int position) {
+                mBitmap = filterAdapter.getFilterBitmap(filterAdapter.getPositionItem(position).getTypeFilter(), false);
+                loadBitmap();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
-    @Override
-    public void setBitmapDrawer(BitmapDrawer bitmapDrawer) {
-        mCustomPainter.setBitmapDrawer(bitmapDrawer);
-    }
 }
