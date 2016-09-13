@@ -3,7 +3,6 @@ package com.asiantech.intern.painter.activities;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -175,26 +174,9 @@ public class HomeActivity extends BaseActivity implements IAction {
                 progressDialog.setIndeterminate(true);
                 progressDialog.setTitle(getString(R.string.rendering));
                 progressDialog.setMessage(getString(R.string.please_wait));
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected void onPreExecute() {
-                        progressDialog.show();
-                        super.onPreExecute();
-                    }
+                progressDialog.show();
+                doSetBitmapBackground(filterAdapter, position, progressDialog);
 
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        mBitmap = filterAdapter.getFilterBitmap(filterAdapter.getPositionItem(position).getTypeFilter(), false);
-                        loadBitmap();
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
-                        super.onPostExecute(aVoid);
-                        progressDialog.dismiss();
-                    }
-                }.execute();
             }
 
             @Override
@@ -202,6 +184,18 @@ public class HomeActivity extends BaseActivity implements IAction {
 
             }
         }));
+    }
+
+    @Background
+    void doSetBitmapBackground(FilterAdapter filterAdapter, int position, ProgressDialog progressDialog) {
+        mBitmap = filterAdapter.getFilterBitmap(filterAdapter.getPositionItem(position).getTypeFilter(), false);
+        loadBitmap();
+        doDismissProgressDialog(progressDialog);
+    }
+
+    @UiThread
+    void doDismissProgressDialog(ProgressDialog progressDialog) {
+        progressDialog.dismiss();
     }
 
     @Override
