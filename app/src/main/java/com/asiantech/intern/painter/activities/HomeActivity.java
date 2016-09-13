@@ -153,17 +153,6 @@ public class HomeActivity extends BaseActivity implements IAction, IPickIcon {
     private void addIconImage() {
         IconAdapter iconAdapter = new IconAdapter(this, mIconImages);
         mRecyclerViewFilter.setAdapter(iconAdapter);
-        mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
-            @Override
-            public void onClick(View view, int position) {
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
     }
 
     private void addFilter() {

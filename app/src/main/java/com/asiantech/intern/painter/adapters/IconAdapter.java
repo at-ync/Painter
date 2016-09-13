@@ -39,7 +39,6 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder
             @Override
             public void onClick(View view) {
                 mIPickIcon.setPickIcon(mIcons.get(position).getIcon());
-
             }
         });
     }
