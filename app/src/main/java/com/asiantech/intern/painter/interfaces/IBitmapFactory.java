@@ -25,7 +25,7 @@ public interface IBitmapFactory {
 
     BitmapDrawer convertTextToBitmap(TextDrawer textDrawer);
 
-    boolean isTouchCircleBitmap(BitmapDrawer bitmapDrawer, float x, float y);
+    boolean checkTouchCircleBitmap(BitmapDrawer bitmapDrawer, float x, float y);
 
     void onDrawCircleBitmap(Canvas canvas, BitmapDrawer bitmapDrawer);
 

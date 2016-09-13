@@ -122,7 +122,6 @@ public class CustomPainter extends View implements IAction {
 
     @Override
     public void setBitmapDrawer(BitmapDrawer bitmapDrawer) {
-        synchronized (mComponents) {
             bitmapDrawer.setBitmapCoordinateX(mCenterX - bitmapDrawer.getBitmap().getWidth() / 2);
             bitmapDrawer.setBitmapCoordinateY(mCenterY - bitmapDrawer.getBitmap().getHeight() / 2);
             bitmapDrawer.setRotateOriginX(mCenterX);
@@ -132,7 +131,6 @@ public class CustomPainter extends View implements IAction {
             component.setBitmapDrawer(bitmapDrawer);
             mComponents.add(component);
             invalidate();
-        }
     }
 
 
@@ -165,20 +163,15 @@ public class CustomPainter extends View implements IAction {
     }
 
     public void updateMoveBitmap(float newX, float newY) {
-        synchronized (mComponents) {
             for (int i = mComponents.size() - 1; i >= 0; i--) {
                 BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
-                if (bitmapDrawer != null && mBitmapFactory.isTouchCircleBitmap(bitmapDrawer, newX, newY)) {
-                    float xMovement = newX - mInitialX;
-                    float yMovement = newY - mInitialY;
+                if (bitmapDrawer != null && mBitmapFactory.checkTouchCircleBitmap(bitmapDrawer, newX, newY)) {
+                    mBitmapFactory.updatePositionBitmap(mComponents.get(i).getBitmapDrawer(), newX - mInitialX, newY - mInitialY);
                     mInitialX = newX;
                     mInitialY = newY;
-                    mBitmapFactory.updatePositionBitmap(mComponents.get(i).getBitmapDrawer(), xMovement, yMovement);
                     break;
                 }
             }
-        }
-
     }
 
     //Set background for Painter

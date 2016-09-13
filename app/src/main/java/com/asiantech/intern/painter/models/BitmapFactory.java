@@ -87,7 +87,7 @@ public class BitmapFactory implements IBitmapFactory {
         Canvas canvas = new Canvas(bitmapDrawer.getBitmap());
         TextFactory textFactory = new TextFactory();
         float xPos = 0;
-        float yPos = (float) ((canvas.getHeight() / 2f) - ((1.6 * textDrawer.getPaint().descent() + textDrawer.getPaint().ascent()) / 2f));
+        float yPos = canvas.getHeight() / 2f - (1.6f * textDrawer.getPaint().descent() + textDrawer.getPaint().ascent()) / 2f;
         textDrawer.setCoordinatesX(xPos);
         textDrawer.setCoordinatesY(yPos);
         textFactory.onDrawText(canvas, textDrawer);
@@ -95,7 +95,7 @@ public class BitmapFactory implements IBitmapFactory {
     }
 
     @Override
-    public boolean isTouchCircleBitmap(BitmapDrawer bitmapDrawer, float x, float y) {
+    public boolean checkTouchCircleBitmap(BitmapDrawer bitmapDrawer, float x, float y) {
         float originX = bitmapDrawer.getRotateOriginX();
         float originY = bitmapDrawer.getRotateOriginY();
         float r = (float) Math.sqrt(Math.pow(x - originX, 2) + Math.pow(y - originY, 2));

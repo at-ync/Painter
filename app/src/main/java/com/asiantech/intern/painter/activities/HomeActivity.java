@@ -85,7 +85,7 @@ public class HomeActivity extends BaseActivity implements IAction {
                 break;
             case R.drawable.ic_font:
                 setAction(Constant.ACTION_INPUT_TEXT);
-                DialogInputText_.builder().build().show(getFragmentManager(), "");
+                DialogInputText_.builder().build().show(getFragmentManager(), getString(R.string.diaglog_tag));
                 break;
             case R.drawable.ic_move:
                 setAction(Constant.ACTION_MOVE);
@@ -119,11 +119,9 @@ public class HomeActivity extends BaseActivity implements IAction {
         loadBitmap();
     }
 
-    private static Bitmap scalePhoto(Bitmap realImage, float maxImageSize, boolean filter) {
+    private Bitmap scalePhoto(Bitmap realImage, float maxImageSize, boolean filter) {
         float ratio = Math.min(maxImageSize / realImage.getWidth(), maxImageSize / realImage.getHeight());
-        int width = Math.round(ratio * realImage.getWidth());
-        int height = Math.round(ratio * realImage.getHeight());
-        return Bitmap.createScaledBitmap(realImage, width, height, filter);
+        return Bitmap.createScaledBitmap(realImage, Math.round(ratio * realImage.getWidth()), Math.round(ratio * realImage.getHeight()), filter);
     }
 
     @Override
