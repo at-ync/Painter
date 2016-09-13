@@ -53,7 +53,7 @@ public class DialogPathColor extends DialogFragment {
     int mColor;
     @FragmentArg
     int mRadius;
-    private OnPickPathStyle mOnPickPathStyle;
+    private IOnPickPathStyle mOnPickPathStyle;
 
     @AfterViews
     void init() {
@@ -64,7 +64,7 @@ public class DialogPathColor extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mOnPickPathStyle = (OnPickPathStyle) context;
+        mOnPickPathStyle = (IOnPickPathStyle) context;
     }
 
     @Click(R.id.btnPickColor)
@@ -176,7 +176,7 @@ public class DialogPathColor extends DialogFragment {
         return customCirclePath.getCircleRadius();
     }
 
-    public interface OnPickPathStyle {
+    public interface IOnPickPathStyle {
         void onPicked(int color, int radius);
     }
 }
