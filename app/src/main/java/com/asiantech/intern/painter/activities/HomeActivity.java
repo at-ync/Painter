@@ -2,6 +2,7 @@ package com.asiantech.intern.painter.activities;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
@@ -124,6 +125,7 @@ public class HomeActivity extends BaseActivity implements IAction {
                 mLlTool.setVisibility(View.VISIBLE);
                 break;
             case R.drawable.ic_rotate:
+                setAction(Constant.ACTION_ROTATE_BITMAP);
                 mLlTool.setVisibility(View.GONE);
                 break;
             case R.drawable.ic_save:
@@ -153,7 +155,9 @@ public class HomeActivity extends BaseActivity implements IAction {
         mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
             @Override
             public void onClick(View view, int position) {
-
+                BitmapDrawer bitmapDrawer = new BitmapDrawer();
+                bitmapDrawer.setBitmap(BitmapFactory.decodeResource(getResources(), mIconImages.get(position).getIcon()));
+                setBitmapDrawer(bitmapDrawer);
             }
 
             @Override

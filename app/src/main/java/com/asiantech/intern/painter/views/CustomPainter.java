@@ -37,6 +37,7 @@ public class CustomPainter extends View implements IAction {
     private BitmapFactory mBitmapFactory;
     private TextFactory mTextFactory;
     private BitmapBackground mBitmapBackground;
+    private int positionDrawCircle = -1;
     // TextDrawer Activities
     private float mCenterX;
     private float mCenterY;
@@ -92,11 +93,15 @@ public class CustomPainter extends View implements IAction {
         if ((mIsDone && (mAction == Constant.ACTION_DRAWING || mAction == Constant.ACTION_ERASER))
                 || (mAction != Constant.ACTION_DRAWING && mAction != Constant.ACTION_ERASER)) {
             mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-            for (Component comp : mComponents) {
-                BitmapDrawer bitmapDrawer = comp.getBitmapDrawer();
-                PathDrawer pathDrawer = comp.getPathDrawer();
+            int size = mComponents.size();
+            for (int i = 0; i < size; i++) {
+                BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
+                PathDrawer pathDrawer = mComponents.get(i).getPathDrawer();
                 if (bitmapDrawer != null) {
                     mBitmapFactory.onDrawBitmap(mCanvas, bitmapDrawer);
+                    if (i == positionDrawCircle) {
+                        mBitmapFactory.onDrawCircleBitmap(mCanvas, bitmapDrawer);
+                    }
                 }
                 if (pathDrawer != null) {
                     mCanvas.drawPath(pathDrawer.getPath(), pathDrawer.getPaint());
@@ -118,22 +123,48 @@ public class CustomPainter extends View implements IAction {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mAction == Constant.ACTION_MOVE_BITMAP) {
-                    initMoveBitmap(event);
-                }
+                initMoveBitmap(event);
+                initRoteBitMap(event);
                 onDrawInit(event);
                 break;
             case MotionEvent.ACTION_UP:
+                positionDrawCircle = -1;
                 onDrawFinish();
+                invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mAction == Constant.ACTION_MOVE_BITMAP) {
-                    updateMoveBitmap(event.getX(), event.getY());
-                }
+                updateMoveBitmap(event);
+                updateRotateBitmap(event);
                 onDrawMove(event);
                 break;
         }
         return true;
+    }
+
+    private void updateRotateBitmap(MotionEvent event) {
+        float newX = event.getX();
+        float newY = event.getY();
+        if (mAction == Constant.ACTION_ROTATE_BITMAP) {
+            for (int i = mComponents.size() - 1; i >= 0; i--) {
+                BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
+                if (bitmapDrawer != null && mBitmapFactory.checkTouchCircleBitmap(bitmapDrawer, newX, newY)) {
+                    positionDrawCircle = i;
+                    bitmapDrawer.setRotateAngle(bitmapDrawer.getRotateAngle()
+                            + mBitmapFactory.getRotateAngle(bitmapDrawer, mInitialX, mInitialY, newX, newY));
+                    invalidate();
+                    mInitialX = newX;
+                    mInitialY = newY;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void initRoteBitMap(MotionEvent event) {
+        if (mAction == Constant.ACTION_ROTATE_BITMAP) {
+            mInitialX = event.getX();
+            mInitialY = event.getY();
+        }
     }
 
 
@@ -176,7 +207,6 @@ public class CustomPainter extends View implements IAction {
         invalidate();
     }
 
-
     private void initMoveBitmap(MotionEvent event) {
         if (mAction == Constant.ACTION_MOVE_BITMAP) {
             mInitialX = event.getX();
@@ -184,15 +214,20 @@ public class CustomPainter extends View implements IAction {
         }
     }
 
-    public void updateMoveBitmap(float newX, float newY) {
-        for (int i = mComponents.size() - 1; i >= 0; i--) {
-            BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
-            if (bitmapDrawer != null && mBitmapFactory.checkTouchCircleBitmap(bitmapDrawer, newX, newY)) {
-                mBitmapFactory.updatePositionBitmap(mComponents.get(i).getBitmapDrawer(), newX - mInitialX, newY - mInitialY);
-                invalidate();
-                mInitialX = newX;
-                mInitialY = newY;
-                break;
+    public void updateMoveBitmap(MotionEvent event) {
+        float newX = event.getX();
+        float newY = event.getY();
+        if (mAction == Constant.ACTION_MOVE_BITMAP) {
+            for (int i = mComponents.size() - 1; i >= 0; i--) {
+                BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
+                if (bitmapDrawer != null && mBitmapFactory.checkTouchCircleBitmap(bitmapDrawer, newX, newY)) {
+                    positionDrawCircle = i;
+                    mBitmapFactory.updatePositionBitmap(mComponents.get(i).getBitmapDrawer(), newX - mInitialX, newY - mInitialY);
+                    invalidate();
+                    mInitialX = newX;
+                    mInitialY = newY;
+                    break;
+                }
             }
         }
     }
@@ -230,8 +265,6 @@ public class CustomPainter extends View implements IAction {
         }
     }
 
-
-    //Set background for Painter
     public void setBackground(Bitmap background) {
         mBitmapBackground.setBitmap(Bitmap.createBitmap(background, 0, 0, background.getWidth(), background.getHeight()));
         invalidate();

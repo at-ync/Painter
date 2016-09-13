@@ -104,7 +104,7 @@ public class BitmapFactory implements IBitmapFactory {
 
     @Override
     public void onDrawCircleBitmap(Canvas canvas, BitmapDrawer bitmapDrawer) {
-        canvas.drawCircle(bitmapDrawer.getBitmapCoordinateX(), bitmapDrawer.getBitmapCoordinateY(), bitmapDrawer.getRadius(), PaintUtil.getInstance().getPaint());
+        canvas.drawCircle(bitmapDrawer.getRotateOriginX(), bitmapDrawer.getRotateOriginY(), bitmapDrawer.getRadius(), PaintUtil.getInstance().getPaint());
     }
 
     @Override
