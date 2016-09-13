@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +15,7 @@ import android.view.View;
 import com.asiantech.intern.painter.beans.BitmapBackground;
 import com.asiantech.intern.painter.beans.BitmapDrawer;
 import com.asiantech.intern.painter.beans.Component;
-import com.asiantech.intern.painter.beans.DrawingPainter;
+import com.asiantech.intern.painter.beans.PathDrawer;
 import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.interfaces.IAction;
@@ -29,7 +32,7 @@ import java.util.List;
 public class CustomPainter extends View implements IAction {
     private float mInitialX;
     private float mInitialY;
-    private boolean mIsOnDraw = true;
+    private boolean mIsOnDraw;
     private List<Component> mComponents;
     private BitmapFactory mBitmapFactory;
     private TextFactory mTextFactory;
@@ -40,11 +43,14 @@ public class CustomPainter extends View implements IAction {
     private int mActionText;
     //Draw Activities
     private boolean mIsDrawing;
+    private boolean mIsEraser;
+    private boolean mIsDone;
+    private PathDrawer mPathDrawer;
+    private float mX, mY;
     //  private Bitmap mBitmapBackground;
     private Paint mPaintBackground;
-    private DrawingPainter mDrawingPainter;
-    // Image Activities
-
+    private Canvas mCanvas;
+    private Bitmap mDrawingBitmap;
 
     public CustomPainter(Context context) {
         super(context);
@@ -60,7 +66,6 @@ public class CustomPainter extends View implements IAction {
         mBitmapFactory = new BitmapFactory();
         mComponents = new ArrayList<>();
         mPaintBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mDrawingPainter = new DrawingPainter();
         mBitmapBackground = new BitmapBackground();
         this.setBackgroundColor(Color.BLACK);
     }
@@ -68,7 +73,8 @@ public class CustomPainter extends View implements IAction {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
+        mDrawingBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mDrawingBitmap);
     }
 
     @Override
@@ -83,23 +89,31 @@ public class CustomPainter extends View implements IAction {
             mBitmapBackground.setSetting(true);
         }
         canvas.drawBitmap(mBitmapBackground.getBitmap(), mBitmapBackground.getLeft(), mBitmapBackground.getTop(), mBitmapBackground.getPaint());
-
-        // Draw other component
-        int size = mComponents.size();
-        for (int i = 0; i < size; i++) {
-            TextDrawer textDrawer = mComponents.get(i).getTextDrawer();
-            BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
-            if (textDrawer != null) {
-                mTextFactory.onDrawText(canvas, textDrawer);
-            }
-            if (bitmapDrawer != null) {
-                mBitmapFactory.setBitmapDrawer(bitmapDrawer);
-                mBitmapFactory.onDrawBitmap(canvas);
+        if(mIsDone) {
+            for (Component comp : mComponents) {
+                TextDrawer textDrawer = comp.getTextDrawer();
+                BitmapDrawer bitmapDrawer = comp.getBitmapDrawer();
+                PathDrawer pathDrawer = comp.getPathDrawer();
+                if (textDrawer != null) {
+                    mTextFactory.onDrawText(canvas, textDrawer);
+                }
+                if (bitmapDrawer != null) {
+                    mBitmapFactory.setBitmapDrawer(bitmapDrawer);
+                    mBitmapFactory.onDrawBitmap(canvas);
+                }
+                if (pathDrawer != null) {
+                    mCanvas.drawPath(pathDrawer.getPath(), pathDrawer.getPaint());
+                }
             }
         }
-        if (mIsOnDraw) {
-            invalidate();
+        if (mPathDrawer != null) {
+            if(!mIsEraser) {
+                canvas.drawPath(mPathDrawer.getPath(), mPathDrawer.getPaint());
+            } else {
+                mCanvas.drawPath(mPathDrawer.getPath(), mPathDrawer.getPaint());
+            }
         }
+        canvas.drawBitmap(mDrawingBitmap, getWidth() - mDrawingBitmap.getWidth(), getHeight() - mDrawingBitmap.getHeight(), mPaintBackground);
     }
 
     @Override
@@ -108,13 +122,16 @@ public class CustomPainter extends View implements IAction {
             case MotionEvent.ACTION_DOWN:
                 initMove(event);
                 onDrawInit(event);
+                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 onDrawFinish();
+                invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
                 onDrawMove(event);
                 updateMove(event);
+                invalidate();
                 break;
         }
         return true;
@@ -136,7 +153,6 @@ public class CustomPainter extends View implements IAction {
         mActionText = action;
     }
 
-
     private void updateMoveText(float movementX, float movementY) {
         synchronized (mComponents) {
             for (int i = mComponents.size() - 1; i >= 0; i--) {
@@ -153,23 +169,57 @@ public class CustomPainter extends View implements IAction {
     }
 
     private void onDrawInit(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
-        mDrawingPainter.onTouchStart(x, y);
+        if (mIsDrawing) {
+            float x = event.getX();
+            float y = event.getY();
+            Path path = new Path();
+            path.moveTo(x, y);
+            mX = x;
+            mY = y;
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setDither(true);
+            paint.setStrokeJoin(Paint.Join.ROUND);
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            paint.setStrokeWidth(12);
+            paint.setStyle(Paint.Style.STROKE);
+            if (mIsEraser) {
+                paint.setAlpha(Color.TRANSPARENT);
+                paint.setColor(Color.TRANSPARENT);
+                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+            }
+            mPathDrawer = new PathDrawer(path, paint);
+            mIsDone = false;
+        }
     }
 
     private void onDrawMove(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
         if (mIsDrawing) {
-            mDrawingPainter.onTouchMove(x, y);
+            float dx = Math.abs(x - mX);
+            float dy = Math.abs(y - mY);
+            float DRAW_TOUCH_TOLERANCE = 4;
+            if (dx >= DRAW_TOUCH_TOLERANCE || dy >= DRAW_TOUCH_TOLERANCE) {
+                mPathDrawer.getPath().quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                mX = x;
+                mY = y;
+            }
+            mIsDone = false;
         }
     }
 
     private void onDrawFinish() {
         if (mIsDrawing) {
-            mDrawingPainter.onTouchUp();
+            mPathDrawer.getPath().lineTo(mX, mY);
+            Component component = new Component();
+            component.setPathDrawer(mPathDrawer);
+            mComponents.add(component);
             setLayerType(LAYER_TYPE_HARDWARE, mPaintBackground);
+            if(!mIsEraser) {
+                mCanvas.drawPath(mPathDrawer.getPath(), mPathDrawer.getPaint());
+            }
+            mIsDone = true;
         }
     }
 
@@ -194,5 +244,13 @@ public class CustomPainter extends View implements IAction {
     //Set background for Painter
     public void setBackground(Bitmap background) {
         mBitmapBackground.setBitmap(Bitmap.createBitmap(background, 0, 0, background.getWidth(), background.getHeight()));
+    }
+
+    public void setIsDrawing(boolean mIsDrawing) {
+        this.mIsDrawing = mIsDrawing;
+    }
+
+    public void setIsEraser(boolean mIsEraser) {
+        this.mIsEraser = mIsEraser;
     }
 }
