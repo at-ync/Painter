@@ -19,6 +19,8 @@ import com.asiantech.intern.painter.beans.Icon;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
+import com.asiantech.intern.painter.dialogs.DialogPathColor;
+import com.asiantech.intern.painter.dialogs.DialogPathColor_;
 import com.asiantech.intern.painter.interfaces.IAction;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements IAction {
+public class HomeActivity extends BaseActivity implements IAction, DialogPathColor.OnPickPathStyle {
     private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
             R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
     private static final int ICONIMAGES[] = {R.drawable.ic_happy, R.drawable.ic_hipster, R.drawable.ic_laughing, R.drawable.ic_love,
@@ -118,6 +120,7 @@ public class HomeActivity extends BaseActivity implements IAction {
                 break;
             case R.drawable.ic_paint:
                 mLlTool.setVisibility(View.GONE);
+                DialogPathColor_.builder().mColor(mCustomPainter.getPathColor()).build().show(getSupportFragmentManager(), "");
                 setAction(Constant.ACTION_DRAWING);
                 break;
             case R.drawable.ic_picture:
@@ -210,5 +213,11 @@ public class HomeActivity extends BaseActivity implements IAction {
     @Override
     public void setBitmapDrawer(BitmapDrawer bitmapDrawer) {
         mCustomPainter.setBitmapDrawer(bitmapDrawer);
+    }
+
+    @Override
+    public void onPicked(int color, int radius) {
+        mCustomPainter.setPathColor(color);
+        mCustomPainter.setPathRadius(radius);
     }
 }
