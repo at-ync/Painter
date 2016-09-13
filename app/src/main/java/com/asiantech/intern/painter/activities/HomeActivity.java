@@ -156,7 +156,6 @@ public class HomeActivity extends BaseActivity implements IAction {
     }
 
     private void addIconImage() {
-        mRecyclerViewFilter.removeAllViews();
         IconAdapter iconAdapter = new IconAdapter(mIconImages);
         mRecyclerViewFilter.setAdapter(iconAdapter);
         mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
@@ -173,7 +172,6 @@ public class HomeActivity extends BaseActivity implements IAction {
     }
 
     private void addFilter() {
-        mRecyclerViewFilter.removeAllViews();
         final FilterAdapter filterAdapter = new FilterAdapter(this, mBitmap);
         mRecyclerViewFilter.setAdapter(filterAdapter);
         mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
