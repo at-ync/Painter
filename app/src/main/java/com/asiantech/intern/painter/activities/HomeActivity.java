@@ -1,5 +1,6 @@
 package com.asiantech.intern.painter.activities;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -167,9 +168,15 @@ public class HomeActivity extends BaseActivity implements IAction {
         mRecyclerViewFilter.setAdapter(filterAdapter);
         mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
             @Override
-            public void onClick(View view, int position) {
-                mBitmap = filterAdapter.getFilterBitmap(filterAdapter.getPositionItem(position).getTypeFilter(), false);
-                loadBitmap();
+            public void onClick(View view, final int position) {
+                final ProgressDialog progressDialog;
+                progressDialog = new ProgressDialog(HomeActivity.this);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setTitle(getString(R.string.rendering));
+                progressDialog.setMessage(getString(R.string.please_wait));
+                progressDialog.show();
+                doSetBitmapBackground(filterAdapter, position, progressDialog);
+
             }
 
             @Override
@@ -177,6 +184,18 @@ public class HomeActivity extends BaseActivity implements IAction {
 
             }
         }));
+    }
+
+    @Background
+    void doSetBitmapBackground(FilterAdapter filterAdapter, int position, ProgressDialog progressDialog) {
+        mBitmap = filterAdapter.getFilterBitmap(filterAdapter.getPositionItem(position).getTypeFilter(), false);
+        loadBitmap();
+        doDismissProgressDialog(progressDialog);
+    }
+
+    @UiThread
+    void doDismissProgressDialog(ProgressDialog progressDialog) {
+        progressDialog.dismiss();
     }
 
     @Override
