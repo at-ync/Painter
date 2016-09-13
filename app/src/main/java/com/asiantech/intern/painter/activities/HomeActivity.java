@@ -20,6 +20,7 @@ import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
 import com.asiantech.intern.painter.interfaces.IAction;
+import com.asiantech.intern.painter.interfaces.IPickIcon;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.ImageUtil;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements IAction {
+public class HomeActivity extends BaseActivity implements IAction, IPickIcon {
     private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
             R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
     private static final int ICONIMAGES[] = {R.drawable.ic_happy, R.drawable.ic_hipster, R.drawable.ic_laughing, R.drawable.ic_love,
@@ -150,21 +151,8 @@ public class HomeActivity extends BaseActivity implements IAction {
     }
 
     private void addIconImage() {
-        IconAdapter iconAdapter = new IconAdapter(mIconImages);
+        IconAdapter iconAdapter = new IconAdapter(this, mIconImages);
         mRecyclerViewFilter.setAdapter(iconAdapter);
-        mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
-            @Override
-            public void onClick(View view, int position) {
-                BitmapDrawer bitmapDrawer = new BitmapDrawer();
-                bitmapDrawer.setBitmap(BitmapFactory.decodeResource(getResources(), mIconImages.get(position).getIcon()));
-                setBitmapDrawer(bitmapDrawer);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
     }
 
     private void addFilter() {
@@ -210,5 +198,12 @@ public class HomeActivity extends BaseActivity implements IAction {
     @Override
     public void setBitmapDrawer(BitmapDrawer bitmapDrawer) {
         mCustomPainter.setBitmapDrawer(bitmapDrawer);
+    }
+
+    @Override
+    public void setPickIcon(int idIcon) {
+        BitmapDrawer bitmapDrawer = new BitmapDrawer();
+        bitmapDrawer.setBitmap(BitmapFactory.decodeResource(getResources(), idIcon));
+        setBitmapDrawer(bitmapDrawer);
     }
 }

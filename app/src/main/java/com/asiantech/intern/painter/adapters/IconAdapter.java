@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.beans.Icon;
+import com.asiantech.intern.painter.interfaces.IPickIcon;
 
 import java.util.List;
 
@@ -18,9 +19,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder> {
     private final List<Icon> mIcons;
+    private final IPickIcon mIPickIcon;
 
-    public IconAdapter(List<Icon> icons) {
+    public IconAdapter(IPickIcon iPickIcon, List<Icon> icons) {
         this.mIcons = icons;
+        this.mIPickIcon = iPickIcon;
     }
 
     @Override
@@ -30,8 +33,14 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder
     }
 
     @Override
-    public void onBindViewHolder(IconViewHolder holder, int position) {
+    public void onBindViewHolder(IconViewHolder holder, final int position) {
         holder.mCircleImageViewIcon.setImageResource(mIcons.get(position).getIcon());
+        holder.mCircleImageViewIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIPickIcon.setPickIcon(mIcons.get(position).getIcon());
+            }
+        });
     }
 
     @Override
