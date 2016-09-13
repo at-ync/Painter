@@ -96,7 +96,7 @@ public class CustomPainter extends View implements IAction {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mAction == Constant.ACTION_MOVE) {
+                if (mAction == Constant.ACTION_MOVE_BITMAP) {
                     initMove(event);
                 }
                 onDrawInit(event);
@@ -105,7 +105,7 @@ public class CustomPainter extends View implements IAction {
                 onDrawFinish();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mAction == Constant.ACTION_MOVE) {
+                if (mAction == Constant.ACTION_MOVE_BITMAP) {
                     updateMoveBitmap(event.getX(), event.getY());
                     invalidate();
                 }
@@ -156,7 +156,7 @@ public class CustomPainter extends View implements IAction {
     }
 
     private void initMove(MotionEvent event) {
-        if (mAction == Constant.ACTION_MOVE) {
+        if (mAction == Constant.ACTION_MOVE_BITMAP) {
             mInitialX = event.getX();
             mInitialY = event.getY();
         }

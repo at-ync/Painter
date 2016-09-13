@@ -88,7 +88,7 @@ public class HomeActivity extends BaseActivity implements IAction {
                 DialogInputText_.builder().build().show(getFragmentManager(), getString(R.string.diaglog_tag));
                 break;
             case R.drawable.ic_move:
-                setAction(Constant.ACTION_MOVE);
+                setAction(Constant.ACTION_MOVE_BITMAP);
                 break;
             case R.drawable.ic_crop:
                 break;
