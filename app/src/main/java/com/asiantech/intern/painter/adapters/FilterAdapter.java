@@ -51,8 +51,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
     }
 
     @Override
-    public void onBindViewHolder(final FilterViewHolder holder, int position) {
-        holder.tvNameFilter.setText(mFilterImages.get(position).getNameFilter());
+    public void onBindViewHolder(final FilterViewHolder holder, final int position) {
         new AsyncTask<Integer, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Integer... integers) {
@@ -62,13 +61,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
             @Override
             protected void onPostExecute(Bitmap bitmap) {
                 holder.imageViewFilter.setImageBitmap(bitmap);
+                holder.tvNameFilter.setText(mFilterImages.get(position).getNameFilter());
             }
         }.execute(mFilterImages.get(position).getTypeFilter());
     }
 
     @Override
     public int getItemCount() {
-        return mFilterImages.size();
+        return mFilterImages != null ? mFilterImages.size() : 0;
     }
 
     private void initListFilters() {
