@@ -30,6 +30,7 @@ import java.util.List;
  * Created by LyHV on 8/31/2016.
  */
 public class CustomPainter extends View implements IAction {
+    private static final float DRAW_TOUCH_TOLERANCE = 4;
     private float mInitialX;
     private float mInitialY;
     private boolean mIsOnDraw;
@@ -89,7 +90,7 @@ public class CustomPainter extends View implements IAction {
             mBitmapBackground.setSetting(true);
         }
         canvas.drawBitmap(mBitmapBackground.getBitmap(), mBitmapBackground.getLeft(), mBitmapBackground.getTop(), mBitmapBackground.getPaint());
-        if(mIsDone) {
+        if (mIsDone) {
             for (Component comp : mComponents) {
                 TextDrawer textDrawer = comp.getTextDrawer();
                 BitmapDrawer bitmapDrawer = comp.getBitmapDrawer();
@@ -107,7 +108,7 @@ public class CustomPainter extends View implements IAction {
             }
         }
         if (mPathDrawer != null) {
-            if(!mIsEraser) {
+            if (!mIsEraser) {
                 canvas.drawPath(mPathDrawer.getPath(), mPathDrawer.getPaint());
             } else {
                 mCanvas.drawPath(mPathDrawer.getPath(), mPathDrawer.getPaint());
@@ -122,18 +123,16 @@ public class CustomPainter extends View implements IAction {
             case MotionEvent.ACTION_DOWN:
                 initMove(event);
                 onDrawInit(event);
-                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 onDrawFinish();
-                invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
                 onDrawMove(event);
                 updateMove(event);
-                invalidate();
                 break;
         }
+        invalidate();
         return true;
     }
 
@@ -176,19 +175,13 @@ public class CustomPainter extends View implements IAction {
             path.moveTo(x, y);
             mX = x;
             mY = y;
-            Paint paint = new Paint();
-            paint.setAntiAlias(true);
-            paint.setDither(true);
-            paint.setStrokeJoin(Paint.Join.ROUND);
-            paint.setStrokeCap(Paint.Cap.ROUND);
-            paint.setStrokeWidth(12);
-            paint.setStyle(Paint.Style.STROKE);
+            mPathDrawer = new PathDrawer();
+            mPathDrawer.setPath(path);
             if (mIsEraser) {
-                paint.setAlpha(Color.TRANSPARENT);
-                paint.setColor(Color.TRANSPARENT);
-                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                mPathDrawer.getPaint().setAlpha(Color.TRANSPARENT);
+                mPathDrawer.getPaint().setColor(Color.TRANSPARENT);
+                mPathDrawer.getPaint().setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
             }
-            mPathDrawer = new PathDrawer(path, paint);
             mIsDone = false;
         }
     }
@@ -199,7 +192,6 @@ public class CustomPainter extends View implements IAction {
         if (mIsDrawing) {
             float dx = Math.abs(x - mX);
             float dy = Math.abs(y - mY);
-            float DRAW_TOUCH_TOLERANCE = 4;
             if (dx >= DRAW_TOUCH_TOLERANCE || dy >= DRAW_TOUCH_TOLERANCE) {
                 mPathDrawer.getPath().quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
                 mX = x;
@@ -216,7 +208,7 @@ public class CustomPainter extends View implements IAction {
             component.setPathDrawer(mPathDrawer);
             mComponents.add(component);
             setLayerType(LAYER_TYPE_HARDWARE, mPaintBackground);
-            if(!mIsEraser) {
+            if (!mIsEraser) {
                 mCanvas.drawPath(mPathDrawer.getPath(), mPathDrawer.getPaint());
             }
             mIsDone = true;
@@ -246,11 +238,11 @@ public class CustomPainter extends View implements IAction {
         mBitmapBackground.setBitmap(Bitmap.createBitmap(background, 0, 0, background.getWidth(), background.getHeight()));
     }
 
-    public void setIsDrawing(boolean mIsDrawing) {
-        this.mIsDrawing = mIsDrawing;
+    public void setIsDrawing(boolean isDrawing) {
+        mIsDrawing = isDrawing;
     }
 
-    public void setIsEraser(boolean mIsEraser) {
-        this.mIsEraser = mIsEraser;
+    public void setIsEraser(boolean isEraser) {
+        mIsEraser = isEraser;
     }
 }
