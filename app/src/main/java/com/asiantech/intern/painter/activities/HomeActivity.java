@@ -1,7 +1,9 @@
 package com.asiantech.intern.painter.activities;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -167,9 +169,32 @@ public class HomeActivity extends BaseActivity implements IAction {
         mRecyclerViewFilter.setAdapter(filterAdapter);
         mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
             @Override
-            public void onClick(View view, int position) {
-                mBitmap = filterAdapter.getFilterBitmap(filterAdapter.getPositionItem(position).getTypeFilter(), false);
-                loadBitmap();
+            public void onClick(View view, final int position) {
+                final ProgressDialog progressDialog;
+                progressDialog = new ProgressDialog(HomeActivity.this);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setTitle(getString(R.string.rendering));
+                progressDialog.setMessage(getString(R.string.please_wait));
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        progressDialog.show();
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        mBitmap = filterAdapter.getFilterBitmap(filterAdapter.getPositionItem(position).getTypeFilter(), false);
+                        loadBitmap();
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+                        progressDialog.dismiss();
+                    }
+                }.execute();
             }
 
             @Override

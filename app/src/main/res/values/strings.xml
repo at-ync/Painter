@@ -31,4 +31,6 @@
     <string name="filter_name_sketch">Sketch</string>
     <string name="filter_name_brightness">Brightness</string>
     <string name="diaglog.tag" />
+    <string name="rendering">Rendering…</string>
+    <string name="please_wait">Please Wait…</string>
 </resources>

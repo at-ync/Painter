@@ -234,6 +234,7 @@ public class CustomPainter extends View implements IAction {
     //Set background for Painter
     public void setBackground(Bitmap background) {
         mBitmapBackground.setBitmap(Bitmap.createBitmap(background, 0, 0, background.getWidth(), background.getHeight()));
+        invalidate();
     }
 
 
