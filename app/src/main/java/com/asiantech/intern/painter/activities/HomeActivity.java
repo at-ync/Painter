@@ -115,6 +115,8 @@ public class HomeActivity extends BaseActivity implements IAction {
                 break;
             case R.drawable.ic_paint:
                 mLlTool.setVisibility(View.GONE);
+                mCustomPainter.setIsEraser(false);
+                mCustomPainter.setIsDrawing(true);
                 break;
             case R.drawable.ic_picture:
                 addIconImage();
