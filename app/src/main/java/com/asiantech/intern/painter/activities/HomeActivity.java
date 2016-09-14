@@ -198,6 +198,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
             progressDialog.setIndeterminate(true);
             progressDialog.setTitle(getString(R.string.rendering));
             progressDialog.setMessage(getString(R.string.please_wait));
+            progressDialog.setCancelable(false);
             progressDialog.show();
             doSetBitmapBackground(mFilterAdapter, position, progressDialog);
             mPickedFilter = position;
