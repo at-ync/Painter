@@ -56,6 +56,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     RecyclerView mRecyclerViewFilter;
     private List<Tool> mTools = new ArrayList<>();
     private List<Icon> mIconImages = new ArrayList<>();
+    private Bitmap mBitmapSource;
     private Bitmap mBitmap;
     private FilterAdapter mFilterAdapter;
 
@@ -64,6 +65,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
         if (mUri != null) {
             try {
                 mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
+                mBitmapSource = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -149,7 +151,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     }
 
     private void addFilter() {
-        mFilterAdapter = new FilterAdapter(this, mBitmap);
+        mFilterAdapter = new FilterAdapter(this, mBitmapSource);
         mRecyclerViewFilter.setAdapter(mFilterAdapter);
     }
 
