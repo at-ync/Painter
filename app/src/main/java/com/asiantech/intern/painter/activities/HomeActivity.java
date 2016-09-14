@@ -1,15 +1,18 @@
 package com.asiantech.intern.painter.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.adapters.FilterAdapter;
@@ -35,14 +38,19 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements IAction, IPickFilter, IPickItems, IPickIcon, DialogPathColor.IOnPickPathStyle {
-    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
-            R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
+    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move,R.drawable.ic_rotate, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
+            R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_save, R.drawable.ic_share};
     private static final int ICON_IMAGES[] = {R.drawable.ic_happy, R.drawable.ic_hipster, R.drawable.ic_laughing, R.drawable.ic_love,
             R.drawable.ic_relieved, R.drawable.ic_rich, R.drawable.ic_sick, R.drawable.ic_smile, R.drawable.ic_smiling};
     @ViewById(R.id.viewPaint)
@@ -61,6 +69,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     private Bitmap mBitmap;
     private FilterAdapter mFilterAdapter;
     private int mPickedFilter = -1;
+    private String mNameImage;
 
     void afterViews() {
         mLlTool.setVisibility(View.GONE);
@@ -88,6 +97,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
         sendBitmap();
         LinearLayoutManager layoutManagerFilter = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewFilter.setLayoutManager(layoutManagerFilter);
+        mNameImage = Environment.getExternalStorageDirectory() + "/Pictures/" + UUID.randomUUID().toString() + ".png";
     }
 
     //TODO Tool click
@@ -127,9 +137,11 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
                 mLlTool.setVisibility(View.GONE);
                 break;
             case R.drawable.ic_save:
+                doingBackgroundSaveImage();
                 mLlTool.setVisibility(View.GONE);
                 break;
             case R.drawable.ic_share:
+                doingBackgroundShareImage();
                 mLlTool.setVisibility(View.GONE);
                 break;
         }
@@ -209,5 +221,51 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     @Override
     public void setItemSelect(int iconTool) {
         onItemSelect(iconTool);
+    }
+
+    @Background
+    public void doingBackgroundSaveImage() {
+        saveImage();
+        showToast();
+    }
+
+    private Uri saveImage() {
+        Uri imageUri = null;
+        OutputStream stream = null;
+        try {
+            stream = new FileOutputStream(mNameImage);
+            Bitmap bitmap = Bitmap.createBitmap(mCustomPainter.getWidth(), mCustomPainter.getHeight(), Bitmap.Config.ARGB_8888);
+            mCustomPainter.draw(new Canvas(bitmap));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            imageUri = Uri.fromFile(new File(mNameImage));
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, imageUri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stream != null) {
+                    stream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return imageUri;
+    }
+
+    @UiThread
+    public void showToast() {
+        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Background
+    public void doingBackgroundShareImage() {
+        Uri uriImage = saveImage();
+        if (uriImage != null) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_STREAM, uriImage);
+            intent.setType("image/jpeg");
+            startActivity(Intent.createChooser(intent, getResources().getText(R.string.send_to)));
+        }
     }
 }
