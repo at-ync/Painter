@@ -97,7 +97,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
         sendBitmap();
         LinearLayoutManager layoutManagerFilter = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewFilter.setLayoutManager(layoutManagerFilter);
-        mNameImage = Environment.getExternalStorageDirectory() + String.format("%s%s%s", "/Pictures/", UUID.randomUUID().toString(), ".png");
+        mNameImage = String.format("%s%s%s%s", Environment.getExternalStorageDirectory(), "/Pictures/", UUID.randomUUID().toString(), ".png");
     }
 
     //TODO Tool click
