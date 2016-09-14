@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -37,7 +36,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@id/btnCancel"
+            android:id="@+id/btnCancel"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +44,7 @@
             android:text="@string/dialog.input_text.button.text.cancel" />
 
         <Button
-            android:id="@id/btnOk"
+            android:id="@+id/btnOk"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

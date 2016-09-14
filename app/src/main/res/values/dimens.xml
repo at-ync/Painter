@@ -35,6 +35,15 @@
     <dimen name="item.add_icon.circleimageview.width">50dp</dimen>
     <dimen name="item.add_icon.circleimageview.height">50dp</dimen>
     <dimen name="item.add_icon.circleimageview.boder.width">1dp</dimen>
+    <dimen name="dialog.input_text.edittext.marginleft">20dp</dimen>
+    <dimen name="dialog.input_text.edittext.marginright">20dp</dimen>
+    <dimen name="dialog.input_text.textview.marginright">10dp</dimen>
+    <dimen name="dialog.input_text.seekbar.marginleft">20dp</dimen>
+    <dimen name="dialog.input_text.seekbar.marginright">20dp</dimen>
+    <dimen name="dialog.input_text.linearlayout.colorpickerview.width">250dp</dimen>
+    <dimen name="dialog.input_text.linearlayout.colorpickerview.height">200dp</dimen>
+    <dimen name="dialog.input_text.linearlayout.colorpickerview.height.marginleft">20dp</dimen>
+    <dimen name="dialog.input_text.linearlayout.colorpickerview.height.marginright">20dp</dimen>
     <dimen name="default_custom_circel_path_dimen">50dp</dimen>
     <dimen name="circle_radius_5">5dp</dimen>
     <dimen name="circle_radius_6">6dp</dimen>
