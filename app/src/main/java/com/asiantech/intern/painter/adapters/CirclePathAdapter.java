@@ -41,7 +41,9 @@ public class CirclePathAdapter extends RecyclerView.Adapter<CirclePathAdapter.Vi
         return mCustomCirclePaths.size();
     }
 
-
+    /**
+     * This class hold Custom Circle Path View for RecyclerView.
+     */
     class ViewHolder extends RecyclerView.ViewHolder {
         private CustomCirclePath customCirclePathRadius;
 
