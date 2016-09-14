@@ -2,88 +2,74 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/black"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dialog.input_text.linearLayout.margin"
-        android:gravity="center">
+        android:layout_margin="@dimen/dialog.input_text.linearLayout.margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dialog.input_text.texview.marginright"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/dialog.input_text.textview.text.size" />
-
-        <EditText
-            android:id="@+id/edtSizeText"
-            android:layout_width="@dimen/dialog.input_text.edittext.width"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:inputType="number"
-            android:maxLength="3"
-            android:padding="@dimen/dialog.input_text.edittext.padding"
-            android:singleLine="true" />
+            android:layout_marginRight="@dimen/dialog.input_text.textview.marginright"
+            android:text="@string/dialog.input_text.textview.text.size"
+            android:textColor="@android:color/white" />
 
         <TextView
+            android:id="@+id/tvSize"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dialog.input_text.texview.marginleft.title_color"
-            android:layout_marginRight="@dimen/dialog.input_text.texview.marginright"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/dialog.input_text.textview.text.color" />
-
-        <EditText
-            android:id="@+id/edtCodeColor"
-            android:layout_width="@dimen/dialog.input_text.edittext.width"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:background="@drawable/round_edittext"
-            android:enabled="false"
-            android:inputType="number"
-            android:singleLine="true" />
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgPickColor"
-            android:layout_width="@dimen/dialog.input_text.imageview.size"
-            android:layout_height="@dimen/dialog.input_text.imageview.size"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dialog.input_text.imageview.marginleft"
-            android:src="@drawable/ic_pickcolor" />
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dialog.input_text.seekbar.marginleft"
+        android:layout_marginRight="@dimen/dialog.input_text.seekbar.marginright" />
+
+    <LinearLayout
+        android:layout_width="@dimen/dialog.input_text.linearlayout.colorpickerview.width"
+        android:layout_height="@dimen/dialog.input_text.linearlayout.colorpickerview.height"
+        android:layout_marginLeft="@dimen/dialog.input_text.linearlayout.colorpickerview.height.marginleft"
+        android:layout_marginRight="@dimen/dialog.input_text.linearlayout.colorpickerview.height.marginright"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.flask.colorpicker.ColorPickerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <EditText
         android:id="@+id/edtInputText"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dialog.input_text.edittext.height"
-        android:layout_margin="@dimen/dialog.input_text.edittext.margin"
-        android:layout_marginBottom="@dimen/dialog.input_text_edittext.marginbot"
-        android:layout_marginTop="@dimen/dialog.input_text.edittext.margintop"
-        android:background="@drawable/round_edittext"
-        android:padding="@dimen/dialog.input_text.edittext.padding" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dialog.input_text.edittext.marginleft"
+        android:layout_marginRight="@dimen/dialog.input_text.edittext.marginright"
+        android:textColor="@android:color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="right">
 
-        <Button
-            android:id="@+id/btnCancel"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        <TextView
+            android:id="@+id/tvCancel"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/dialog.input_text.button.text.cancel" />
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dialog.input_text.edittext.margin"
+            android:text="@string/dialog.input_text.button.text.cancel"
+            android:textColor="@android:color/white" />
 
-        <Button
-            android:id="@+id/btnOk"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        <TextView
+            android:id="@+id/tvOk"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/dialog.input_text.button.text.ok" />
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dialog.input_text.edittext.margin"
+            android:text="@string/dialog.input_text.button.text.ok"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

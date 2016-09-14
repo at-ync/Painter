@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -161,7 +162,6 @@ public class HomeActivity extends BaseActivity implements IAction {
         mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
             @Override
             public void onClick(View view, int position) {
-
             }
 
             @Override

@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,77 +33,17 @@ import org.androidannotations.annotations.ViewById;
  */
 @EFragment(R.layout.dialog_input_text)
 public class DialogInputText extends DialogFragment {
-    @ViewById(R.id.btnCancel)
-    Button btnCancel;
-    @ViewById(R.id.btnOk)
-    Button btnOk;
     @ViewById(R.id.edtInputText)
     EditText mEditInputText;
-    @ViewById(R.id.edtSizeText)
-    EditText mEdtSizeText;
-    @ViewById(R.id.imgPickColor)
-    ImageView mImgPickColor;
-    @ViewById(R.id.edtCodeColor)
-    EditText mEdtCodeColor;
-    private int mColorText = Color.BLACK;
-    private IAction mIAction;
 
     @AfterViews
     public void init() {
-        getDialog().setTitle(R.string.dialog_input_text_title);
-        mEdtCodeColor.setBackgroundColor(mColorText);
-        if (getActivity() instanceof HomeActivity) {
-            mIAction = (IAction) getActivity();
-        }
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     }
 
-    @Click(R.id.btnCancel)
+    @Click(R.id.tvCancel)
     public void onClickCancel() {
         dismiss();
-    }
-
-    @Click(R.id.btnOk)
-    public void onClickOk() {
-        String content = mEditInputText.getText().toString();
-        String sizeText = mEdtSizeText.getText().toString();
-        if (TextUtils.isEmpty(content) || TextUtils.isEmpty(sizeText)) {
-            return;
-        }
-        int size = Integer.parseInt(sizeText);
-        TextDrawer textDrawer = createNewTextObject(content, getPaint(size, mColorText));
-        mIAction.setTextDrawer(textDrawer);
-        onClickCancel();
-    }
-
-    @Click(R.id.imgPickColor)
-    public void setImgPickColor() {
-        ColorPickerDialogBuilder
-                .with(getActivity())
-                .setTitle(getString(R.string.dialog_pick_color_title))
-                .initialColor(-1)
-                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                .density(12)
-                .setOnColorSelectedListener(new OnColorSelectedListener() {
-                    @Override
-                    public void onColorSelected(int selectedColor) {
-
-                    }
-                })
-                .setPositiveButton(getString(R.string.dialog_pick_color_button_text_ok), new ColorPickerClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                        mColorText = selectedColor;
-                        mEdtCodeColor.setBackgroundColor(selectedColor);
-                    }
-                })
-                .setNegativeButton(getString(R.string.dialog_pick_color_button_text_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .build()
-                .show();
     }
 
     private Paint getPaint(int size, int color) {
