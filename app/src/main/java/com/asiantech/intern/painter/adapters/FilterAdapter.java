@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.beans.FilterImage;
 import com.asiantech.intern.painter.commons.Constant;
+import com.asiantech.intern.painter.interfaces.IPickFilter;
 import com.asiantech.intern.painter.utils.ImageFilterUtils;
 import com.asiantech.intern.painter.utils.ImageUtil;
 
@@ -36,11 +37,13 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
     private final Bitmap mBitmapFilter;
     private final Bitmap mBitmapSource;
     private List<FilterImage> mFilterImages;
+    private final IPickFilter mIPickFilter;
 
     public FilterAdapter(Context context, Bitmap bitmap) {
         this.mContext = context;
-        mBitmapFilter = ImageUtil.getInstance().compressBitmap(bitmap, 10).copy(Bitmap.Config.ARGB_8888, true);
-        mBitmapSource = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        this.mIPickFilter = (IPickFilter) context;
+        this.mBitmapFilter = ImageUtil.getInstance().compressBitmap(bitmap, 10).copy(Bitmap.Config.ARGB_8888, true);
+        this.mBitmapSource = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         initListFilters();
     }
 
@@ -139,6 +142,12 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
             super(itemView);
             imageViewFilter = (CircleImageView) itemView.findViewById(R.id.circleImageViewFilter);
             tvNameFilter = (TextView) itemView.findViewById(R.id.tvNameFilter);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mIPickFilter.setPickFilter(getAdapterPosition());
+                }
+            });
         }
     }
 }
