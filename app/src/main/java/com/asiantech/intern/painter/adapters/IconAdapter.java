@@ -22,8 +22,8 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder
     private final IPickIcon mIPickIcon;
 
     public IconAdapter(IPickIcon iPickIcon, List<Icon> icons) {
-        this.mIcons = icons;
-        this.mIPickIcon = iPickIcon;
+        mIcons = icons;
+        mIPickIcon = iPickIcon;
     }
 
     @Override

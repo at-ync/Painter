@@ -22,7 +22,7 @@ public class ToolAdapter extends RecyclerView.Adapter<ToolAdapter.ToolViewHolder
     private IPickItems mIPickItems;
 
     public ToolAdapter(IPickItems iPickItems, List<Tool> tools) {
-        this.mIPickItems = iPickItems;
+        mIPickItems = iPickItems;
         mTools = tools;
     }
 

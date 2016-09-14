@@ -40,10 +40,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
     private final IPickFilter mIPickFilter;
 
     public FilterAdapter(Context context, Bitmap bitmap) {
-        this.mContext = context;
-        this.mIPickFilter = (IPickFilter) context;
-        this.mBitmapFilter = ImageUtil.getInstance().compressBitmap(bitmap, 10).copy(Bitmap.Config.ARGB_8888, true);
-        this.mBitmapSource = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        mContext = context;
+        if (context instanceof IPickFilter) {
+            mIPickFilter = (IPickFilter) context;
+        } else {
+            mIPickFilter = null;
+        }
+        mBitmapFilter = ImageUtil.getInstance().compressBitmap(bitmap, 10).copy(Bitmap.Config.ARGB_8888, true);
+        mBitmapSource = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         initListFilters();
     }
 
