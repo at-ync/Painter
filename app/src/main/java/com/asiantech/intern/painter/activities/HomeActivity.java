@@ -65,8 +65,10 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     RecyclerView mRecyclerViewFilter;
     private List<Tool> mTools = new ArrayList<>();
     private List<Icon> mIconImages = new ArrayList<>();
+    private Bitmap mBitmapSource;
     private Bitmap mBitmap;
     private FilterAdapter mFilterAdapter;
+    private int mPickedFilter = -1;
     private String mNameImage;
 
     void afterViews() {
@@ -74,6 +76,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
         if (mUri != null) {
             try {
                 mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
+                mBitmapSource = MediaStore.Images.Media.getBitmap(getContentResolver(), mUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -162,7 +165,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     }
 
     private void addFilter() {
-        mFilterAdapter = new FilterAdapter(this, mBitmap);
+        mFilterAdapter = new FilterAdapter(this, mBitmapSource);
         mRecyclerViewFilter.setAdapter(mFilterAdapter);
     }
 
@@ -202,13 +205,17 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
 
     @Override
     public void setPickFilter(int position) {
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(HomeActivity.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setTitle(getString(R.string.rendering));
-        progressDialog.setMessage(getString(R.string.please_wait));
-        progressDialog.show();
-        doSetBitmapBackground(mFilterAdapter, position, progressDialog);
+        if (mPickedFilter != position) {
+            final ProgressDialog progressDialog;
+            progressDialog = new ProgressDialog(HomeActivity.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setTitle(getString(R.string.rendering));
+            progressDialog.setMessage(getString(R.string.please_wait));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            doSetBitmapBackground(mFilterAdapter, position, progressDialog);
+            mPickedFilter = position;
+        }
     }
 
     @Override
