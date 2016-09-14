@@ -55,4 +55,5 @@
     <dimen name="textview_color_preview_width">200dp</dimen>
     <dimen name="textview_color_preview_height">20dp</dimen>
     <dimen name="button_color_picker_padding">10dp</dimen>
+    <dimen name="dialog.input_text.texvtiew.marginleft">5dp</dimen>
 </resources>
