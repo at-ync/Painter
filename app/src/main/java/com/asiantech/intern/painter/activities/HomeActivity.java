@@ -49,7 +49,7 @@ import java.util.UUID;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements IAction, IPickFilter, IPickItems, IPickIcon, DialogPathColor.IOnPickPathStyle {
-    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move,R.drawable.ic_rotate, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
+    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_rotate, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
             R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_save, R.drawable.ic_share};
     private static final int ICON_IMAGES[] = {R.drawable.ic_happy, R.drawable.ic_hipster, R.drawable.ic_laughing, R.drawable.ic_love,
             R.drawable.ic_relieved, R.drawable.ic_rich, R.drawable.ic_sick, R.drawable.ic_smile, R.drawable.ic_smiling};
@@ -97,7 +97,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
         sendBitmap();
         LinearLayoutManager layoutManagerFilter = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewFilter.setLayoutManager(layoutManagerFilter);
-        mNameImage = Environment.getExternalStorageDirectory() + "/Pictures/" + UUID.randomUUID().toString() + ".png";
+        mNameImage = Environment.getExternalStorageDirectory() + String.format("%s%s%s", "/Pictures/", UUID.randomUUID().toString(), ".png");
     }
 
     //TODO Tool click
@@ -141,7 +141,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
                 mLlTool.setVisibility(View.GONE);
                 break;
             case R.drawable.ic_share:
-                doingBackgroundShareImage();
+                doingShareImage();
                 mLlTool.setVisibility(View.GONE);
                 break;
         }
@@ -224,7 +224,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     }
 
     @Background
-    public void doingBackgroundSaveImage() {
+    protected void doingBackgroundSaveImage() {
         saveImage();
         showToast();
     }
@@ -254,12 +254,11 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     }
 
     @UiThread
-    public void showToast() {
+    protected void showToast() {
         Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
     }
 
-    @Background
-    public void doingBackgroundShareImage() {
+    private void doingShareImage() {
         Uri uriImage = saveImage();
         if (uriImage != null) {
             Intent intent = new Intent(Intent.ACTION_SEND);

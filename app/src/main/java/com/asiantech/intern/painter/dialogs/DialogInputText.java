@@ -29,6 +29,7 @@ import org.androidannotations.annotations.ViewById;
  */
 @EFragment(R.layout.dialog_input_text)
 public class DialogInputText extends DialogFragment {
+    private static final int SIZE_CHANGE = 50;
     @ViewById(R.id.edtInputText)
     EditText mEditInputText;
     @ViewById(R.id.customColorPicker)
@@ -40,14 +41,15 @@ public class DialogInputText extends DialogFragment {
     private IAction mIAction;
     private int mSizeText;
 
+
     @AfterViews
     public void init() {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         if (getActivity() instanceof HomeActivity) {
             mIAction = (IAction) getActivity();
         }
-        mSeekBar.setProgress(50);
-        mSizeText = 100;
+        mSeekBar.setProgress(SIZE_CHANGE);
+        mSizeText = SIZE_CHANGE + SIZE_CHANGE;
         updateTextViewSize(mSizeText);
         handlerSeekBarChangeSizeText();
     }
@@ -92,7 +94,7 @@ public class DialogInputText extends DialogFragment {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                mSizeText = i + 50;
+                mSizeText = i + SIZE_CHANGE;
                 updateTextViewSize(mSizeText);
             }
 
@@ -110,6 +112,6 @@ public class DialogInputText extends DialogFragment {
 
     @UiThread
     public void updateTextViewSize(int size) {
-        mTvSizeText.setText(String.format("%d %s", size, "dp"));
+        mTvSizeText.setText(String.valueOf(size));
     }
 }
