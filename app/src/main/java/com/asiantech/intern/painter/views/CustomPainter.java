@@ -43,11 +43,11 @@ public class CustomPainter extends View implements IAction {
     private float mCenterY;
     private int mAction;
     //Draw Activities
-    private boolean mIsDrawing;
-    private boolean mIsEraser;
     private boolean mIsDone;
     private PathDrawer mPathDrawer;
     private float mX, mY;
+    private int mPathColor = Color.BLACK;
+    private int mPathRadius;
     //  private Bitmap mBitmapBackground;
     private Paint mPaintBackground;
     private Canvas mCanvas;
@@ -177,6 +177,10 @@ public class CustomPainter extends View implements IAction {
             mX = x;
             mY = y;
             mPathDrawer = new PathDrawer();
+            mPathDrawer.getPaint().setColor(mPathColor);
+            if(mPathRadius > 0) {
+                mPathDrawer.getPaint().setStrokeWidth(mPathRadius);
+            }
             mPathDrawer.setPath(path);
             if (mAction == Constant.ACTION_ERASER) {
                 mPathDrawer.getPaint().setAlpha(Color.TRANSPARENT);
@@ -270,5 +274,15 @@ public class CustomPainter extends View implements IAction {
         invalidate();
     }
 
+    public void setPathColor(int pathColor) {
+        this.mPathColor = pathColor;
+    }
 
+    public void setPathRadius(int pathRadius) {
+        this.mPathRadius = pathRadius;
+    }
+
+    public int getPathColor() {
+        return mPathColor;
+    }
 }
