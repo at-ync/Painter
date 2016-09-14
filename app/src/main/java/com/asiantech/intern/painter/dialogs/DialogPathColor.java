@@ -15,6 +15,7 @@ import com.asiantech.intern.painter.adapters.CirclePathAdapter;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
 import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
 import com.asiantech.intern.painter.views.CustomCirclePath;
+import com.asiantech.intern.painter.views.CustomCirclePath_;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
@@ -51,7 +52,7 @@ public class DialogPathColor extends DialogFragment {
     @FragmentArg
     int mRadius;
     private IOnPickPathStyle mOnPickPathStyle;
-    private List<CustomCirclePath> mCustomCirclePaths;
+    private List<CustomCirclePath_> mCustomCirclePaths;
     private CirclePathAdapter mCirclePathAdapter;
 
     @AfterViews
@@ -145,13 +146,13 @@ public class DialogPathColor extends DialogFragment {
 
     private void initListCirclePath() {
         mCustomCirclePaths = new ArrayList<>();
-        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_5)));
-        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_6)));
-        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_7)));
-        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_8)));
-        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_9)));
-        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_10)));
-        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_11)));
+        mCustomCirclePaths.add(new CustomCirclePath_(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_5)));
+        mCustomCirclePaths.add(new CustomCirclePath_(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_6)));
+        mCustomCirclePaths.add(new CustomCirclePath_(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_7)));
+        mCustomCirclePaths.add(new CustomCirclePath_(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_8)));
+        mCustomCirclePaths.add(new CustomCirclePath_(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_9)));
+        mCustomCirclePaths.add(new CustomCirclePath_(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_10)));
+        mCustomCirclePaths.add(new CustomCirclePath_(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_11)));
     }
 
     public interface IOnPickPathStyle {

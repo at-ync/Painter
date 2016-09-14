@@ -10,10 +10,13 @@ import android.view.View;
 
 import com.asiantech.intern.painter.R;
 
+import org.androidannotations.annotations.EView;
+
 /**
  * Copyright © 2016 AsianTech inc.
  * Created by HungTQB on 13/09/2016.
  */
+@EView
 public class CustomCirclePath extends View {
     private int mCircleRadius;
     private int mCircleColor = Color.BLACK;

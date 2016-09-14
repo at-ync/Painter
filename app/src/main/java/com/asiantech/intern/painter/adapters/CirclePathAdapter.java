@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.views.CustomCirclePath;
+import com.asiantech.intern.painter.views.CustomCirclePath_;
 
 import java.util.List;
 
@@ -15,10 +16,10 @@ import java.util.List;
  * Created by HungTQB on 13/09/2016.
  */
 public class CirclePathAdapter extends RecyclerView.Adapter<CirclePathAdapter.ViewHolder> {
-    private List<CustomCirclePath> mCustomCirclePaths;
+    private List<CustomCirclePath_> mCustomCirclePaths;
     private int mIndex = -1;
 
-    public CirclePathAdapter(List<CustomCirclePath> customCirclePaths) {
+    public CirclePathAdapter(List<CustomCirclePath_> customCirclePaths) {
         mCustomCirclePaths = customCirclePaths;
     }
 
