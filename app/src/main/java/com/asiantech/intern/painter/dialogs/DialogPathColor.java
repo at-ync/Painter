@@ -2,13 +2,18 @@ package com.asiantech.intern.painter.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.asiantech.intern.painter.R;
+import com.asiantech.intern.painter.adapters.CirclePathAdapter;
+import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
+import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
 import com.asiantech.intern.painter.views.CustomCirclePath;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
@@ -21,28 +26,20 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Copyright © 2016 AsianTech inc.
  * Created by HungTQB on 13/09/2016.
  */
 @EFragment(R.layout.dialog_path_color)
 public class DialogPathColor extends DialogFragment {
+    private static final int DEFAULT_DENSITY = 12;
     @ViewById(R.id.btnPickColor)
-    ImageButton mBtnPickColor;
-    @ViewById(R.id.pathRadius5)
-    CustomCirclePath mPathRadius5;
-    @ViewById(R.id.pathRadius6)
-    CustomCirclePath mPathRadius6;
-    @ViewById(R.id.pathRadius7)
-    CustomCirclePath mPathRadius7;
-    @ViewById(R.id.pathRadius8)
-    CustomCirclePath mPathRadius8;
-    @ViewById(R.id.pathRadius9)
-    CustomCirclePath mPathRadius9;
-    @ViewById(R.id.pathRadius10)
-    CustomCirclePath mPathRadius10;
-    @ViewById(R.id.pathRadius11)
-    CustomCirclePath mPathRadius11;
+    ImageButton mImgBtnPickColor;
+    @ViewById(R.id.recyclerViewPathRadius)
+    RecyclerView mRecyclerViewPathRadius;
     @ViewById(R.id.btnOk)
     Button mBtnOk;
     @ViewById(R.id.btnCancel)
@@ -54,17 +51,39 @@ public class DialogPathColor extends DialogFragment {
     @FragmentArg
     int mRadius;
     private IOnPickPathStyle mOnPickPathStyle;
+    private List<CustomCirclePath> mCustomCirclePaths;
+    private CirclePathAdapter mCirclePathAdapter;
 
     @AfterViews
     void init() {
+        initListCirclePath();
         setColorPathRadius(mColor);
         mTvColorReview.setBackgroundColor(mColor);
+        mCirclePathAdapter = new CirclePathAdapter(mCustomCirclePaths);
+        mRecyclerViewPathRadius.setAdapter(mCirclePathAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerViewPathRadius.setLayoutManager(layoutManager);
+        mRecyclerViewPathRadius.addOnItemTouchListener(new ClickItemRecyclerView(getContext(), mRecyclerViewPathRadius, new IClickItemRecyclerView() {
+            @Override
+            public void onClick(View view, int position) {
+                clearSelectedRadius();
+                CustomCirclePath customCirclePath = mCustomCirclePaths.get(position);
+                mRadius = customCirclePath.getCircleRadius();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mOnPickPathStyle = (IOnPickPathStyle) context;
+        if (context instanceof IOnPickPathStyle) {
+            mOnPickPathStyle = (IOnPickPathStyle) context;
+        }
     }
 
     @Click(R.id.btnPickColor)
@@ -74,7 +93,7 @@ public class DialogPathColor extends DialogFragment {
                 .setTitle(getString(R.string.dialog_pick_color_title))
                 .initialColor(-1)
                 .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                .density(12)
+                .density(DEFAULT_DENSITY)
                 .setOnColorSelectedListener(new OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int selectedColor) {
@@ -97,48 +116,6 @@ public class DialogPathColor extends DialogFragment {
                 .show();
     }
 
-    @Click(R.id.pathRadius5)
-    void onClickPathRadius5() {
-        clearSelectedRadius();
-        mRadius = getRadius(mPathRadius5);
-    }
-
-
-    @Click(R.id.pathRadius6)
-    void onClickPathRadius6() {
-        clearSelectedRadius();
-        mRadius = getRadius(mPathRadius6);
-    }
-
-    @Click(R.id.pathRadius7)
-    void onClickPathRadius7() {
-        clearSelectedRadius();
-        mRadius = getRadius(mPathRadius7);
-    }
-
-    @Click(R.id.pathRadius8)
-    void onClickPathRadius8() {
-        clearSelectedRadius();
-        mRadius = getRadius(mPathRadius8);
-    }
-
-    @Click(R.id.pathRadius9)
-    void onClickPathRadius9() {
-        clearSelectedRadius();
-        mRadius = getRadius(mPathRadius9);
-    }
-
-    @Click(R.id.pathRadius10)
-    void onClickPathRadius10() {
-        clearSelectedRadius();
-        mRadius = getRadius(mPathRadius10);
-    }
-
-    @Click(R.id.pathRadius11)
-    void onClickPathRadius11() {
-        clearSelectedRadius();
-        mRadius = getRadius(mPathRadius11);
-    }
 
     @Click(R.id.btnOk)
     void onClickButtonOk() {
@@ -152,28 +129,29 @@ public class DialogPathColor extends DialogFragment {
     }
 
     private void clearSelectedRadius() {
-        mPathRadius5.setBackground(null);
-        mPathRadius6.setBackground(null);
-        mPathRadius7.setBackground(null);
-        mPathRadius8.setBackground(null);
-        mPathRadius9.setBackground(null);
-        mPathRadius10.setBackground(null);
-        mPathRadius11.setBackground(null);
+        for (CustomCirclePath customCirclePath : mCustomCirclePaths) {
+            customCirclePath.setBackground(null);
+        }
     }
 
     private void setColorPathRadius(int color) {
-        mPathRadius5.setCircleColor(color);
-        mPathRadius6.setCircleColor(color);
-        mPathRadius7.setCircleColor(color);
-        mPathRadius8.setCircleColor(color);
-        mPathRadius9.setCircleColor(color);
-        mPathRadius10.setCircleColor(color);
-        mPathRadius11.setCircleColor(color);
+        for (CustomCirclePath customCirclePath : mCustomCirclePaths) {
+            customCirclePath.setCircleColor(color);
+        }
+        if (mCirclePathAdapter != null) {
+            mCirclePathAdapter.notifyDataSetChanged();
+        }
     }
 
-    private int getRadius(CustomCirclePath customCirclePath) {
-        customCirclePath.setBackgroundColor(Color.GREEN);
-        return customCirclePath.getCircleRadius();
+    private void initListCirclePath() {
+        mCustomCirclePaths = new ArrayList<>();
+        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_5)));
+        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_6)));
+        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_7)));
+        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_8)));
+        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_9)));
+        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_10)));
+        mCustomCirclePaths.add(new CustomCirclePath(getContext(), getContext().getResources().getDimensionPixelSize(R.dimen.circle_radius_11)));
     }
 
     public interface IOnPickPathStyle {

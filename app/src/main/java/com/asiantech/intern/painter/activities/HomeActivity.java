@@ -19,6 +19,8 @@ import com.asiantech.intern.painter.beans.Icon;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.dialogs.DialogInputText_;
+import com.asiantech.intern.painter.dialogs.DialogPathColor;
+import com.asiantech.intern.painter.dialogs.DialogPathColor_;
 import com.asiantech.intern.painter.interfaces.IAction;
 import com.asiantech.intern.painter.interfaces.IPickIcon;
 import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
@@ -37,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements IAction, IPickIcon {
+public class HomeActivity extends BaseActivity implements IAction, IPickIcon, DialogPathColor.IOnPickPathStyle {
     private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
             R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
     private static final int ICONIMAGES[] = {R.drawable.ic_happy, R.drawable.ic_hipster, R.drawable.ic_laughing, R.drawable.ic_love,
@@ -120,6 +122,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickIcon {
             case R.drawable.ic_paint:
                 mLlTool.setVisibility(View.GONE);
                 setAction(Constant.ACTION_DRAWING);
+                DialogPathColor_.builder().mColor(mCustomPainter.getPathColor()).build().show(getSupportFragmentManager(), "");
                 break;
             case R.drawable.ic_picture:
                 addIconImage();
@@ -205,5 +208,10 @@ public class HomeActivity extends BaseActivity implements IAction, IPickIcon {
         BitmapDrawer bitmapDrawer = new BitmapDrawer();
         bitmapDrawer.setBitmap(BitmapFactory.decodeResource(getResources(), idIcon));
         setBitmapDrawer(bitmapDrawer);
+    }
+
+    public void onPicked(int color, int radius) {
+        mCustomPainter.setPathColor(color);
+        mCustomPainter.setPathRadius(radius);
     }
 }

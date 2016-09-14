@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.asiantech.intern.painter.views.CustomCirclePath
+        android:id="@+id/customCirclePathRadius"
+        android:layout_width="@dimen/default_custom_circel_path_dimen"
+        android:layout_height="@dimen/default_custom_circel_path_dimen"
+        android:background="@drawable/custom_select_imagebutton"
+        app:circleColor="@color/default_color_circle"
+        app:circleRadius="@dimen/circle_radius_5" />
+</LinearLayout>

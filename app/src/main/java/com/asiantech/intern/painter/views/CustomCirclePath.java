@@ -24,8 +24,11 @@ public class CustomCirclePath extends View {
         init(context, attrs);
     }
 
-    public CustomCirclePath(Context context) {
+    public CustomCirclePath(Context context, int radius) {
         super(context);
+        mPaint = new Paint();
+        mPaint.setColor(mCircleColor);
+        mCircleRadius = radius;
     }
 
     @Override
@@ -43,13 +46,23 @@ public class CustomCirclePath extends View {
         mCircleRadius = typedArray.getDimensionPixelSize(R.styleable.CustomCirclePath_circleRadius, 0);
     }
 
+    public int getCircleRadius() {
+        return mCircleRadius;
+    }
+
+    public void setCircleRadius(int mCircleRadius) {
+        this.mCircleRadius = mCircleRadius;
+        mPaint.setStrokeWidth(mCircleRadius);
+        invalidate();
+    }
+
+    public int getCircleColor() {
+        return mCircleColor;
+    }
+
     public void setCircleColor(int circleColor) {
         this.mCircleColor = circleColor;
         mPaint.setColor(mCircleColor);
         invalidate();
-    }
-
-    public int getCircleRadius() {
-        return mCircleRadius;
     }
 }

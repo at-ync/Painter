@@ -5,61 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewPathRadius"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <com.asiantech.intern.painter.views.CustomCirclePath
-            android:id="@+id/pathRadius5"
-            android:layout_width="@dimen/default_custom_circel_path_dimen"
-            android:layout_height="@dimen/default_custom_circel_path_dimen"
-            app:circleColor="@color/default_color_circle"
-            app:circleRadius="@dimen/circle_radius_5" />
-
-        <com.asiantech.intern.painter.views.CustomCirclePath
-            android:id="@+id/pathRadius6"
-            android:layout_width="@dimen/default_custom_circel_path_dimen"
-            android:layout_height="@dimen/default_custom_circel_path_dimen"
-            app:circleColor="@color/default_color_circle"
-            app:circleRadius="@dimen/circle_radius_6" />
-
-        <com.asiantech.intern.painter.views.CustomCirclePath
-            android:id="@+id/pathRadius7"
-            android:layout_width="@dimen/default_custom_circel_path_dimen"
-            android:layout_height="@dimen/default_custom_circel_path_dimen"
-            app:circleColor="@color/default_color_circle"
-            app:circleRadius="@dimen/circle_radius_7" />
-
-        <com.asiantech.intern.painter.views.CustomCirclePath
-            android:id="@+id/pathRadius8"
-            android:layout_width="@dimen/default_custom_circel_path_dimen"
-            android:layout_height="@dimen/default_custom_circel_path_dimen"
-            app:circleColor="@color/default_color_circle"
-            app:circleRadius="@dimen/circle_radius_8" />
-
-        <com.asiantech.intern.painter.views.CustomCirclePath
-            android:id="@+id/pathRadius9"
-            android:layout_width="@dimen/default_custom_circel_path_dimen"
-            android:layout_height="@dimen/default_custom_circel_path_dimen"
-            app:circleColor="@color/default_color_circle"
-            app:circleRadius="@dimen/circle_radius_9" />
-
-        <com.asiantech.intern.painter.views.CustomCirclePath
-            android:id="@+id/pathRadius10"
-            android:layout_width="@dimen/default_custom_circel_path_dimen"
-            android:layout_height="@dimen/default_custom_circel_path_dimen"
-            app:circleColor="@color/default_color_circle"
-            app:circleRadius="@dimen/circle_radius_10" />
-
-        <com.asiantech.intern.painter.views.CustomCirclePath
-            android:id="@+id/pathRadius11"
-            android:layout_width="@dimen/default_custom_circel_path_dimen"
-            android:layout_height="@dimen/default_custom_circel_path_dimen"
-            app:circleColor="@color/default_color_circle"
-            app:circleRadius="@dimen/circle_radius_11" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
