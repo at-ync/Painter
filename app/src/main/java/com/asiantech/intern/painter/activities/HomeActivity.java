@@ -22,9 +22,9 @@ import com.asiantech.intern.painter.dialogs.DialogInputText_;
 import com.asiantech.intern.painter.dialogs.DialogPathColor;
 import com.asiantech.intern.painter.dialogs.DialogPathColor_;
 import com.asiantech.intern.painter.interfaces.IAction;
+import com.asiantech.intern.painter.interfaces.IPickFilter;
 import com.asiantech.intern.painter.interfaces.IPickIcon;
-import com.asiantech.intern.painter.utils.ClickItemRecyclerView;
-import com.asiantech.intern.painter.utils.IClickItemRecyclerView;
+import com.asiantech.intern.painter.interfaces.IPickItems;
 import com.asiantech.intern.painter.utils.ImageUtil;
 import com.asiantech.intern.painter.views.CustomPainter;
 
@@ -39,10 +39,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements IAction, IPickIcon, DialogPathColor.IOnPickPathStyle {
+public class HomeActivity extends BaseActivity implements IAction, IPickFilter, IPickItems, IPickIcon, DialogPathColor.IOnPickPathStyle {
     private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
             R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_rotate, R.drawable.ic_save, R.drawable.ic_share};
-    private static final int ICONIMAGES[] = {R.drawable.ic_happy, R.drawable.ic_hipster, R.drawable.ic_laughing, R.drawable.ic_love,
+    private static final int ICON_IMAGES[] = {R.drawable.ic_happy, R.drawable.ic_hipster, R.drawable.ic_laughing, R.drawable.ic_love,
             R.drawable.ic_relieved, R.drawable.ic_rich, R.drawable.ic_sick, R.drawable.ic_smile, R.drawable.ic_smiling};
     @ViewById(R.id.viewPaint)
     CustomPainter mCustomPainter;
@@ -57,6 +57,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickIcon, Di
     private List<Tool> mTools = new ArrayList<>();
     private List<Icon> mIconImages = new ArrayList<>();
     private Bitmap mBitmap;
+    private FilterAdapter mFilterAdapter;
 
     void afterViews() {
         mLlTool.setVisibility(View.GONE);
@@ -72,7 +73,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickIcon, Di
         for (int icon : ICONS) {
             mTools.add(new Tool(icon));
         }
-        for (int iconImage : ICONIMAGES) {
+        for (int iconImage : ICON_IMAGES) {
             mIconImages.add(new Icon(iconImage));
         }
         mRecyclerViewTool.setHasFixedSize(true);
@@ -80,17 +81,6 @@ public class HomeActivity extends BaseActivity implements IAction, IPickIcon, Di
         mRecyclerViewTool.setLayoutManager(layoutManager);
         final ToolAdapter toolAdapter = new ToolAdapter(this, mTools);
         mRecyclerViewTool.setAdapter(toolAdapter);
-        mRecyclerViewTool.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewTool, new IClickItemRecyclerView() {
-            @Override
-            public void onClick(View view, int position) {
-                onItemSelect(mTools.get(position).getIconTool());
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
         sendBitmap();
         LinearLayoutManager layoutManagerFilter = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewFilter.setLayoutManager(layoutManagerFilter);
@@ -159,26 +149,8 @@ public class HomeActivity extends BaseActivity implements IAction, IPickIcon, Di
     }
 
     private void addFilter() {
-        final FilterAdapter filterAdapter = new FilterAdapter(this, mBitmap);
-        mRecyclerViewFilter.setAdapter(filterAdapter);
-        mRecyclerViewFilter.addOnItemTouchListener(new ClickItemRecyclerView(this, mRecyclerViewFilter, new IClickItemRecyclerView() {
-            @Override
-            public void onClick(View view, final int position) {
-                final ProgressDialog progressDialog;
-                progressDialog = new ProgressDialog(HomeActivity.this);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setTitle(getString(R.string.rendering));
-                progressDialog.setMessage(getString(R.string.please_wait));
-                progressDialog.show();
-                doSetBitmapBackground(filterAdapter, position, progressDialog);
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
+        mFilterAdapter = new FilterAdapter(this, mBitmap);
+        mRecyclerViewFilter.setAdapter(mFilterAdapter);
     }
 
     @Background
@@ -213,5 +185,21 @@ public class HomeActivity extends BaseActivity implements IAction, IPickIcon, Di
     public void onPicked(int color, int radius) {
         mCustomPainter.setPathColor(color);
         mCustomPainter.setPathRadius(radius);
+    }
+
+    @Override
+    public void setPickFilter(int position) {
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(HomeActivity.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setTitle(getString(R.string.rendering));
+        progressDialog.setMessage(getString(R.string.please_wait));
+        progressDialog.show();
+        doSetBitmapBackground(mFilterAdapter, position, progressDialog);
+    }
+
+    @Override
+    public void setItemSelect(int iconTool) {
+        onItemSelect(iconTool);
     }
 }

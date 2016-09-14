@@ -1,6 +1,5 @@
 package com.asiantech.intern.painter.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.widget.ImageView;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.beans.Tool;
+import com.asiantech.intern.painter.interfaces.IPickItems;
 
 import java.util.List;
 
@@ -17,12 +17,12 @@ import java.util.List;
  * Created by Congybk on 9/6/2016.
  */
 public class ToolAdapter extends RecyclerView.Adapter<ToolAdapter.ToolViewHolder> {
-    private final Context mContext;
     private final List<Tool> mTools;
     private int mIndex = -1;
+    private IPickItems mIPickItems;
 
-    public ToolAdapter(Context context, List<Tool> tools) {
-        mContext = context;
+    public ToolAdapter(IPickItems iPickItems, List<Tool> tools) {
+        mIPickItems = iPickItems;
         mTools = tools;
     }
 
@@ -33,7 +33,7 @@ public class ToolAdapter extends RecyclerView.Adapter<ToolAdapter.ToolViewHolder
     }
 
     @Override
-    public void onBindViewHolder(final ToolViewHolder holder, int position) {
+    public void onBindViewHolder(final ToolViewHolder holder, final int position) {
         holder.mImgTool.setImageResource(mTools.get(position).getIconTool());
         holder.mView.setSelected(mIndex == position);
     }
@@ -49,6 +49,7 @@ public class ToolAdapter extends RecyclerView.Adapter<ToolAdapter.ToolViewHolder
     public class ToolViewHolder extends RecyclerView.ViewHolder {
         private final ImageView mImgTool;
         private final View mView;
+
         public ToolViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
@@ -57,6 +58,7 @@ public class ToolAdapter extends RecyclerView.Adapter<ToolAdapter.ToolViewHolder
                 @Override
                 public void onClick(View view) {
                     mIndex = getAdapterPosition();
+                    mIPickItems.setItemSelect(mTools.get(mIndex).getIconTool());
                     notifyDataSetChanged();
                 }
             });
