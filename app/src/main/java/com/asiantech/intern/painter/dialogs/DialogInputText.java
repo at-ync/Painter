@@ -14,8 +14,10 @@ import android.widget.ImageView;
 
 import com.asiantech.intern.painter.R;
 import com.asiantech.intern.painter.activities.HomeActivity;
+import com.asiantech.intern.painter.beans.BitmapDrawer;
 import com.asiantech.intern.painter.beans.TextDrawer;
 import com.asiantech.intern.painter.interfaces.IAction;
+import com.asiantech.intern.painter.models.BitmapFactory;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
@@ -47,17 +49,15 @@ public class DialogInputText extends DialogFragment {
     }
 
     private Paint getPaint(int size, int color) {
-        Paint paint = new Paint();
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(size);
         paint.setColor(color);
-        paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(getTypeface(getString(R.string.typeface_arizonia_regular_ttf)));
         return paint;
     }
 
     private TextDrawer createNewTextObject(String content, Paint paint) {
         TextDrawer textObject = new TextDrawer();
-        textObject.setAngle(0);
         textObject.setPaint(paint);
         textObject.setContent(content);
         return textObject;

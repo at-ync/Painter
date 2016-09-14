@@ -14,5 +14,4 @@ public interface ITextFactory {
     boolean isTouchInTextArea(TextDrawer textObject, float x, float y);
 
     void updateCoordinatesText(TextDrawer textObject, float movementX, float movementY);
-
 }

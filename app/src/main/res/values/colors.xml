@@ -16,4 +16,5 @@
     <color name="dialog.input_text.edittext.color.shape">#7fffffff</color>
     <color name="activity.home.recyclerview.filter.color">#5f000000</color>
     <color name="item.add_icon.circleimageview.boder.color">@android:color/white</color>
+    <color name="default_color_circle">#000000</color>
 </resources>
