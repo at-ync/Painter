@@ -49,8 +49,8 @@ import java.util.UUID;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements IAction, IPickFilter, IPickItems, IPickIcon, DialogPathColor.IOnPickPathStyle {
-    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_rotate, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
-            R.drawable.ic_picture, R.drawable.ic_crop, R.drawable.ic_save, R.drawable.ic_share};
+    private static final int ICONS[] = {R.drawable.ic_filter, R.drawable.ic_move, R.drawable.ic_rotate, R.drawable.ic_crop, R.drawable.ic_font, R.drawable.ic_paint, R.drawable.ic_eraser,
+            R.drawable.ic_picture, R.drawable.ic_save, R.drawable.ic_share};
     private static final int ICON_IMAGES[] = {R.drawable.ic_happy, R.drawable.ic_hipster, R.drawable.ic_laughing, R.drawable.ic_love,
             R.drawable.ic_relieved, R.drawable.ic_rich, R.drawable.ic_sick, R.drawable.ic_smile, R.drawable.ic_smiling};
     @ViewById(R.id.viewPaint)
@@ -117,6 +117,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
                 setAction(Constant.ACTION_MOVE_BITMAP);
                 break;
             case R.drawable.ic_crop:
+                setAction(Constant.ACTION_SCALE);
                 mLlTool.setVisibility(View.GONE);
                 break;
             case R.drawable.ic_eraser:

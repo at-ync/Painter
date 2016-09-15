@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.asiantech.intern.painter.beans.BitmapBackground;
@@ -19,7 +20,6 @@ import com.asiantech.intern.painter.beans.PathDrawer;
 import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.interfaces.IAction;
 import com.asiantech.intern.painter.models.BitmapFactory;
-import com.asiantech.intern.painter.models.TextFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +29,16 @@ import java.util.List;
  * Created by LyHV on 8/31/2016.
  */
 public class CustomPainter extends View implements IAction {
+    private float mValueScale = 1f;
+    private ScaleGestureDetector mScaleDetector;
     private static final float DRAW_TOUCH_TOLERANCE = 4;
     private float mInitialX;
     private float mInitialY;
-    private boolean mIsOnDraw;
     private List<Component> mComponents;
     private BitmapFactory mBitmapFactory;
-    private TextFactory mTextFactory;
     private BitmapBackground mBitmapBackground;
-    private int positionDrawCircle = -1;
+    private int mIndexDrawCircle = -1;
+    private int mIndexScale = -1;
     // TextDrawer Activities
     private float mCenterX;
     private float mCenterY;
@@ -63,7 +64,7 @@ public class CustomPainter extends View implements IAction {
     }
 
     public void init() {
-        mTextFactory = new TextFactory();
+        mScaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
         mBitmapFactory = new BitmapFactory();
         mComponents = new ArrayList<>();
         mPaintBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -99,9 +100,10 @@ public class CustomPainter extends View implements IAction {
                 PathDrawer pathDrawer = mComponents.get(i).getPathDrawer();
                 if (bitmapDrawer != null) {
                     mBitmapFactory.onDrawBitmap(mCanvas, bitmapDrawer);
-                    if (i == positionDrawCircle) {
+                    if (i == mIndexDrawCircle || i == mIndexScale) {
                         mBitmapFactory.onDrawCircleBitmap(mCanvas, bitmapDrawer);
                     }
+
                 }
                 if (pathDrawer != null) {
                     mCanvas.drawPath(pathDrawer.getPath(), pathDrawer.getPaint());
@@ -121,14 +123,20 @@ public class CustomPainter extends View implements IAction {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
+        mScaleDetector.onTouchEvent(event);
+        int numTouch = event.getPointerCount();
+        switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 initMoveBitmap(event);
                 initRoteBitMap(event);
                 onDrawInit(event);
+                checkSelectScale(event);
                 break;
             case MotionEvent.ACTION_UP:
-                positionDrawCircle = -1;
+                mIndexDrawCircle = -1;
+                if (mAction != Constant.ACTION_SCALE) {
+                    mIndexScale = -1;
+                }
                 onDrawFinish();
                 invalidate();
                 break;
@@ -136,9 +144,44 @@ public class CustomPainter extends View implements IAction {
                 updateMoveBitmap(event);
                 updateRotateBitmap(event);
                 onDrawMove(event);
+                updateScale(numTouch);
                 break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                break;
+
         }
         return true;
+    }
+
+    private void checkSelectScale(MotionEvent event) {
+        if (mAction == Constant.ACTION_SCALE) {
+            for (int i = mComponents.size() - 1; i >= 0; i--) {
+                BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
+                if (bitmapDrawer != null && mBitmapFactory.checkTouchCircleBitmap(bitmapDrawer, event.getX(), event.getY())) {
+                    mIndexScale = i;
+                    break;
+                }
+            }
+        }
+
+    }
+
+    private void updateScale(int numTouch) {
+        if (mAction == Constant.ACTION_SCALE) {
+            if (numTouch == 2) {
+                for (int i = mComponents.size() - 1; i >= 0; i--) {
+                    BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
+                    if (bitmapDrawer != null && i == mIndexScale) {
+                        bitmapDrawer.setScale(mValueScale);
+                        mBitmapFactory.updatePositionBitmapAfterScale(bitmapDrawer, mValueScale);
+                        mIndexDrawCircle = i;
+                        invalidate();
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 
     private void updateRotateBitmap(MotionEvent event) {
@@ -148,7 +191,7 @@ public class CustomPainter extends View implements IAction {
             for (int i = mComponents.size() - 1; i >= 0; i--) {
                 BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
                 if (bitmapDrawer != null && mBitmapFactory.checkTouchCircleBitmap(bitmapDrawer, newX, newY)) {
-                    positionDrawCircle = i;
+                    mIndexDrawCircle = i;
                     bitmapDrawer.setRotateAngle(bitmapDrawer.getRotateAngle()
                             + mBitmapFactory.getRotateAngle(bitmapDrawer, mInitialX, mInitialY, newX, newY));
                     invalidate();
@@ -178,7 +221,7 @@ public class CustomPainter extends View implements IAction {
             mY = y;
             mPathDrawer = new PathDrawer();
             mPathDrawer.getPaint().setColor(mPathColor);
-            if(mPathRadius > 0) {
+            if (mPathRadius > 0) {
                 mPathDrawer.getPaint().setStrokeWidth(mPathRadius);
             }
             mPathDrawer.setPath(path);
@@ -192,7 +235,6 @@ public class CustomPainter extends View implements IAction {
         }
     }
 
-    //
     @Override
     public void setAction(int action) {
         mAction = action;
@@ -225,7 +267,7 @@ public class CustomPainter extends View implements IAction {
             for (int i = mComponents.size() - 1; i >= 0; i--) {
                 BitmapDrawer bitmapDrawer = mComponents.get(i).getBitmapDrawer();
                 if (bitmapDrawer != null && mBitmapFactory.checkTouchCircleBitmap(bitmapDrawer, newX, newY)) {
-                    positionDrawCircle = i;
+                    mIndexDrawCircle = i;
                     mBitmapFactory.updatePositionBitmap(mComponents.get(i).getBitmapDrawer(), newX - mInitialX, newY - mInitialY);
                     invalidate();
                     mInitialX = newX;
@@ -235,8 +277,6 @@ public class CustomPainter extends View implements IAction {
             }
         }
     }
-
-    //
 
     private void onDrawMove(MotionEvent event) {
         float x = event.getX();
@@ -284,5 +324,14 @@ public class CustomPainter extends View implements IAction {
 
     public int getPathColor() {
         return mPathColor;
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            mValueScale *= detector.getScaleFactor();
+            mValueScale = Math.max(Constant.MIN_SCALE, Math.min(mValueScale, Constant.MAX_SCALE));
+            return true;
+        }
     }
 }
