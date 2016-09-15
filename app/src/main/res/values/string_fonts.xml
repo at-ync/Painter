@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fonts">
+        <item>arizonia_regular.ttf</item>
+        <item>pacifico.ttf</item>
+        <item>windsong.ttf</item>
+        <item>arizonia_regular.ttf</item>
+    </string-array>
+</resources>
