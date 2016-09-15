@@ -20,6 +20,7 @@ public class BitmapFactory implements IBitmapFactory {
     @Override
     public void onDrawBitmap(Canvas canvas, BitmapDrawer bitmapDrawer) {
         Matrix matrix = new Matrix();
+        matrix.setScale(bitmapDrawer.getScale(), bitmapDrawer.getScale());
         matrix.postTranslate(bitmapDrawer.getBitmapCoordinateX(), bitmapDrawer.getBitmapCoordinateY());
         matrix.postRotate(bitmapDrawer.getRotateAngle(), bitmapDrawer.getRotateOriginX(), bitmapDrawer.getRotateOriginY());
         canvas.drawBitmap(bitmapDrawer.getBitmap(), matrix, null);
@@ -113,6 +114,15 @@ public class BitmapFactory implements IBitmapFactory {
         bitmapDrawer.setRotateOriginY(bitmapDrawer.getRotateOriginY() + movementY);
         bitmapDrawer.setBitmapCoordinateY(bitmapDrawer.getBitmapCoordinateY() + movementY);
         bitmapDrawer.setBitmapCoordinateX(bitmapDrawer.getBitmapCoordinateX() + movementX);
+    }
+
+    @Override
+    public void updatePositionBitmapAfterScale(BitmapDrawer bitmapDrawer, float scale) {
+        float newWidth = bitmapDrawer.getBitmap().getWidth() * scale;
+        float newHeight = bitmapDrawer.getBitmap().getHeight() * scale;
+        bitmapDrawer.setBitmapCoordinateX(bitmapDrawer.getRotateOriginX() - newWidth / 2);
+        bitmapDrawer.setBitmapCoordinateY(bitmapDrawer.getRotateOriginY() - newHeight / 2);
+        bitmapDrawer.setRadius((float) Math.sqrt(Math.pow(newWidth / 2, 2) + Math.pow(newHeight / 2, 2)));
     }
 
 }

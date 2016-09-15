@@ -30,4 +30,6 @@ public interface IBitmapFactory {
     void onDrawCircleBitmap(Canvas canvas, BitmapDrawer bitmapDrawer);
 
     void updatePositionBitmap(BitmapDrawer bitmapDrawer, float movementX, float movementY);
+
+    void updatePositionBitmapAfterScale(BitmapDrawer bitmapDrawer, float scale);
 }

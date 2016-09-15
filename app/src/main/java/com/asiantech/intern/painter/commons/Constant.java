@@ -5,7 +5,7 @@ package com.asiantech.intern.painter.commons;
  * Created by LyHV on 9/4/2016.
  */
 public class Constant {
-    public static final int ACTION_STOP = 0;
+    public static final int ACTION_SCALE = 6;
     public static final int ACTION_MOVE_BITMAP = 1;
     public static final int ACTION_INPUT_TEXT = 2;
     public static final int ACTION_ROTATE_BITMAP = 3;
@@ -24,4 +24,6 @@ public class Constant {
     public static final int VIGNETTE = 7;
     public static final int SKETCH = 8;
     public static final int BRIGHTNESS = 9;
+    public static final float MIN_SCALE = 0.5f;
+    public static final float MAX_SCALE = 5f;
 }

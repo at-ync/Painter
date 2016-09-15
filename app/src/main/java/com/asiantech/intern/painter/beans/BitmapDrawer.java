@@ -12,6 +12,7 @@ import lombok.Data;
 public class BitmapDrawer extends BaseDrawer {
     private Bitmap bitmap;
     private float radius;
+    private float scale = 1f;
     private float rotateOriginX;
     private float rotateOriginY;
     private float bitmapCoordinateX;
