@@ -2,10 +2,12 @@ package com.asiantech.intern.painter.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -36,30 +38,27 @@ import java.util.List;
  */
 @EFragment(R.layout.dialog_path_color)
 public class DialogPathColor extends DialogFragment {
-    private static final int DEFAULT_DENSITY = 12;
-    @ViewById(R.id.btnPickColor)
-    ImageButton mImgBtnPickColor;
     @ViewById(R.id.recyclerViewPathRadius)
     RecyclerView mRecyclerViewPathRadius;
     @ViewById(R.id.btnOk)
     Button mBtnOk;
     @ViewById(R.id.btnCancel)
     Button mBtnCancel;
-    @ViewById(R.id.tvColorReview)
-    TextView mTvColorReview;
     @FragmentArg
     int mColor;
     @FragmentArg
     int mRadius;
+    @ViewById(R.id.customColorPicker)
+    ColorPickerView mCustomColorPicker;
     private IOnPickPathStyle mOnPickPathStyle;
     private List<CustomCirclePath_> mCustomCirclePaths;
     private CirclePathAdapter mCirclePathAdapter;
 
     @AfterViews
     void init() {
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         initListCirclePath();
-        setColorPathRadius(mColor);
-        mTvColorReview.setBackgroundColor(mColor);
+        setColorPathRadius(Color.WHITE);
         mCirclePathAdapter = new CirclePathAdapter(mCustomCirclePaths);
         mRecyclerViewPathRadius.setAdapter(mCirclePathAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -77,6 +76,13 @@ public class DialogPathColor extends DialogFragment {
 
             }
         }));
+        mCustomColorPicker.addOnColorSelectedListener(new OnColorSelectedListener() {
+            @Override
+            public void onColorSelected(int color) {
+                mColor = color;
+                setColorPathRadius(color);
+            }
+        });
     }
 
     @Override
@@ -86,37 +92,6 @@ public class DialogPathColor extends DialogFragment {
             mOnPickPathStyle = (IOnPickPathStyle) context;
         }
     }
-
-    @Click(R.id.btnPickColor)
-    void onPickColor() {
-        ColorPickerDialogBuilder
-                .with(getActivity())
-                .setTitle(getString(R.string.dialog_pick_color_title))
-                .initialColor(-1)
-                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                .density(DEFAULT_DENSITY)
-                .setOnColorSelectedListener(new OnColorSelectedListener() {
-                    @Override
-                    public void onColorSelected(int selectedColor) {
-                    }
-                })
-                .setPositiveButton(getString(R.string.dialog_pick_color_button_text_ok), new ColorPickerClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                        mColor = selectedColor;
-                        setColorPathRadius(selectedColor);
-                        mTvColorReview.setBackgroundColor(selectedColor);
-                    }
-                })
-                .setNegativeButton(getString(R.string.dialog_pick_color_button_text_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .build()
-                .show();
-    }
-
 
     @Click(R.id.btnOk)
     void onClickButtonOk() {
