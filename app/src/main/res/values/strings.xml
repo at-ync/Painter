@@ -34,4 +34,5 @@
     <string name="rendering">Rendering…</string>
     <string name="please_wait">Please Wait…</string>
     <string name="button_pick_color">Button Pick Color</string>
+    <string name="dialog.input_text.textview.font">Font:</string>
 </resources>
