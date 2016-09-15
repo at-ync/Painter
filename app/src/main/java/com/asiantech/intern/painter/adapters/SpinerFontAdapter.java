@@ -18,28 +18,29 @@ import com.asiantech.intern.painter.R;
 public class SpinerFontAdapter extends ArrayAdapter<String> {
     private final Context mContext;
     private final String[] mFonts;
-    public SpinerFontAdapter(Context context, int textViewResourceId, String[] fonts) {
-        super(context, textViewResourceId, fonts);
+
+    public SpinerFontAdapter(Context context, String[] fonts) {
+        super(context, R.layout.item_row_spiner_font, fonts);
         mContext = context;
         mFonts = fonts;
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+        return getCustomView(position, parent);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+        return getCustomView(position, parent);
     }
 
-    public View getCustomView(int position, View convertView, ViewGroup parent) {
+    public View getCustomView(int position, ViewGroup parent) {
 
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         View row = inflater.inflate(R.layout.item_row_spiner_font, parent, false);
         TextView tvRow = (TextView) row.findViewById(R.id.tvRow);
-        tvRow.setTypeface(Typeface.createFromAsset(mContext.getAssets(),mFonts[position]));
+        tvRow.setTypeface(Typeface.createFromAsset(mContext.getAssets(), mFonts[position]));
         return row;
     }
 

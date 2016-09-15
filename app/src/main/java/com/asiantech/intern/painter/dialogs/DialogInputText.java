@@ -51,12 +51,12 @@ public class DialogInputText extends DialogFragment implements AdapterView.OnIte
 
     @AfterViews
     public void init() {
-        mFonts = getResources().getStringArray(R.array.font);
+        mFonts = getResources().getStringArray(R.array.fonts);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         if (getActivity() instanceof HomeActivity) {
             mIAction = (IAction) getActivity();
         }
-        SpinerFontAdapter spinnerAdapter = new SpinerFontAdapter(getActivity(), R.id.tvRow, mFonts);
+        SpinerFontAdapter spinnerAdapter = new SpinerFontAdapter(getActivity(), mFonts);
         mSpinerFont.setAdapter(spinnerAdapter);
         mSpinerFont.setOnItemSelectedListener(this);
         mSeekBar.setProgress(SIZE_CHANGE);
