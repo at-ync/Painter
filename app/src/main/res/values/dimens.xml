@@ -44,7 +44,7 @@
     <dimen name="dialog.input_text.linearlayout.colorpickerview.height">200dp</dimen>
     <dimen name="dialog.input_text.linearlayout.colorpickerview.height.marginleft">20dp</dimen>
     <dimen name="dialog.input_text.linearlayout.colorpickerview.height.marginright">20dp</dimen>
-    <dimen name="default_custom_circel_path_dimen">50dp</dimen>
+    <dimen name="default_custom_circel_path_dimen">30dp</dimen>
     <dimen name="circle_radius_5">5dp</dimen>
     <dimen name="circle_radius_6">6dp</dimen>
     <dimen name="circle_radius_7">7dp</dimen>
@@ -56,4 +56,5 @@
     <dimen name="textview_color_preview_height">20dp</dimen>
     <dimen name="button_color_picker_padding">10dp</dimen>
     <dimen name="dialog.input_text.texvtiew.marginleft">5dp</dimen>
+    <dimen name="dialog.path_color.linearlayout.margin">20dp</dimen>
 </resources>
