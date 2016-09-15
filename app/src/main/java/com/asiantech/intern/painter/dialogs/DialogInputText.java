@@ -4,10 +4,8 @@ import android.app.DialogFragment;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -131,7 +129,6 @@ public class DialogInputText extends DialogFragment implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         mFont = mFonts[i];
-        Log.i("TAG",mFonts[i]);
     }
 
     @Override
