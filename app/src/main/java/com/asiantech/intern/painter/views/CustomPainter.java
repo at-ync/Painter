@@ -86,11 +86,15 @@ public class CustomPainter extends View implements IAction {
         if (!mBitmapBackground.isSetting()) {
             mCenterX = getWidth() / 2;
             mCenterY = getHeight() / 2;
-            mBitmapBackground.setLeft((getWidth() - mBitmapBackground.getBitmap().getWidth()) / 2);
-            mBitmapBackground.setTop((getHeight() - mBitmapBackground.getBitmap().getHeight()) / 2);
+            if(mBitmapBackground.getBitmap() != null) {
+                mBitmapBackground.setLeft((getWidth() - mBitmapBackground.getBitmap().getWidth()) / 2);
+                mBitmapBackground.setTop((getHeight() - mBitmapBackground.getBitmap().getHeight()) / 2);
+            }
             mBitmapBackground.setSetting(true);
         }
-        canvas.drawBitmap(mBitmapBackground.getBitmap(), mBitmapBackground.getLeft(), mBitmapBackground.getTop(), mBitmapBackground.getPaint());
+        if(mBitmapBackground.getBitmap() != null) {
+            canvas.drawBitmap(mBitmapBackground.getBitmap(), mBitmapBackground.getLeft(), mBitmapBackground.getTop(), mBitmapBackground.getPaint());
+        }
         if ((mIsDone && (mAction == Constant.ACTION_DRAWING || mAction == Constant.ACTION_ERASER))
                 || (mAction != Constant.ACTION_DRAWING && mAction != Constant.ACTION_ERASER)) {
             mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);

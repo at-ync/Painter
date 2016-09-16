@@ -10,7 +10,7 @@
     <dimen name="activity.main.circleimageview.photo.height">90dp</dimen>
     <dimen name="activity.main.linearlayout.camera.margin">5dp</dimen>
     <dimen name="activity.main.linearlayout.photo.margin">5dp</dimen>
-    <dimen name="activity.home.linearlayout.height">70dp</dimen>
+    <dimen name="activity.home.linearlayout.height">90dp</dimen>
     <dimen name="activity.home.linearlayout.height.menu_select">50dp</dimen>
     <dimen name="activity.home.imagebutton.padding">10dp</dimen>
     <!--Item Filter Image-->
