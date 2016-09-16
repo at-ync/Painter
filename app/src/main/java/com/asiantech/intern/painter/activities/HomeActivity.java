@@ -10,8 +10,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.asiantech.intern.painter.R;
@@ -19,6 +21,7 @@ import com.asiantech.intern.painter.adapters.FilterAdapter;
 import com.asiantech.intern.painter.adapters.IconAdapter;
 import com.asiantech.intern.painter.adapters.ToolAdapter;
 import com.asiantech.intern.painter.beans.BitmapDrawer;
+import com.asiantech.intern.painter.beans.FilterImage;
 import com.asiantech.intern.painter.beans.Icon;
 import com.asiantech.intern.painter.beans.Tool;
 import com.asiantech.intern.painter.commons.Constant;
@@ -63,6 +66,8 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     LinearLayout mLlTool;
     @ViewById(R.id.recyclerViewFilter)
     RecyclerView mRecyclerViewFilter;
+    @ViewById(R.id.seekBar)
+    SeekBar mSeekBar;
     private List<Tool> mTools = new ArrayList<>();
     private List<Icon> mIconImages = new ArrayList<>();
     private Bitmap mBitmapSource;
@@ -70,6 +75,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
     private FilterAdapter mFilterAdapter;
     private int mPickedFilter = -1;
     private String mNameImage;
+    private FilterImage mFilterImage;
 
     void afterViews() {
         mLlTool.setVisibility(View.GONE);
@@ -172,7 +178,15 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
 
     @Background
     void doSetBitmapBackground(FilterAdapter filterAdapter, int position, ProgressDialog progressDialog) {
-        mBitmap = filterAdapter.getFilterBitmap(filterAdapter.getPositionItem(position).getTypeFilter(), false);
+        mFilterImage = filterAdapter.getPositionItem(position);
+        mBitmap = filterAdapter.getFilterBitmap(mFilterImage.getTypeFilter(), false);
+        loadBitmap();
+        initSeekBarProperties(mSeekBar, mFilterImage.getTypeFilter(),progressDialog);
+    }
+
+    @Background
+    void doEditBitmapFilter(FilterAdapter filterAdapter, ProgressDialog progressDialog, float value) {
+        mBitmap = filterAdapter.getEditedFilterBitmap(mFilterImage.getTypeFilter(), value);
         loadBitmap();
         doDismissProgressDialog(progressDialog);
     }
@@ -216,6 +230,7 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
             progressDialog.show();
             doSetBitmapBackground(mFilterAdapter, position, progressDialog);
             mPickedFilter = position;
+            initSeekBar(progressDialog);
         }
     }
 
@@ -267,5 +282,91 @@ public class HomeActivity extends BaseActivity implements IAction, IPickFilter, 
             intent.setType("image/jpeg");
             startActivity(Intent.createChooser(intent, getResources().getText(R.string.send_to)));
         }
+    }
+
+    private void initSeekBar(ProgressDialog progressDialog) {
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                final ProgressDialog progressDialog;
+                progressDialog = new ProgressDialog(HomeActivity.this);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setTitle(getString(R.string.rendering));
+                progressDialog.setMessage(getString(R.string.please_wait));
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                switch (mFilterImage.getTypeFilter()) {
+                    case Constant.BRIGHTNESS:
+                        doEditBitmapFilter(mFilterAdapter, progressDialog, progress - 255);
+                        break;
+                    case Constant.SEPIA:
+                        doEditBitmapFilter(mFilterAdapter, progressDialog, (float) (2.0 / 100) * progress);
+                        break;
+                    case Constant.CONTRAST:
+                        doEditBitmapFilter(mFilterAdapter, progressDialog, (float) (10.0 / 100.0) * progress);
+                        break;
+                    case Constant.HUE:
+                        doEditBitmapFilter(mFilterAdapter, progressDialog, progress);
+                        break;
+                    case Constant.VIGNETTE:
+                        doEditBitmapFilter(mFilterAdapter, progressDialog, (float) mSeekBar.getProgress() / 100);
+                        break;
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    @UiThread
+    void initSeekBarProperties(SeekBar seekBar, int type, ProgressDialog progressDialog) {
+        switch (type) {
+            case Constant.CONTRAST:
+                seekBar.setVisibility(View.VISIBLE);
+                seekBar.setMax(100);
+                seekBar.setProgress(1);
+                break;
+            case Constant.INVERT:
+                seekBar.setVisibility(View.GONE);
+                break;
+            case Constant.HUE:
+                seekBar.setVisibility(View.VISIBLE);
+                seekBar.setMax(100);
+                seekBar.setProgress(50);
+                break;
+            case Constant.SEPIA:
+                seekBar.setVisibility(View.VISIBLE);
+                seekBar.setMax(100);
+                seekBar.setProgress(22);
+                break;
+            case Constant.GRAYSCALE:
+                seekBar.setVisibility(View.GONE);
+                break;
+            case Constant.VIGNETTE:
+                seekBar.setVisibility(View.VISIBLE);
+                seekBar.setMax(100);
+                seekBar.setProgress(80);
+                break;
+            case Constant.SKETCH:
+                seekBar.setVisibility(View.GONE);
+                break;
+            case Constant.BRIGHTNESS:
+                seekBar.setVisibility(View.VISIBLE);
+                seekBar.setMax(500);
+                seekBar.setProgress(255);
+                break;
+        }
+        progressDialog.dismiss();
     }
 }

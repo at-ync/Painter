@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.asiantech.intern.painter.R;
@@ -15,6 +16,9 @@ import com.asiantech.intern.painter.commons.Constant;
 import com.asiantech.intern.painter.interfaces.IPickFilter;
 import com.asiantech.intern.painter.utils.ImageFilterUtils;
 import com.asiantech.intern.painter.utils.ImageUtil;
+
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,4 +158,28 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
             });
         }
     }
+
+    public Bitmap getEditedFilterBitmap(int type, float value) {
+        switch (type) {
+            case Constant.CONTRAST:
+                return ImageFilterUtils.getInstance().doContrast(mBitmapSource, value);
+            case Constant.INVERT:
+                return ImageFilterUtils.getInstance().doInvertImage(mBitmapSource);
+            case Constant.HUE:
+                return ImageFilterUtils.getInstance().doHue(mBitmapSource, (int) value);
+            case Constant.SEPIA:
+                return ImageFilterUtils.getInstance().doSepia(mBitmapSource, value);
+            case Constant.GRAYSCALE:
+                return ImageFilterUtils.getInstance().doGrayScale(mBitmapSource);
+            case Constant.VIGNETTE:
+                return ImageFilterUtils.getInstance().doVignette(mBitmapSource, value);
+            case Constant.SKETCH:
+                Bitmap sketchBitmap = ImageUtil.getInstance().compressBitmap(mBitmapSource, 100).copy(Bitmap.Config.ARGB_8888, true);
+                return ImageFilterUtils.getInstance().doSketch(sketchBitmap, mContext);
+            case Constant.BRIGHTNESS:
+                return ImageFilterUtils.getInstance().doBrightness(mBitmapSource, value);
+        }
+        return null;
+    }
 }
+
